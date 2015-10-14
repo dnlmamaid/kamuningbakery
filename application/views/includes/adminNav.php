@@ -1,14 +1,15 @@
 <!-- Sidebar -->
         <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-            <ul class="nav sidebar-nav">
-                <li class="sidebar-brand">
+        	<ul class="sidebar-header">
                     <img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+            </ul>        	
+            <ul class="nav sidebar-nav">
+                
+                <li>
+                    <a href="<?php echo base_url()?>">Home</a>
                 </li>
                 <li>
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href="#">Inventory</a>
+                    <a href="<?php echo base_url()?>inventory">Inventory</a>
                 </li>
                 <li>
                     <a href="#">Activity</a>
@@ -26,16 +27,23 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Control Panel <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li class="dropdown-header">Admin</li>
-                    <li><a href="#">My Profile</a></li>
-                    <li><a href="#">Users</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="<?php echo base_url()?>users/profile">My Profile</a></li>
+                    <li><a href="<?php echo base_url()?>users">Users</a></li>
+                    <li><a href="<?php echo base_url()?>logout">Logout</a></li>
                   </ul>
                 </li>
-                <li>
-                	<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/pandesal.jpg">
-            		<p>&copy; Kamuning Bakery 2015</p>
-            	</li>
             </ul>
+            <ul class="nav sidebar-footer">
+                <img class="img-responsive" src="<?php echo base_url(); ?>assets/images/pandesal.jpg" style="height:100px;">
+				<p>&copy; Kamuning Bakery 2015</p>
+			</ul>
             
         </nav>
         <!-- /#sidebar-wrapper -->
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+				<span class="hamb-top"></span>
+				<span class="hamb-middle"></span>
+				<span class="hamb-bottom"></span>
+			</button>

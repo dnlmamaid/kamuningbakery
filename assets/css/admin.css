@@ -2,6 +2,7 @@
 
 /* General Styles */
 body {
+	font-family: 'Open Sans Light';
     position: relative;
     overflow-x: hidden;
 }
@@ -17,8 +18,9 @@ body {
 }
 
 table tr th i{ 
-	color: #006600;
+	color: #0B6738;
 }
+
 
 input:focus, textarea:focus {
 	outline: none;
@@ -28,26 +30,46 @@ input:focus, textarea:focus {
 	outline: none;
 }
 
+h1 i {
+	color: #0B6738;
+}
 
-h1 {
+.breadcrumb a{
+	color: #000;	
+}
+
+.breadcrumb i{
+	color: #0B6738;	
+}
+h1{
+	font-family: 'Open Sans';
+	font-weight:bold;
+	text-transform: uppercase;
     font-size:2.25em;
     line-height:1.1;
     margin:0.5em 0;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.33);
 }
 h2 {
+	font-family: 'Open Sans';
+	font-weight:bold;
     font-size:1.85em;
     line-height:1.1;
     margin:0.55em 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.33);
 }
 h3 {
+	font-family: 'Open Sans';
+	font-weight:bold;
+	
     font-size:1.45em;
     line-height:1.1;
     margin:0.6em 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.33);
 }
 h4 {
+	font-family: 'Open Sans';
+	font-weight:bold;
     font-size:1.25em;
     line-height:1.1;
     margin:0.65em 0;
@@ -103,7 +125,36 @@ p {
 	margin: 0 0 1em !important;
 }
 
+.modal-header{
+	background: #0B6738;
+	color: #FFF;
+}
 
+@media only screen and (min-width : 1200px) {
+	
+	.modal-footer{
+		margin-top: 300px;
+	}
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 320px) {
+	.modal-footer{
+		margin-top: 300px;
+	}
+}
+
+
+.modal-title {
+	font-family: 'Open Sans';
+	font-weight:bold;
+	text-transform: uppercase;
+		
+}
+.modal-body {
+	font-family: 'Open Sans Light';
+}
 .form-group {
 	margin: 0 auto;
 	margin-bottom: 15px;
@@ -113,31 +164,22 @@ p {
 .form-control {
 	color: #003300;
 	border: none;
-	padding: 22px 4px;
 	outline: none;
 	margin: 0;
-	width: 210px;
 	max-width: 100%;
 	display: block;
-	margin-bottom: 20px;
-	background: #fff;
+	margin-bottom: 15px;
+	background: #FFF;
 	font-size: inherit;
 	border-radius: 0px !important;
-	width: 99%;
+}
+
+.inline {
+	display: inline-block;
 }
 
 
 }
-.form-control input[type="text"]{	
-  border: none;
-}
-
-.form-control input[type="text"]:focus, .form-control input[type="password"]:focus {
-  border-color: #0B6738;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(11, 103, 56);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(11, 103, 56);
-}  
 
 a {
 	color: #0B6738;
@@ -207,6 +249,14 @@ a:hover {
     width: 220px;
 }
 
+.bg-panel{
+	background: #FFF;
+	border-radius: 5px;
+	padding-bottom:50px;
+	box-shadow: 3px 3px 3px #000;
+}
+
+
 #page-content-wrapper {
     width: 100%;
     padding-top: 70px;
@@ -223,12 +273,15 @@ a:hover {
 
 .sidebar-nav {
     position: absolute;
-    top: 0;
+    top: 175px;
     width: 220px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
+
+
+    
 
 .sidebar-nav li {
     position: relative; 
@@ -252,7 +305,7 @@ a:hover {
             transition: width .2s ease-in;
 
 }
-.sidebar-nav li:first-child a {
+.sidebar-nav li:first-child:before {
     color: #fff;
     background-color: #1a1a1a;
 }
@@ -313,6 +366,23 @@ a:hover {
     font-size: 20px;
     line-height: 44px;
 }
+
+.sidebar-footer {
+	margin-left: 40px;
+    font-size: 12px;
+    background: none;
+    position: absolute;
+    bottom: 40px;
+    width: 220px;   
+}
+
+.sidebar-header {
+    background: none;
+    position: absolute;
+    top: 50px;
+    margin-left: -40px;
+}
+
 .sidebar-nav .dropdown-menu {
     position: relative;
     width: 100%;
@@ -324,13 +394,17 @@ a:hover {
     box-shadow: none;
 }
 
+.nav-footer{
+	
+	top:500px;
+}
 /*-------------------------------*/
 /*       Hamburger-Cross         */
 /*-------------------------------*/
 
 .hamburger {
   position: fixed;
-  top: 20px;  
+  top:20px;  
   z-index: 999;
   display: block;
   width: 32px;
@@ -495,6 +569,20 @@ a:hover {
     transition: all .3s ease;
 }
 
+.btn-caution {
+	color: #006600;
+	background: #FFCC00;
+}
+
+.btn-caution:hover{
+	background: #E6B800;
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
 .btn-danger {
 	background: #CC0000;
 }
@@ -537,7 +625,7 @@ a:hover {
   -o-transition: all .3s ease;
   transition: all .3s ease;
   color: #333;
-  background-color: #EEEEEE;
+  background-color: #CFCFCF;
   
 }
 /* .info-box
@@ -706,3 +794,24 @@ a:hover {
   background-color : #4875b4;  
 }
 
+
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+    pointer-events:none;
+}
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events:none;
+}
+.modal-content {
+    /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+    width:inherit;
+    height:inherit;
+    /* To center horizontally */
+    margin: 0 auto;
+    pointer-events:all;
+}

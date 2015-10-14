@@ -21,7 +21,8 @@
 <!-- Custom Styles-->
 	<link href="<?php echo base_url(); ?>assets/css/admin.css" rel="stylesheet">
 	
-
+<!-- Vegas -->
+	<link href="<?php echo base_url();?>assets/vegas/vegas.min.css" rel="stylesheet">
     
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

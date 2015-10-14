@@ -4,9 +4,28 @@ function initializeJS() {
 	 $(".clickable-row").click(function() {
 	        window.document.location = $(this).data("href");
 	});	
-
-    //tool tips
-    jQuery('.tooltips').tooltip();
+	//searchboxanimate
+	$('#searchbox').focus(function()
+	{ 
+	$(this).animate({
+	    width: '300px'
+	  }, 300, function() {
+	    // Animation complete.
+	  });
+	});
+	
+	
+	$('#searchbox').blur(function()
+	{ 
+	$(this).animate({
+	     width: '200px'
+	   }, 300, function() {
+	     // Animation complete.
+	   });
+	 });
+	 
+    //tool tips   
+  	$('[data-toggle="tooltip"]').tooltip()
 
     //popovers
     jQuery('.popovers').popover();

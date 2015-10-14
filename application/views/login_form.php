@@ -24,20 +24,12 @@
 			  					<?php if($this->session->flashdata('error')){ ?>
 									<div class="alert alert-danger" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('error'); ?></div>
 								<?php } ?>
-								<?php if($this->session->flashdata('success')){ ?>
-									<div class="alert alert-success" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('success'); ?></div>
-								<?php } ?>
 						        	<div class="form-group">
 							        	<input type="text" name="username" id="Username" class="form-control" placeholder="Username" required autofocus>
 							        </div>
 						        		
 						        	<div class="form-group">
-							        	<input type="password"  name="password" id="Password" class="form-control" placeholder="Password" required>
-	
-							        	<div class="pull-left">
-											<a href="" data-target="#password-reset" data-toggle="modal">Forgot Password</a>									
-										</div>
-										
+							        	<input type="password"  name="password" id="Password" class="form-control" placeholder="Password" required>							     
 										<div class="pull-right">
 											<input type="submit" class="btn btn-theme" value="Login">
 										</div>

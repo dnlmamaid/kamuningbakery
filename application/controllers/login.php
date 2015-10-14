@@ -17,7 +17,7 @@ class login extends CI_Controller {
 	function index() {
 		if($this->session->userdata('is_logged_in'))
 	    {
-			redirect('dashboard', 'refresh');
+			redirect('home', 'refresh');
 		}	
 		
 		else{
@@ -35,7 +35,7 @@ class login extends CI_Controller {
 	*/	
 	function validate_account()
 	{
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password','required');
 		
         if($this->form_validation->run() == FALSE){
@@ -49,21 +49,22 @@ class login extends CI_Controller {
 			
 			if($this->users_model->check_account_db() == TRUE){
 				
-				$email = $this->input->post('email');
+				$username = $this->input->post('username');
 				
-				$user_id = $this->users_model->get_user_id_from_email($email);
+				$user_id = $this->users_model->get_user_id_from_username($username);
 				$user    = $this->users_model->get_user($user_id);
 				
 				$data = array(
 					'user_id' => $user -> id,
-					'email' => $user -> email,
+					'username' => $user -> username,
+					'user_type' => $user -> user_type,
 					'is_logged_in' => true,
-					'is_admin' => $user->is_admin,
+					
 					
 				);
 				
 				$this -> session -> set_userdata($data);
-				redirect('dashboard', 'refresh');	
+				redirect('home', 'refresh');	
 							
 			}
 			
@@ -75,8 +76,6 @@ class login extends CI_Controller {
     }
 	
 	
-	
-	
 	function check_account()
     {
 		$query = $this->users_model->check_account_db();
@@ -85,21 +84,6 @@ class login extends CI_Controller {
 		}
 		else{
 			return false;
-		}
-    }
-	
-	function reset_password()
-    {
-		$email = $this->input->post('email');
-		if($user_id = $this->users_model->get_user_id_from_email($email)){
-			
-			$this->users_model->change_password($user_id, $email);
-			$this->session->set_flashdata('success', 'Please check your email for your new password');
-			$this->index();   
-		}
-		else{
-			$this->session->set_flashdata('error', 'The Email you have entered is not yet associated with the site');
-			$this->index();                     
 		}
     }
 	

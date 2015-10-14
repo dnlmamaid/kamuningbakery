@@ -10,7 +10,7 @@ class products_model extends CI_Model{
 			return $this->db->count_all_results('products');
 		}
 		else{
-			$this -> db -> where('products.status', '1');
+			$this -> db -> where('products.is_active', '1');
 			return $this->db->count_all_results('products');
 		}
 	}
@@ -25,7 +25,7 @@ class products_model extends CI_Model{
 		}
 		else{
 			
-			$this -> db -> where('products.status', '1');
+			$this -> db -> where('products.is_active', '1');
 			$this -> db -> where('products.category_ID', $cid);
 			return $this->db->count_all_results('products');
 		}
@@ -38,8 +38,8 @@ class products_model extends CI_Model{
 	function getProducts($limit, $start)
 	{
 		if($this -> session -> userdata('is_admin')){
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->limit($limit, $start);
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
@@ -53,10 +53,10 @@ class products_model extends CI_Model{
 			return false;
 		}
 		else{
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->limit($limit, $start);
-			$this -> db -> where('status', '1');
+			$this -> db -> where('products.is_active', '1');
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
 			if ($query->num_rows() > 0) {
@@ -86,8 +86,8 @@ class products_model extends CI_Model{
 			$this -> db -> where('product_ID', $pid);
 			$class = $this->db->get()->row('class_ID');
 			
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this -> db -> select('*');
 			$this -> db -> from('products');
 			
@@ -106,11 +106,11 @@ class products_model extends CI_Model{
 			$this -> db -> where('product_ID', $pid);
 			$class = $this->db->get()->row('class_ID');
 			
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this -> db -> select('*');
 			$this -> db -> from('products');
-			$this -> db -> where('products.status', '1');
+			$this -> db -> where('products.is_active', '1');
 			$this -> db -> where('products.product_ID !=', $pid);
 			$this -> db -> where('products.class_ID', $class);
 			$this -> db -> order_by('date_created', 'desc');
@@ -128,8 +128,8 @@ class products_model extends CI_Model{
 	 */
 	function get_product_rec($pid) {
 		
-		$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-		$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 		$this -> db -> where('product_ID', $pid);
 		$q = $this -> db -> get('products');
 		
@@ -157,7 +157,7 @@ class products_model extends CI_Model{
 	 */
 	function get_cat_rec($cid) {
 		
-		$this -> db -> where('category_ID', $cid);
+		$this -> db -> where('category_id', $cid);
 		$q = $this -> db -> get('product_category');
 		
 		return $q -> result();
@@ -172,8 +172,8 @@ class products_model extends CI_Model{
 		if($this -> session -> userdata('is_admin')){
 			
 			$this->db->limit($limit, $start);
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this -> db -> where('products.category_ID', $cid);
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
@@ -188,8 +188,8 @@ class products_model extends CI_Model{
 		}
 		else if(!$this -> session -> userdata('is_admin')){
 			$this->db->limit($limit, $start);
-			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> where('products.status', '1');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> where('products.is_active', '1');
 			$this -> db -> where('products.category_ID', $cid);
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
@@ -209,7 +209,7 @@ class products_model extends CI_Model{
 
 	function get_by_category()
 	{
-		$this->db->order_by("category_ID", "asc");
+		$this->db->order_by('category_ID', 'asc');
 		$this -> db -> where('category_ID', $this->input->post('category_ID'));
 
 	}
@@ -237,7 +237,7 @@ class products_model extends CI_Model{
 					'category_ID' => $this->input->post('category_ID'),
 					'class_ID' => $this->input->post('class_ID'),
 					'product_Description' => $this->input->post('product_Description'),
-					'status' => $this->input->post('status'),
+					'is_active' => $this->input->post('is_active'),
 		    );
 		
 			$this->db->where('product_ID', $id);
@@ -265,7 +265,7 @@ class products_model extends CI_Model{
 			$data = array(
 					'class_Name' => $this->input->post('class_Name'),
 					'class_Definition' => $this->input->post('class_Definition'),
-					'class_Status' => $this->input->post('class_Status'),
+					'is_active' => $this->input->post('is_active'),
 		    );
 		
 			$this->db->where('class_ID', $clid);
@@ -293,7 +293,7 @@ class products_model extends CI_Model{
 			$data = array(
 					'category_Name' => $this->input->post('category_Name'),
 					'category_Definition' => $this->input->post('category_Definition'),
-					'category_Status' => $this->input->post('category_Status'),
+					'is_active' => $this->input->post('is_active'),
 		    );
 		
 			$this->db->where('category_ID', $id);
@@ -311,8 +311,8 @@ class products_model extends CI_Model{
 	 */
 	function getCategory()
     {
-		$this->db->order_by("category_ID", "asc"); 
-		$this -> db -> where('category_Status', '1');
+		$this->db->order_by('category_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
 		$q = $this->db->get('product_category');
 		$data = $q->result_array();
 		return $data;
@@ -324,7 +324,7 @@ class products_model extends CI_Model{
 	 */
 	function getCategoryFP()
     {
-    	$this->db->order_by('category_Status', 'asc');
+    	$this->db->order_by('is_active', 'asc');
 		$this->db->order_by('category_ID', 'desc'); 
 		$q = $this->db->get('product_category');
 		$data = $q->result_array();
@@ -337,7 +337,7 @@ class products_model extends CI_Model{
 	 */
 	function getClassFP()
     {
-		$this->db->order_by('class_Status', 'asc');
+		$this->db->order_by('is_active', 'asc');
 		$this->db->order_by('class_ID', 'desc'); 
 		
 		$q = $this->db->get('product_class');
@@ -362,7 +362,8 @@ class products_model extends CI_Model{
 				
 			$data = array(
 				'category_Name' => $this->input->post('category_Name'),
-				'category_Status' => $this->input->post('status'),
+				'definition' => $this->input->post('definition'),
+				'is_active' => $this->input->post('is_active'),
 	        );
 			  
 			$this->db->insert('product_category', $data);
@@ -378,8 +379,8 @@ class products_model extends CI_Model{
 	 */
 	function getClass()
     {
-		$this->db->order_by("class_ID", "asc"); 
-		$this -> db -> where('class_Status', '1');
+		$this->db->order_by('class_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
 		$q = $this->db->get('product_Class');
 		$data = $q->result_array();
 		return $data;
@@ -401,7 +402,8 @@ class products_model extends CI_Model{
 				
 			$data = array(
 				'class_Name' => $this->input->post('class_Name'),
-				'class_Status' => $this->input->post('status'),
+				'class_Definition' => $this->input->post('class_Definition'),
+				'is_active' => $this->input->post('is_active'),
 	        );
 			  
 			$this->db->insert('product_Class', $data);
@@ -435,7 +437,7 @@ class products_model extends CI_Model{
 				'product_Description' => $this->input->post('product_Description'),
 				'product_Img' => $this->input->post('product_Img'),
 				'img_Thumb' => $this->input->post('img_Thumb'),
-				'status' => $this->input->post('status'),
+				'is_active' => $this->input->post('is_active'),
 	        );
 			  
 			$this->db->insert('products', $data);
@@ -468,7 +470,7 @@ class products_model extends CI_Model{
 	 */	
 	function remove_class($id)
     {
-    	$this->db->where('class_ID',$id);	
+    	$this->db->where('id',$id);	
 		$query = $this->db->delete('product_class');
 	    $this->session->set_flashdata('success','Entry Deleted.');
     }
@@ -481,8 +483,8 @@ class products_model extends CI_Model{
     		
 	    	$var = urldecode($keyword);		
 			
-	    	$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
+	    	$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 	        $this->db->or_like('product_Name', $var);
 			$this->db->or_like('price', $var);
 	        $this->db->or_like('category_name', $var);
@@ -500,9 +502,9 @@ class products_model extends CI_Model{
 			
 			$var = urldecode($keyword);
 
-	    	$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_Class.class_ID = products.class_ID', 'left');
-			$this->db->where('status', '1');
+	    	$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+			$this->db->where('is_active', '1');
 	        $this->db->like('product_Name', $var);
 			$this->db->or_like('price', $var); 
 	        $this->db->or_like('category_name', $var);
