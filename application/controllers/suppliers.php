@@ -152,7 +152,7 @@ class suppliers extends CI_Controller {
 		{
 			$this -> users_model -> remove($id);
 			$this->session->set_flashdata('message','Successfully Deleted Entry');
-			redirect('users', 'refresh');
+			redirect('suppliers', 'refresh');
 		}
 		
 		else if ($this -> session -> userdata('is_logged_in') && $this->session->userdata('user_type') != '1'){
@@ -170,21 +170,23 @@ class suppliers extends CI_Controller {
 	
 	
 	
-	public function deactivate()
-	{		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type')=='1')
+	public function disable($id)
+	{
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			
+			$this -> users_model -> disable_s($id);
+			
+			$this->session->set_flashdata('success','Account Disabled');
+			redirect('suppliers', 'refresh');
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
 		{
-			$id = $this -> uri -> segment(3);
-			$this -> users_model -> approve($id);
-			
-			$this->session->set_flashdata('message','Account Deactivated');
-			$this->index('refresh');
-		}
-		
-		else if ($this -> session -> userdata('is_logged_in') && $this->session->userdata('user_type') != '1'){
 			
 			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('home', 'refresh');
+			redirect($base_url, 'refresh');
 		} 
 		
 		else{
@@ -193,26 +195,39 @@ class suppliers extends CI_Controller {
 			redirect('login', 'refresh');
 		}
 	}
+
+	public function enable($id)
+	{		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			
+			$this -> users_model -> enable_s($id);
+			
+			$this->session->set_flashdata('success','Account Enabled');
+			redirect('suppliers', 'refresh');
+		}
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+		{
+			
+			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
+			redirect($base_url, 'refresh');
+		} 
+		
+		else{
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
 	
 	
 	function search() {
 		
 		if($this->session->userdata('is_logged_in'))
-		{
-		
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-		
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
-				
+		{			
 			$search = $this -> input -> post('search');
-			redirect('users/search_result/'.$search);
+			redirect('suppliers/search_result/'.$search);
 						
 		}
 		
@@ -229,19 +244,7 @@ class suppliers extends CI_Controller {
 		
 		if ($this -> session -> userdata('is_logged_in'))
 		{
-
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-		
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
-				
-			$data['search'] = $this -> users_model -> search_user_profiles($search);
+			$data['search'] = $this -> users_model -> search_suppliers($search);
 			
 			$data['main_content'] = 'suppliers_table';
 			$this -> load -> view('includes/adminTemplate', $data);

@@ -67,13 +67,37 @@
 			                    
 			                    <td class="col-md-1">
 			                	<div class="">
-									<a class="btn btn-caution" href="<?php echo base_url()?>suppliers/deactivate/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="disable supplier"><i class="icon_close"></i></a>
+			                		<?php if($row->is_active == '1'){?>
+			                		<a class="btn btn-caution" href="<?php echo base_url()?>suppliers/disable/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="disable supplier"><i class="icon_close"></i></a>
+			                		<?php } else if ($row->is_active != '1'){?>
+			                			<a class="btn btn-success" href="<?php echo base_url()?>suppliers/enable/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="enable supplier"><i class="icon_check_alt2"></i></a>
+			                		<?php } ?>
+									
 			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>suppliers/remove/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="right" title="delete supplier"><i class="icon_close_alt2"></i></a>
 			                    </div>
 	                           	</td>
 							<?php endforeach; ?>
 							</tr>
-							
+							<?php elseif(isset($search) && is_array($search)): foreach($search as $row): ?> 
+							<tr class="conf clickable-row" data-href="<?php echo base_url()?>suppliers/profile/<?php echo $row->supplier_id?>">
+								<td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
+								<td class="col-md-1-b"><?php echo $row->contact_Person ?></td>
+								<td class="col-md-2-b"><?php echo $row->st_Address; ?> <?php echo $row->city ?></td>
+			                    <td class="col-md-1-b"><?php echo $row->contact; ?></td>
+			                    
+			                    <td class="col-md-1">
+			                	<div class="">
+			                		<?php if($row->is_active == '1'){?>
+			                		<a class="btn btn-caution" href="<?php echo base_url()?>suppliers/disable/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="disable supplier"><i class="icon_close"></i></a>
+			                		<?php } else if ($row->is_active != '1'){?>
+			                			<a class="btn btn-success" href="<?php echo base_url()?>suppliers/enable/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="enable supplier"><i class="icon_check_alt2"></i></a>
+			                		<?php } ?>
+									
+			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>suppliers/remove/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="right" title="delete supplier"><i class="icon_close_alt2"></i></a>
+			                    </div>
+	                           	</td>
+							<?php endforeach; ?>
+							</tr>
 							<?php else:?>
 							<tr>
 								<th>No records</th>

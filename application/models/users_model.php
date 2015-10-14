@@ -180,6 +180,42 @@ Class users_model extends CI_Model
 		$this->session->set_flashdata('success','You have Successfuly updated information');
 		
 	}
+	
+	/**
+	  * Disable function.
+	 *  disables a user
+	 * @access public
+	 */
+	public function disable($id)
+	
+	{
+		$data = array(
+		'is_active'	=> '0',
+		);
+		
+		$this->db->where('id', $id);
+		$this->db->update('users', $data);
+		
+		
+	}
+	
+	/**
+	  * Enable function.
+	 *  Enables a user
+	 * @access public
+	 */
+	public function enable($id)
+	
+	{
+		$data = array(
+		'is_active'	=> '1',
+		);
+		
+		$this->db->where('id', $id);
+		$this->db->update('users', $data);
+		
+		
+	}
 
 
 	/**
@@ -341,10 +377,11 @@ Class users_model extends CI_Model
 	/*
 	 * search user function
 	 */	
-	function search_users_profile($search) {
-		
+	function search_users($search) {
+		$this->db->join('user_type','user_type.type_id = users.user_type','left');
 		$var = urldecode($search);		
 		
+		$this->db->where('is_active', '1');
 		$this -> db -> like('username',$var);
 		$this -> db -> or_like('firstName',$var);
 		$this -> db -> or_like('lastName', $var);
@@ -444,7 +481,7 @@ Class users_model extends CI_Model
 	}
 	
 	/**
-	 * Get Suppleir Record function
+	 * Get Supplier Record function
 	 * 
 	 * 
 	 */
@@ -455,6 +492,64 @@ Class users_model extends CI_Model
 		
 		return $q -> result();
 
+	}
+	
+	/**
+	  * Disable function.
+	 *  disables a supplier
+	 * @access public
+	 */
+	public function disable_s($id)
+	
+	{
+		$data = array(
+		'is_active'	=> '0',
+		);
+		
+		$this->db->where('supplier_id', $id);
+		$this->db->update('suppliers', $data);
+		
+		
+	}
+	
+	/**
+	  * Enable function.
+	 *  Enables a supplier
+	 * @access public
+	 */
+	public function enable_s($id)
+	
+	{
+		$data = array(
+		'is_active'	=> '1',
+		);
+		
+		$this->db->where('supplier_id', $id);
+		$this->db->update('suppliers', $data);
+		
+		
+	}
+	
+	
+	/*
+	 * search suppliers function
+	 */	
+	function search_suppliers($search) {
+		
+		$var = urldecode($search);		
+		
+		$this->db->where('is_active', '1');
+		$this -> db -> like('supplier_name',$var);
+		$this -> db -> or_like('contact_Person',$var);
+		$this -> db -> or_like('st_Address', $var);
+		$this -> db -> or_like('city', $var);
+		$this -> db -> or_like('terms', $var);
+		$this -> db -> or_like('contact', $var);
+		
+		$query = $this -> db -> get('suppliers');
+		$rows = $query -> num_rows();
+		$this -> session -> set_flashdata('search', $rows . ' matching record(s) found.');
+		return $query -> result();
 	}
 	
 	/***
