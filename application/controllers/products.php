@@ -10,7 +10,8 @@ class products extends CI_Controller {
 	}
 
 	public function index($offset = 0) {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 			$total_row = $this->products_model->getProductsCtr();
@@ -56,17 +57,7 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 
 			$data['main_content'] = 'products_page';
 			$this -> load -> view('includes/adminTemplate', $data);
@@ -139,7 +130,8 @@ class products extends CI_Controller {
 
 	public function category($cid)
 	{
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			
 			//Pagination
 			$offset = ($this->uri->segment(4) != '' ? $this->uri->segment(4): 0);
@@ -187,17 +179,7 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 			
 			
 			
@@ -273,22 +255,13 @@ class products extends CI_Controller {
 	
 	public function categories()
 	{
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			
 			$data['cat'] = $this -> products_model -> getCategoryFP();
 			
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 
 			$data['main_content'] = 'category_table';
 			$this -> load -> view('includes/adminTemplate', $data);
@@ -322,28 +295,23 @@ class products extends CI_Controller {
 	}
 
 	public function create_new_product() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
+			$data['supplier'] = $this -> products_model -> getSupplier();
 
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
-
-			$data['main_content'] = 'new_product_page';
+			$data['main_content'] = 'product_page';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+	    {
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect('profile', 'refresh');
-		} else {
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
 			//If no session, redirect to login page
 			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
@@ -373,27 +341,16 @@ class products extends CI_Controller {
 	}
 
 	public function view_product() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
-
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
-			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {	
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
-			$data['products'] = $this -> products_model -> getSimilarProducts($pid);
-			
+						
 			$data['main_content'] = 'view_product_page';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+		}
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+	    {
 			/* User Data */
 			$id = $this -> session -> userdata('user_id');
 			$email = $this -> session -> userdata('email');
@@ -420,21 +377,12 @@ class products extends CI_Controller {
 	}
 
 	public function edit_product() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 			
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
@@ -453,21 +401,12 @@ class products extends CI_Controller {
 	}
 
 	public function edit_class() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 			
 			$clid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_class_rec($clid);
@@ -486,19 +425,10 @@ class products extends CI_Controller {
 	}
 
 	public function edit_category() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 		
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 			
 			$cid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_cat_rec($cid);
@@ -517,7 +447,8 @@ class products extends CI_Controller {
 	}
 
 	public function create() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$this -> products_model -> addProduct();
 			redirect('products/create_new_product', 'refresh');
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
@@ -526,18 +457,9 @@ class products extends CI_Controller {
 		}
 	}
 
-	public function add_category() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
-			$this -> products_model -> addCategory();
-			redirect($this->agent->referrer(), 'refresh');
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect('profile', 'refresh');
-		}
-	}
-	
 	public function add_class() {
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$this -> products_model -> addClass();
 			redirect($this->agent->referrer(), 'refresh');
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
@@ -547,84 +469,15 @@ class products extends CI_Controller {
 	}
 	
 	
-	public function do_upload($id) {
-		if ($this -> input -> post('upload')) {
-			
-			$config = array(
-				'upload_path' => $this->image_path,
-				'allowed_types' => 'gif|jpg|png',
-				'max_size' => '10024',
-				'quality' => '100%',
-				'remove_spaces' => TRUE,
-			);
-			
-			$this -> load -> library('upload', $config);
-			$this->upload->initialize($config);
-			
-			if (!$this -> upload -> do_upload()){
-				
-				$error = array(
-					'error' => $this -> upload -> display_errors()
-				);
-				
-				redirect('products/edit_product/'.$pid, $error);
-			} 
-			
-			else {
-				$pid = $this -> uri -> segment(3);
-				$data = $this -> upload -> data();
-				$this -> thumb($data);
-				
-				$this -> upload_model -> add_image($id);
-				
-				$data = array(
-					'upload_data' => $this -> upload -> data()
-				);
-				
-				redirect('products/edit_product/'.$pid, 'refresh');  
-				
-			}
-		}
-		
-		else {
-			redirect('products/upload');
-		}
-	}
-
-	function thumb($data) {
-		
-		$config = array(
-			'image_library' => 'gd2',
-			'source_image' => $data['full_path'], 
-			'new_image' => $this->thumb_path.'/'.$data['raw_name'].$data['file_ext'],
-			'create_thumb' => TRUE,
-			'maintain_ratio'=> TRUE,
-			'width' => '250',
-			'height' => '250',
-		);
-		$this -> load -> library('image_lib', $config);
-		$this->image_lib->initialize($config);
-		$this -> image_lib -> resize();
-	}
-	
 	
 	function search() {
 		
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 	
 			
 			$search = $this -> input -> post('search');
@@ -657,21 +510,12 @@ class products extends CI_Controller {
 
 	function search_result($search) {
 		
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
 				
 			$data['search'] = $this -> products_model -> search($search);
 			

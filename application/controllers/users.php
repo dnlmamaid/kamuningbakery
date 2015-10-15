@@ -73,11 +73,6 @@ class users extends CI_Controller {
 	    {			
 			$data['utype'] = $this->users_model->getuType();
 			
-			/* Notification */
-			
-			$data['notif'] = $this->users_model->getNotif(); //gets member applicants
-			$data['notif_n_ctr'] = $this->users_model->getNotifNCtr();//ctr for member applicants
-			
 			$mid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> users_model -> get_member_rec($mid);
 			

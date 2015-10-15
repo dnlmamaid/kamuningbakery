@@ -61,10 +61,10 @@ function initializeJS() {
     
     //Vegas
 	$('body').vegas({
-		overlay: 'assets/vegas/overlays/05.png',
+		overlay: '/kamuningbakery/assets/vegas/overlays/05.png',
 		slides: [
 			
-		    { src: 'assets/images/kb_facade.jpg' },
+		    { src: '/kamuningbakery/assets/images/kb_facade.jpg' },
 
 		]
 	});

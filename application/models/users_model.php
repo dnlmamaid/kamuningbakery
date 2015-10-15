@@ -1,7 +1,6 @@
-<?php
+<?php date_default_timezone_set('Asia/Manila');
 Class users_model extends CI_Model
 {
-	
 	
 	/**
 	 * resolve_user_login function.
@@ -118,6 +117,7 @@ Class users_model extends CI_Model
 		
 		$this->db->where('username',$this->input->post('username'));
 		$val = $this->db->get('users');
+		
 		if($val->num_rows() == 1){
 			$this->session->set_flashdata('name_error','Username already in use.');
 		}
@@ -139,8 +139,19 @@ Class users_model extends CI_Model
 			);
 			
 			$this->db->insert('users', $data);
-			
 			$this->session->set_flashdata('success','Successfully Created User');
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Users',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		}
 	
 	}
@@ -179,6 +190,19 @@ Class users_model extends CI_Model
 		$this->db->update('users', $data);
 		$this->session->set_flashdata('success','You have Successfuly updated information');
 		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Users',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'updated a user account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+		$this->db->insert('audit_trail', $audit);
+		
 	}
 	
 	/**
@@ -196,6 +220,18 @@ Class users_model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->update('users', $data);
 		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Users',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'disabled account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		
 	}
 	
@@ -214,6 +250,18 @@ Class users_model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->update('users', $data);
 		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Users',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'enabled account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		
 	}
 
@@ -400,6 +448,19 @@ Class users_model extends CI_Model
 		$this->db->where('id',$id);
 	    $query = $this->db->delete('users');
 		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Users',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'deleted account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+		
     }
 	
 	/**
@@ -451,6 +512,19 @@ Class users_model extends CI_Model
 			
 			$this->db->insert('suppliers', $data);
 			$this->session->set_flashdata('success','Successfully Created Supplier');
+			
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Suppliers',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created supplier',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		}
 	
 	}
@@ -477,6 +551,19 @@ Class users_model extends CI_Model
 		$this->db->where('supplier_id', $id);
 		$this->db->update('suppliers', $data);
 		$this->session->set_flashdata('success','You have Successfuly updated information');
+		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Suppliers',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'updated supplier',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+		$this->db->insert('audit_trail', $audit);
 		
 	}
 	
@@ -509,7 +596,18 @@ Class users_model extends CI_Model
 		$this->db->where('supplier_id', $id);
 		$this->db->update('suppliers', $data);
 		
-		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Suppliers',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'disabled supplier',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+		$this->db->insert('audit_trail', $audit);
 	}
 	
 	/**
@@ -527,6 +625,18 @@ Class users_model extends CI_Model
 		$this->db->where('supplier_id', $id);
 		$this->db->update('suppliers', $data);
 		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Suppliers',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'enabled supplier',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+		$this->db->insert('audit_trail', $audit);
 		
 	}
 	
@@ -570,5 +680,27 @@ Class users_model extends CI_Model
 		}
 		return false;
 	}
+	
+	/*
+	 * delete user function
+	 */	
+	function remove_s($id)
+    {
+		$this->db->where('supplier_id',$id);
+	    $query = $this->db->delete('suppliers');
+		
+		$remark_id = $id;
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Suppliers',
+			'remark_id'	=> $remark_id,
+			'remarks'	=> 'deleted account',
+			'date_created'=> date('Y-m-j H:i:s'),
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+		
+    }
 }
 ?>

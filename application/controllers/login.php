@@ -17,7 +17,7 @@ class login extends CI_Controller {
 	function index() {
 		if($this->session->userdata('is_logged_in'))
 	    {
-			redirect('home', 'refresh');
+			redirect(base_url(), 'refresh');
 		}	
 		
 		else{
@@ -64,7 +64,7 @@ class login extends CI_Controller {
 				);
 				
 				$this -> session -> set_userdata($data);
-				redirect('home', 'refresh');	
+				redirect(base_url(), 'refresh');	
 							
 			}
 			

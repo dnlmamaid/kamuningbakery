@@ -144,7 +144,8 @@ class inventory extends CI_Controller {
 	
 	function search() {
 		
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
 			
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();

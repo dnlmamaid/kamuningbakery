@@ -52,6 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['users/page/:num'] = 'users/index';
-
+$route['audit_trail/page/:num'] = 'audit_trail/index';
 $route['inventory/page/:num'] = 'inventory/index';
 $route['translate_uri_dashes'] = FALSE;

@@ -20,7 +20,7 @@ class home extends CI_Controller {
 			$data['main_content'] = 'home';
 			$this->load->view('includes/admintemplate', $data);		
 		}
-		/*
+		
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '2'))
 	    {
 			$data['main_content'] = 'home';
@@ -43,7 +43,7 @@ class home extends CI_Controller {
 	    {
 			$data['main_content'] = 'home';
 			$this->load->view('includes/purchasertemplate', $data);		
-		}*/
+		}
 		
 		else
 	    {

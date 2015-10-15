@@ -264,7 +264,6 @@ class products_model extends CI_Model{
 			
 			$data = array(
 					'class_Name' => $this->input->post('class_Name'),
-					'class_Definition' => $this->input->post('class_Definition'),
 					'is_active' => $this->input->post('is_active'),
 		    );
 		
@@ -272,6 +271,20 @@ class products_model extends CI_Model{
 			$this->db->update('product_Class', $data);
 			
 			$this->session->set_flashdata('success','Successfuly updated information.');
+
+
+			
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Class',
+				'remark_id'	=> $id,
+				'remarks'	=> 'created account',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);			
 		}
 	}
 	
@@ -300,6 +313,19 @@ class products_model extends CI_Model{
 			$this->db->update('product_category', $data);
 			
 			$this->session->set_flashdata('success','Successfuly updated information.');
+			
+			
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Category',
+				'remark_id'	=> $id,
+				'remarks'	=> 'updated category',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		}
 	}
 	
@@ -318,14 +344,27 @@ class products_model extends CI_Model{
 		return $data;
 	}	
 	
+	
+	/**
+	 * Get Supplier Function 
+	 * 
+	 */
+	function getSupplier()
+    {
+		$this->db->order_by('supplier_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
+		$q = $this->db->get('suppliers');
+		$data = $q->result_array();
+		return $data;
+	}	
+	
 	/**
 	 * Get Category for Products Function 
 	 * 
 	 */
 	function getCategoryFP()
-    {
-    	$this->db->order_by('is_active', 'asc');
-		$this->db->order_by('category_ID', 'desc'); 
+    {    	
+		$this->db->order_by('category_id', 'desc'); 
 		$q = $this->db->get('product_category');
 		$data = $q->result_array();
 		return $data;
@@ -368,6 +407,19 @@ class products_model extends CI_Model{
 			  
 			$this->db->insert('product_category', $data);
 			$this->session->set_flashdata('success','You have successfully added a new product category.');
+			
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Category',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created category',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 	        
 		}  
 	}
@@ -402,12 +454,24 @@ class products_model extends CI_Model{
 				
 			$data = array(
 				'class_Name' => $this->input->post('class_Name'),
-				'class_Definition' => $this->input->post('class_Definition'),
 				'is_active' => $this->input->post('is_active'),
 	        );
 			  
 			$this->db->insert('product_Class', $data);
 			$this->session->set_flashdata('success','You have successfully added a new product class.');
+			
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Classes',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created class',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 	        
 		}  
 	}
@@ -419,7 +483,6 @@ class products_model extends CI_Model{
 	function addProduct()
     {
     	$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('product_Code',$this->input->post('product_Code'));
 		$val = $this->db->get('products');
 		if($val->num_rows() == 1){
 			$this->session->set_flashdata('message','Product already exist.');
@@ -429,19 +492,32 @@ class products_model extends CI_Model{
 				
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
-				'product_Code' => $this->input->post('product_Code'),
-				'price' => $this->input->post('price'),
 				'material' => $this->input->post('material'),
+				'price' => $this->input->post('price'),
 				'category_ID' => $this->input->post('category_ID'),
 				'class_ID' => $this->input->post('class_ID'),
-				'product_Description' => $this->input->post('product_Description'),
-				'product_Img' => $this->input->post('product_Img'),
-				'img_Thumb' => $this->input->post('img_Thumb'),
+				'description' => $this->input->post('description'),
+				'um' => $this->input->post('um'),
+				
+				
 				'is_active' => $this->input->post('is_active'),
 	        );
 			  
 			$this->db->insert('products', $data);
 			$this->session->set_flashdata('success','You have successfully added a new product');
+			
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 	        
 		}  
 	}		
@@ -454,6 +530,19 @@ class products_model extends CI_Model{
 	    $this->db->where('product_ID',$id);
 		$query = $this->db->delete('products');
 	    $this->session->set_flashdata('success','Entry Deleted.');
+		
+		
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Products',
+			'remark_id'	=> $id,
+			'remarks'	=> 'deleted product',
+			'date_created'=> date('Y-m-j H:i:s'),
+				
+		);
+			
+		$this->db->insert('audit_trail', $audit);
     }
 	
 	/*
@@ -470,16 +559,29 @@ class products_model extends CI_Model{
 	 */	
 	function remove_class($id)
     {
-    	$this->db->where('id',$id);	
+    	$this->db->where('class_id',$id);	
 		$query = $this->db->delete('product_class');
 	    $this->session->set_flashdata('success','Entry Deleted.');
+		
+		
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Classes',
+				'remark_id'	=> $id,
+				'remarks'	=> 'delete class',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
     }
     
    
     function search($keyword)
     {
     	
-		if($this -> session -> userdata('is_admin')){
+		if($this -> session -> userdata('is_logged_in')){
     		
 	    	$var = urldecode($keyword);		
 			
@@ -497,28 +599,6 @@ class products_model extends CI_Model{
 			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
 			return $query -> result();
 		}
-	
-		else{
-			
-			$var = urldecode($keyword);
-
-	    	$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this->db->where('is_active', '1');
-	        $this->db->like('product_Name', $var);
-			$this->db->or_like('price', $var); 
-	        $this->db->or_like('category_name', $var);
-			$this->db->or_like('class_Name', $var);
-	        $this->db->or_like('material', $var); 
-	        $this->db->or_like('product_Code', $var);
-			$this->db->or_like('product_Description', $var);
-			
-			$query = $this -> db -> get('products');
-			$rows = $query -> num_rows();
-			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
-			return $query -> result();			
-		}
-
 	
 	}
 

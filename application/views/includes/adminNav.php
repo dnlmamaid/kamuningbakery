@@ -9,6 +9,9 @@
                     <a href="<?php echo base_url()?>">Home</a>
                 </li>
                 <li>
+                    <a href="<?php echo base_url()?>suppliers">Suppliers</a>
+                </li>
+                <li>
                     <a href="<?php echo base_url()?>inventory">Inventory</a>
                 </li>
                 <li>
@@ -27,8 +30,9 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Control Panel <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li class="dropdown-header">Admin</li>
-                    <li><a href="<?php echo base_url()?>users/profile">My Profile</a></li>
+                    <li><a href="<?php echo base_url()?>users/profile/<?php echo $this->session->userdata('user_id')?>">My Profile</a></li>
                     <li><a href="<?php echo base_url()?>users">Users</a></li>
+                    <li><a href="<?php echo base_url()?>audit_trail">Audit Trail</a></li>
                     <li><a href="<?php echo base_url()?>logout">Logout</a></li>
                   </ul>
                 </li>
