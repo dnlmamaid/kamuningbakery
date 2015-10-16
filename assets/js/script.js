@@ -4,6 +4,7 @@ function initializeJS() {
 	 $(".clickable-row").click(function() {
 	        window.document.location = $(this).data("href");
 	});	
+	
 	//searchboxanimate
 	$('#searchbox').focus(function()
 	{ 
@@ -14,7 +15,19 @@ function initializeJS() {
 	  });
 	});
 	
+	//dropdown add product
+	$('select[name="category_ID"]').bind('change',function(){
+		var showOrHide = ($(this).val() == 2) ? true : false;
+		$('#RM').toggle(showOrHide);
+		$('#RM2').toggle(showOrHide);
+	});
 	
+	$('select[name="category_ID"]').bind('change',function(){
+		var showOrHide = ($(this).val() == 1) ? true : false;
+		$('#materials').toggle(showOrHide);
+	});
+	
+	     
 	$('#searchbox').blur(function()
 	{ 
 	$(this).animate({

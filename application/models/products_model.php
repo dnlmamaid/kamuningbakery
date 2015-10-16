@@ -10,7 +10,7 @@ class products_model extends CI_Model{
 			return $this->db->count_all_results('products');
 		}
 		else{
-			$this -> db -> where('products.is_active', '1');
+			$this -> db -> where('products.product_status', '1');
 			return $this->db->count_all_results('products');
 		}
 	}
@@ -25,7 +25,7 @@ class products_model extends CI_Model{
 		}
 		else{
 			
-			$this -> db -> where('products.is_active', '1');
+			$this -> db -> where('products.product_status', '1');
 			$this -> db -> where('products.category_ID', $cid);
 			return $this->db->count_all_results('products');
 		}
@@ -37,7 +37,8 @@ class products_model extends CI_Model{
 	 */
 	function getProducts($limit, $start)
 	{
-		if($this -> session -> userdata('is_admin')){
+		if($this -> session -> userdata('is_logged_in')){
+			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
 			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->limit($limit, $start);
@@ -56,7 +57,7 @@ class products_model extends CI_Model{
 			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->limit($limit, $start);
-			$this -> db -> where('products.is_active', '1');
+			$this -> db -> where('products.product_status', '1');
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
 			if ($query->num_rows() > 0) {
@@ -69,54 +70,70 @@ class products_model extends CI_Model{
 			return false;
 			
 		}
-		
-	
 	}
-	
+
 	/**
-	 * Get Similar Products Function
-	 * -- gets similar products from current viewed product
+	 * get product by category function
+	 * 
+	 * 
 	 */
-	function getSimilarProducts($pid)
-	{
-		if($this -> session -> userdata('is_admin')){
-			$this->db->limit(6);	
-			$this->db->select('class_ID');
-			$this->db->from('products');	
-			$this -> db -> where('product_ID', $pid);
-			$class = $this->db->get()->row('class_ID');
+	function get_product_by_category($limit, $start, $cid) {
+		if($this -> session -> userdata('is_logged_in')){
 			
+			$this->db->limit($limit, $start);
+			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
 			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this -> db -> select('*');
-			$this -> db -> from('products');
-			
-			$this -> db -> where('products.product_ID !=', $pid);
-			$this -> db -> where('products.class_ID', $class);
+			$this -> db -> where('products.category_ID', $cid);
 			$this -> db -> order_by('date_created', 'desc');
+			$query = $this->db->get('products');
+			if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+			$data[] = $row;
+			}
+			
+			return $data;
+			}
+			return false;
+		}
+		else if(!$this -> session -> userdata('is_admin')){
+			$this->db->limit($limit, $start);
+			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
+			$this -> db -> where('products.status', '1');
+			$this -> db -> where('products.category_ID', $cid);
+			$this -> db -> order_by('date_created', 'desc');
+			$query = $this->db->get('products');
+			if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+			$data[] = $row;
+			}
+			
+			return $data;
+			}
+			return false;
+			
+		}
+
+	}
+	
+	
+	/**
+	 * Get Products Supplier Function
+	 * -- gets products supplied by the supplier
+	 */
+	function getProductSupplier($sid)
+	{
+		if($this -> session -> userdata('is_logged_in'))
+		{
+			$this->db->limit(6);	
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+			$this->db->from('products');
+			$this -> db -> order_by('quantity', 'asc');	
+			$this -> db -> where('supplier_ID', $sid);
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
 			return $data;	
-		}
-		
-		else if(!$this -> session -> userdata('is_admin')){	
-			$this->db->limit(6);	
-			$this->db->select('class_ID');
-			$this->db->from('products');	
-			$this -> db -> where('product_ID', $pid);
-			$class = $this->db->get()->row('class_ID');
-			
-			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this -> db -> select('*');
-			$this -> db -> from('products');
-			$this -> db -> where('products.is_active', '1');
-			$this -> db -> where('products.product_ID !=', $pid);
-			$this -> db -> where('products.class_ID', $class);
-			$this -> db -> order_by('date_created', 'desc');
-			$query = $this -> db -> get();
-			$data = $query -> result_array();
-			return $data;
 		}
 		
 	}
@@ -126,10 +143,12 @@ class products_model extends CI_Model{
 	 * 
 	 * 
 	 */
-	function get_product_rec($pid) {
-		
+	function get_product_rec($pid)
+	{
+
 		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
 		$this -> db -> where('product_ID', $pid);
 		$q = $this -> db -> get('products');
 		
@@ -151,7 +170,7 @@ class products_model extends CI_Model{
 	}
 	
 	/**
-	 * get product record function
+	 * get category record function
 	 * 
 	 * 
 	 */
@@ -164,55 +183,19 @@ class products_model extends CI_Model{
 	}
 	
 	/**
-	 * get product by category function
-	 * 
+	 * Get Category Function 
 	 * 
 	 */
-	function get_product_by_category($limit, $start, $cid) {
-		if($this -> session -> userdata('is_admin')){
-			
-			$this->db->limit($limit, $start);
-			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this -> db -> where('products.category_ID', $cid);
-			$this -> db -> order_by('date_created', 'desc');
-			$query = $this->db->get('products');
-			if ($query->num_rows() > 0) {
-			foreach ($query->result() as $row) {
-			$data[] = $row;
-			}
-			
-			return $data;
-			}
-			return false;
-		}
-		else if(!$this -> session -> userdata('is_admin')){
-			$this->db->limit($limit, $start);
-			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-			$this -> db -> where('products.is_active', '1');
-			$this -> db -> where('products.category_ID', $cid);
-			$this -> db -> order_by('date_created', 'desc');
-			$query = $this->db->get('products');
-			if ($query->num_rows() > 0) {
-			foreach ($query->result() as $row) {
-			$data[] = $row;
-			}
-			
-			return $data;
-			}
-			return false;
-			
-		}
-
-	}
+	function getRawMats()
+    {
+		$this -> db -> where('category_ID', '2');
+		$q = $this->db->get('products');
+		$data = $q->result_array();
+		return $data;
+	}	
 	
 
-	function get_by_category()
-	{
-		$this->db->order_by('category_ID', 'asc');
-		$this -> db -> where('category_ID', $this->input->post('category_ID'));
-
-	}
+	
 
 	/**
 	  * update_product function.
@@ -220,32 +203,108 @@ class products_model extends CI_Model{
 	 * @access public
 	 */
 	public function update_product($id)
-	{	$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('product_Code',$this->input->post('product_Code'));
+	{
+		$this->db->where('product_id !=',$id);
+		$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
 		$val = $this->db->get('products');
-		if(($val->num_rows() == 1) && !$this->db->where('product_ID', $id)){
-			$this->session->set_flashdata('message','Product name or code already exist.');
+		if(($val->num_rows() == 1)){
+			$this->session->set_flashdata('error','Product already exist.');
 		}
 
 		else{
 			
 			$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'product_Code' => $this->input->post('product_Code'),
+					'quantity' => $this->input->post('quantity'),
 					'price' => $this->input->post('price'),
-					'material' => $this->input->post('material'),
+					'supplier_ID' => $this->input->post('supplier_ID'),
 					'category_ID' => $this->input->post('category_ID'),
 					'class_ID' => $this->input->post('class_ID'),
-					'product_Description' => $this->input->post('product_Description'),
-					'is_active' => $this->input->post('is_active'),
+					'description' => $this->input->post('description'),
+					'um' => $this->input->post('um'),
+					'date_created'=> date('Y-m-j H:i:s'),
+					'product_status' => $this->input->post('product_status'),
 		    );
 		
 			$this->db->where('product_ID', $id);
 			$this->db->update('products', $data);
 			
 			$this->session->set_flashdata('success','Successfuly updated information.');
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $id,
+				'remarks'	=> 'updated product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
 		}
 	}
+	
+		/**
+	  * Disable function.
+	 *  disables a product so that lower level user won't be able to interact with it
+	 * @access public
+	 */
+	public function disable($id)
+	
+	{
+		$data = array(
+		'product_status'	=> '0',
+		);
+		
+		$this->db->where('product_id', $id);
+		$this->db->update('products', $data);
+		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'disabled product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+		
+	}
+	
+	/**
+	  * Enable function.
+	 *  Enables a product
+	 * @access public
+	 */
+	public function enable($id)
+	
+	{
+		$data = array(
+		'product_status'	=> '1',
+		);
+		
+		$this->db->where('product_id', $id);
+		$this->db->update('products', $data);
+		
+		$remark_id = $id;
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'products',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'enabled product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+		
+	}
+	
 	
 	/**
 	  * update_class function.
@@ -272,8 +331,6 @@ class products_model extends CI_Model{
 			
 			$this->session->set_flashdata('success','Successfuly updated information.');
 
-
-			
 			
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
@@ -305,7 +362,6 @@ class products_model extends CI_Model{
 			
 			$data = array(
 					'category_Name' => $this->input->post('category_Name'),
-					'category_Definition' => $this->input->post('category_Definition'),
 					'is_active' => $this->input->post('is_active'),
 		    );
 		
@@ -401,7 +457,6 @@ class products_model extends CI_Model{
 				
 			$data = array(
 				'category_Name' => $this->input->post('category_Name'),
-				'definition' => $this->input->post('definition'),
 				'is_active' => $this->input->post('is_active'),
 	        );
 			  
@@ -483,24 +538,41 @@ class products_model extends CI_Model{
 	function addProduct()
     {
     	$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		
 		$val = $this->db->get('products');
 		if($val->num_rows() == 1){
-			$this->session->set_flashdata('message','Product already exist.');
+			$this->session->set_flashdata('error','Product already exists.');
 		}
 
 		else{
-				
+			
+			$rm_ID = array(
+				$this->input->post('rm_ID1'),
+				$this->input->post('rm_ID2'),
+				$this->input->post('rm_ID3'),
+				$this->input->post('rm_ID4'),
+				$this->input->post('rm_ID5'),
+				$this->input->post('rm_ID6'),
+				$this->input->post('rm_ID7'),
+				$this->input->post('rm_ID8'),
+				$this->input->post('rm_ID9'),
+				$this->input->post('rm_ID10'),
+			);
+			$rm_ID = implode('', $rm_ID);
+		
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
-				'material' => $this->input->post('material'),
+				'quantity' => $this->input->post('quantity'),
 				'price' => $this->input->post('price'),
+				'supplier_ID' => $this->input->post('supplier_ID'),
 				'category_ID' => $this->input->post('category_ID'),
 				'class_ID' => $this->input->post('class_ID'),
+				'rm_ID' => $rm_ID,
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
-				
-				
-				'is_active' => $this->input->post('is_active'),
+				'date_created'=> date('Y-m-j H:i:s'),
+				'product_status' => $this->input->post('product_status'),
 	        );
 			  
 			$this->db->insert('products', $data);
@@ -584,16 +656,15 @@ class products_model extends CI_Model{
 		if($this -> session -> userdata('is_logged_in')){
     		
 	    	$var = urldecode($keyword);		
-			
+			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
 	    	$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 	        $this->db->or_like('product_Name', $var);
 			$this->db->or_like('price', $var);
+			$this->db->or_like('supplier_name', $var);
 	        $this->db->or_like('category_name', $var);
 			$this->db->or_like('class_Name', $var);
-	        $this->db->or_like('material', $var); 
-	        $this->db->or_like('product_Code', $var);
-			$this->db->or_like('product_Description', $var); 
+			$this->db->or_like('products.description', $var); 
 			$query = $this -> db -> get('products');
 			$rows = $query -> num_rows();
 			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');

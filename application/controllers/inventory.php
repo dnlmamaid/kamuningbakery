@@ -60,16 +60,7 @@ class inventory extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-			
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
+		
 			
 			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
@@ -131,9 +122,10 @@ class inventory extends CI_Controller {
    
 			$data['products'] = $this->products_model->get_product_by_category($config['per_page'], $offset, $cid);
 			
+						
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			
+		
 			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 			
@@ -149,16 +141,7 @@ class inventory extends CI_Controller {
 			
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-			
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
+		
 	
 			
 			$search = $this -> input -> post('search');
@@ -194,17 +177,6 @@ class inventory extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
-			
-			
-			$data['notif'] = $this -> users_model -> getNotif();//gets member applicants
-			$data['notif_n_ctr'] = $this -> users_model -> getNotifNCtr();//ctr for member applicants
-				
 			$data['search'] = $this -> products_model -> search($search);
 			
 			$data['main_content'] = 'products_table';

@@ -1,15 +1,18 @@
-<?php $body = $this->uri->segment('2'); ?>
-
+<?php 
+		$pg = $this->uri->segment('3');
+		$body = $this->uri->segment('2');
+	  	$head = $this->uri->segment('1');
+?>
 	<div class="container bg-panel">
 			
 		  <div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"><i class="fa icon_cart"></i> Products</h1>
+					<h1 class="page-header"><?php if($body == 'category' && $pg == '2'){ ?><i class="fa fa-lemon-o"></i> Raw Materials <?php } else if($body == 'category' && $pg == '1'){ ?><i class="fa icon_cart"></i> Finished Goods <?php } else {?><i class="fa icon_cart"></i> Products <?php } ?></h1>
 					
 					<div class="col-lg-3 pull-left">
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>dashboard"> Home</a></li>
-						<li><i class="fa icon_cart"></i><a href="<?php echo base_url()?>Products"> Products</a></li>
+						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+						<li><?php if($body == 'category' && $pg == '2'){ ?><i class="fa fa-lemon-o"></i><a href="<?php echo base_url()?>inventory/category/2"> Raw Materials</a><?php } else if($body == 'category' && $pg == '1'){ ?><i class="fa icon_cart"></i><a href="<?php echo base_url()?>inventory/category/1"> Finished Goods</a><?php } else {?><i class="fa icon_cart"></i><a href="<?php echo base_url()?>Products"> Products</a><?php } ?></li>
 					</ol>
 					</div>
 					
@@ -25,8 +28,8 @@
 	    			
 	    			<div class="col-lg-3 pull-right">
 		    			<a alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution pull-right" style="margin-right:5px;"><i class="fa fa-tags"></i></a>
-		    			
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Add New Product" href="<?php echo base_url()?>products/create_new_product" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Create Finished Good" href="<?php echo base_url()?>products/create_new_finished_good" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Create Raw Material" href="<?php echo base_url()?>products/create_new_raw_material" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
 					</div>
 	    				
 				</div>
@@ -51,39 +54,53 @@
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa icon_cart"></i> Product Name</th>
-			                            <th class="col-md-1"><i class="fa fa-barcode"></i> Code</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Category</th>
+			                            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
+			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
+			                            
 			                            <th class="col-md-1"><i class="icon_cogs"></i> Action</th>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>Products/profile/<?php echo $row->id?>">
-										<td class="col-md-1-b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->email ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->company ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->contact ?></td>
+								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
+										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php echo $row->um?></td>
+		                                
 		                                <td class="col-md-1">
-			                                <div class="btn-group">
-			                                  <a class="btn btn-success" href="<?php echo base_url()?>Products/profile/<?php echo $row->id?>"><i class="icon_check_alt2"></i></a>
-			                                  <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>Products/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
-			                                </div>
+			                                <div class="">
+						                		<?php if($row->product_status == '1'){?>
+						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
+						                		<?php } else if ($row->product_status != '1'){?>
+						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
+						                		<?php } ?>
+						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
+						                    </div>
 	                                	</td>
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>Products/profile/<?php echo $row->id?>">
-										<td class="col-md-1-b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->email ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->company ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->contact ?></td>
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
+										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1-b"><?php echo $row->quantity?></td>
+		                                
 		                                <td class="col-md-1">
-			                                <div class="btn-group">
-			                                  <a class="btn btn-success" href="<?php echo base_url()?>Products/profile/<?php echo $row->id?>"><i class="icon_check_alt2"></i></a>
-			                                  <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>Products/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
-			                                </div>
+			                                 <div class="">
+						                		<?php if($row->is_active == '1'){?>
+						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
+						                		<?php } else if ($row->is_active != '1'){?>
+						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
+						                		<?php } ?>
+						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
+						                    </div>
 	                                	</td>
-	                                </tr>
+	                               </tr>
 	                                <?php endforeach;		                               
 									else:?>
 									<tr>											

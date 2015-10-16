@@ -49,9 +49,10 @@
 					<option value="<?php echo $r->user_type ?>"><?php echo $r->type_name?></option>
 					<?php if(!empty($utype)){
 						if (is_array($utype)){                      
-							foreach ($utype as $row) {?>
+							foreach ($utype as $row) {
+								if($row['type_id'] != $r->user_type){ ?>
 								<option value="<?php echo $row['type_id']?>"><?php echo $row['type_name']; ?></option>
-							<?php }
+							<?php } }
 						}
 					}
 					else{	?>

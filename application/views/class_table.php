@@ -42,28 +42,28 @@
 						<tbody>
 							<tr>
 								<th class="col-md-2"><i class="fa fa-tags"></i> class Name</th>
-								<th class="col-md-6"><i class="fa fa-list-alt"></i> Description</th>
+								
 	                            <th class="col-md-1"><i class="icon_cogs"></i> Action</th>
 	                        </tr>
-	                        <?php if(isset($cls) && is_array($cls)): foreach($cls as $row): if($row['class_Status'] =='0'){?>
-						    <tr class="conf clickable-row" data-href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_ID'] ?>">
+	                        <?php if(isset($cls) && is_array($cls)): foreach($cls as $row): if($row['is_active'] =='0'){?>
+						    <tr class="conf clickable-row" data-href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_id'] ?>">
 								<td class="col-md-2-b"><i class="fa fa-exclamation" style="color:red;"></i> <?php echo $row['class_Name'] ?></td>
 								<td class="col-md-6-b"><?php echo $row['class_Definition'] ?></td>
 		                        <td class="col-md-1">
 				                    <div class="btn-group">
-				                    	<a class="btn btn-success" href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_ID'] ?>" data-toggle="tooltip" data-placement="left" title="edit class"><i class="icon icon_pencil-edit"></i></a>
-				                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/deleteClass/<?php echo $row['class_ID'] ?>" data-toggle="tooltip" data-placement="right" title="delete product"><i class="icon_close_alt2"></i></a>
+				                    	<a class="btn btn-success" href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_id'] ?>" data-toggle="tooltip" data-placement="left" title="edit class"><i class="icon icon_pencil-edit"></i></a>
+				                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/deleteClass/<?php echo $row['class_id'] ?>" data-toggle="tooltip" data-placement="right" title="delete product"><i class="icon_close_alt2"></i></a>
 				                    </div>
 	                            </td>
 							<?php } 							
 	                        else{ ?>	
-	                        <tr class="clickable-row" data-href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_ID'] ?>">
+	                        <tr class="clickable-row" data-href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_id'] ?>">
 		                        <td class="col-md-2"><?php echo $row['class_Name'] ?></td>
-								<td class="col-md-6"><?php echo $row['class_Definition'] ?></td>
+								
 		                        <td class="col-md-1">
 				                    <div class="btn-group">
-				                    	<a class="btn btn-success" href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_ID'] ?>" data-toggle="tooltip" data-placement="left" title="edit class"><i class="icon icon_pencil-edit"></i></a>
-				                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/deleteClass/<?php echo $row['class_ID'] ?>" data-toggle="tooltip" data-placement="right" title="delete class"><i class="icon_close_alt2"></i></a>
+				                    	<a class="btn btn-success" href="<?php echo base_url()?>products/edit_class/<?php echo $row['class_id'] ?>" data-toggle="tooltip" data-placement="left" title="edit class"><i class="icon icon_pencil-edit"></i></a>
+				                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/deleteClass/<?php echo $row['class_id'] ?>" data-toggle="tooltip" data-placement="right" title="delete class"><i class="icon_close_alt2"></i></a>
 				                    </div>
 	                            </td>
 	                       <?php } ?>

@@ -8,7 +8,7 @@ class suppliers extends CI_Controller {
 		{
         parent::__construct();
 		$this -> load -> model('users_model');
-		
+		$this -> load -> model('products_model');
 		
 	}
 
@@ -81,7 +81,7 @@ class suppliers extends CI_Controller {
 			
 			$mid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> users_model -> get_supplier_rec($mid);
-			
+			$data['products'] = $this -> products_model -> getProductSupplier($mid);
 			$data['main_content'] = 'suppliers_profile';
 			$this->load->view('includes/adminTemplate', $data);
 		}
@@ -108,9 +108,9 @@ class suppliers extends CI_Controller {
 	{
 		if($this->session->userdata('is_logged_in')){
 			$id = $this -> uri -> segment(3);
-			$this -> users_model -> update_user($id);
+			$this -> users_model -> update_supplier($id);
 			
-			redirect('users/profile/'.$id, 'refresh');
+			redirect('suppliers/profile/'.$id, 'refresh');
 		}
 		
 		else{

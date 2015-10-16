@@ -66,7 +66,7 @@
 			                    <td class="col-md-1">
 			                	<div class="">
 			                		<?php if($row->is_active == '1'){?>
-			                		<a class="btn btn-caution" href="<?php echo base_url()?>users/disable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="disable user"><i class="icon_close"></i></a>
+			                		<a class="btn btn-caution" href="<?php echo base_url()?>users/disable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="disable user"><i class="icon_close_alt2"></i></a>
 			                		<?php } else if ($row->is_active != '1'){?>
 			                			<a class="btn btn-success" href="<?php echo base_url()?>users/enable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="enable user"><i class="icon_check_alt2"></i></a>
 			                		<?php } ?>

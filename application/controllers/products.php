@@ -59,7 +59,7 @@ class products extends CI_Controller {
 			
 			
 
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 			
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
@@ -107,17 +107,9 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
+						
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs			
-			
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/memberTemplate', $data);
 		} else {
 			//If no session, redirect to login page
@@ -183,7 +175,7 @@ class products extends CI_Controller {
 			
 			
 			
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 			
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
@@ -232,17 +224,9 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
 
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/memberTemplate', $data);
 		} else {
 			//If no session, redirect to login page
@@ -294,11 +278,12 @@ class products extends CI_Controller {
 
 	}
 
-	public function create_new_product() {
+	public function create_new_raw_material() {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-			$data['cat'] = $this -> products_model -> getCategory();
+			
 			$data['cls'] = $this -> products_model -> getClass();
+			$data['rm'] = $this -> products_model -> getRawMats();
 			$data['supplier'] = $this -> products_model -> getSupplier();
 
 			$data['main_content'] = 'product_page';
@@ -318,11 +303,41 @@ class products extends CI_Controller {
 		}
 
 	}
+	
+	
+	public function create_new_finished_good() {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+			$data['rm'] = $this -> products_model -> getRawMats();
+			$data['supplier'] = $this -> products_model -> getSupplier();
 
+			$data['main_content'] = 'product_page';
+			$this -> load -> view('includes/adminTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+	    {
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+
+	}
+	
 	public function update($id)
 	{
-		$this -> products_model -> update_product($id);
-		redirect('products/edit_product/'.$id, 'refresh');
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			$this -> products_model -> update_product($id);
+			redirect('products/view_product/'.$id, 'refresh');
+		}
 		
 	}
 	
@@ -344,54 +359,25 @@ class products extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {	
 			$pid = $this -> uri -> segment(3);
+			$data['supplier'] = $this -> products_model -> getSupplier();
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+			
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 						
-			$data['main_content'] = 'view_product_page';
+			$data['main_content'] = 'product_page';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
 		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
 	    {
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-			
-			/* Notification */
-			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
 			
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 			$data['products'] = $this -> products_model -> getSimilarProducts($pid);	
 			
 			
-			$data['main_content'] = 'view_product_page';
+			$data['main_content'] = 'product_page';
 			$this -> load -> view('includes/memberTemplate', $data);
-		} else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
-
-	}
-
-	public function edit_product() {
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-			
-			
-			
-			$pid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> products_model -> get_product_rec($pid);
-			
-			$data['main_content'] = 'view_product_page';
-			$this -> load -> view('includes/adminTemplate', $data);
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect('products', 'refresh');
 		} else {
 			//If no session, redirect to login page
 			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
@@ -405,9 +391,7 @@ class products extends CI_Controller {
 	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			
-			
-			
+		
 			$clid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_class_rec($clid);
 			
@@ -487,15 +471,7 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
 			
 			$search = $this -> input -> post('search');
 			redirect('products/search_result/'.$search);
@@ -514,30 +490,20 @@ class products extends CI_Controller {
 	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			
-			
 				
 			$data['search'] = $this -> products_model -> search($search);
 			
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 						
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$email = $this -> session -> userdata('email');
-			$data['log'] = $this -> users_model -> get_log($id);
-
-			/* Notification */
 			
-			$data['nmsgs'] = $this -> users_model -> getNMail($email);//gets unread msgs
-			$data['notif_m_ctr'] = $this -> users_model -> getMailNCtr($email);//ctr for unread msgs
 			
 			$data['search'] = $this -> products_model -> search($search);
 			
-			$data['main_content'] = 'products_page';
+			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/memberTemplate', $data);
 		} else {
 			//If no session, redirect to login page
@@ -545,6 +511,56 @@ class products extends CI_Controller {
 			redirect('login', 'refresh');
 		}
 	
+	}
+
+	public function disable($id)
+	{
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			
+			$this -> products_model -> disable($id);
+			
+			$this->session->set_flashdata('success','Product disabled and will not be seen by level 1 users');
+			redirect('products', 'refresh');
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+		{
+			
+			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
+			redirect($base_url, 'refresh');
+		} 
+		
+		else{
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+
+	public function enable($id)
+	{		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			
+			$this -> products_model -> enable($id);
+			
+			$this->session->set_flashdata('success','Product Enabled');
+			redirect('products', 'refresh');
+		}
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+		{
+			
+			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
+			redirect($base_url, 'refresh');
+		} 
+		
+		else{
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
 	}
 	
 	public function delete($id)
