@@ -23,6 +23,10 @@
 	
 <!-- Vegas -->
 	<link href="<?php echo base_url();?>assets/vegas/vegas.min.css" rel="stylesheet">
+	
+<!--datepicker-->
+	<link href="<?php echo base_url()?>assets/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
     
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

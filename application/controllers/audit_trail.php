@@ -93,16 +93,17 @@ class audit_trail extends CI_Controller {
 	function search()
 	{
 		
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		{
 				
 			$search = $this -> input -> post('search');
-			redirect('audit_table/search_result/'.$search);
+			redirect('audit_trail/search_result/'.$search);
 						
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			
 		
 			$search = $this -> input -> post('search');
-			redirect('audit_table/search_result/'.$search);
+			redirect('audit_trail/search_result/'.$search);
 			
 		} else {
 			//If no session, redirect to login page
@@ -115,7 +116,8 @@ class audit_trail extends CI_Controller {
 	function search_result($search)
 	{
 		
-		if ($this -> session -> userdata('is_logged_in') && $this -> session -> userdata('is_admin')) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		{
 				
 			$data['search'] = $this -> reports_model -> search($search);
 			

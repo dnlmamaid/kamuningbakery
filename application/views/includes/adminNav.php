@@ -15,15 +15,24 @@
                     <a href="<?php echo base_url()?>inventory">Inventory</a>
                 </li>
                 <li>
-                    <a href="#">Activity</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Activity <span class="caret"></span></a>
+                  	<ul class="dropdown-menu" role="menu">
+                  		<li class="dropdown-header">Activity</li>
+                  		<li><a href="<?php echo base_url()?>purchases">Purchase History</a></li>
+                  		<li><a href="<?php echo base_url()?>purchases/purchase_order">Purchase Order</a></li>
+	                    <li><a href="<?php echo base_url()?>production">Production</a></li>
+	                    <li><a href="<?php echo base_url()?>production/produce_goods">Produce Goods</a></li>
+	                    
+                 	</ul>
+                </li>
                 </li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li class="dropdown-header">Reports</li>
-                    <li><a href="#">Sales</a></li>
-                    <li><a href="#">Production</a></li>
-                    <li><a href="#">Purchases</a></li>
+                    <li><a href="<?php echo base_url()?>sales/report">Sales</a></li>
+                    <li><a href="<?php echo base_url()?>production/report">Production</a></li>
+                    <li><a href="<?php echo base_url()?>purchases/report">Purchases</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">

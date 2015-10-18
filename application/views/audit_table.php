@@ -58,7 +58,7 @@
 								  		<td class="col-md-1"><?php echo $row->module ?></td>
 								  		<td class="col-md-2"><?php echo $row->remarks ?></td>
 										<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-		                                <td class="col-md-1"><?php echo $row->date_created ?></td>
+		                                <td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
 		                                <!--<td class="col-md-1">
 			                                <div class="btn-group">
 			                                  <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>audit_trail/remove/<?php echo $row->audit_id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>

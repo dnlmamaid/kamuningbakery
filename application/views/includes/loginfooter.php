@@ -29,9 +29,9 @@
 
 <!-- Vegas -->
 <script src="<?php echo base_url();?>assets/vegas/vegas.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/vegasIn.js"></script>
 
-<!-- Custom -->
-<script src="<?php echo base_url();?>assets/js/script.js"></script>
+
 
 
 </body>

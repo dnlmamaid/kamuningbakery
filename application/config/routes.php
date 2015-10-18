@@ -54,4 +54,7 @@ $route['404_override'] = '';
 $route['users/page/:num'] = 'users/index';
 $route['audit_trail/page/:num'] = 'audit_trail/index';
 $route['inventory/page/:num'] = 'inventory/index';
+$route['purchases/page/:num'] = 'purchases/index';
+$route['sales/page/:num'] = 'sales/index';
+$route['production/page/:num'] = 'production/index';
 $route['translate_uri_dashes'] = FALSE;

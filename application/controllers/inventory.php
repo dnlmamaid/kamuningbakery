@@ -55,7 +55,7 @@ class inventory extends CI_Controller {
       			
     		}   
 			$data['products'] = $this->products_model->getProducts($config['per_page'], $offset);
-		
+			
 			
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();

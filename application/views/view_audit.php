@@ -25,11 +25,18 @@
 							<?php echo $r->firstName?> <?php echo $r->lastName?>
 						</div>
 					</div>
-				
+
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label for="contact_Person">Module: </label>
 							<?php echo $r->module?>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-12">
+							<label for="contact">Date Modified: </label>
+							<?php echo date('F d,Y (D) h:i A', strtotime($r->date_created))?>
 						</div>
 					</div>
 				
@@ -39,6 +46,8 @@
 							<?php echo $r->remarks?>
 						</div>
 					</div>
+					
+					
 					
 					<div class="form-group">
 						<div class="col-lg-12">

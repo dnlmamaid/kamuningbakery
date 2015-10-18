@@ -5,6 +5,16 @@ function initializeJS() {
 	        window.document.location = $(this).data("href");
 	});	
 	
+	//datepicker
+	 $('#sdate').datetimepicker({
+			format : 'YYYY-MM-DD',
+	 });
+	 
+	 //datepicker
+	 $('#edate').datetimepicker({
+			format : 'YYYY-MM-DD',
+	 });
+	   
 	//searchboxanimate
 	$('#searchbox').focus(function()
 	{ 
@@ -27,6 +37,12 @@ function initializeJS() {
 		$('#materials').toggle(showOrHide);
 	});
 	
+	//dropdown quantity
+	$('select[name="rm_ID1"]').bind('change',function(){
+		var showOrHide = ($(this).val()) ? true : false;
+		$('#RM').toggle(showOrHide);
+		$('#RM2').toggle(showOrHide);
+	});
 	     
 	$('#searchbox').blur(function()
 	{ 
@@ -71,17 +87,6 @@ function initializeJS() {
 	        $('#wrapper').toggleClass('toggled');
 	  });  
 	});
-    
-    //Vegas
-	$('body').vegas({
-		overlay: '/kamuningbakery/assets/vegas/overlays/05.png',
-		slides: [
-			
-		    { src: '/kamuningbakery/assets/images/kb_facade.jpg' },
-
-		]
-	});
-		
     
 }
 

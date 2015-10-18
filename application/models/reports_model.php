@@ -1,7 +1,8 @@
 <?php
 Class reports_model extends CI_Model {
+	
 
-	/******* CRUD *******************/
+	/******* AUDIT *******************/
 
 	/*
 	 * Get all Audit Trail
@@ -42,6 +43,213 @@ Class reports_model extends CI_Model {
 		
 		return $q -> result();
 
+	}
+	
+	/** Search Audit **/
+	function search($keyword)
+    {
+    	
+		if($this -> session -> userdata('is_logged_in')){
+    		
+	    	$var = urldecode($keyword);		
+			$this -> db -> join('users', 'users.id = audit_trail.user_id', 'left');
+	    	
+	        $this->db->like('firstName', $var);
+			$this->db->or_like('lastName', $var);
+			$this->db->or_like('module', $var);
+			$this->db->or_like('remark_id', $var);
+	        $this->db->or_like('remarks', $var);
+			$this->db->or_like('date_created', $var);
+			
+			$query = $this -> db -> get('audit_trail');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
+			return $query -> result();
+		}
+	
+	}
+	
+	/*****************************************************************/
+	/*********************  PURCHASES	*****************************/
+	/***************************************************************/
+	
+	public function getPurchases($limit, $start) {
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('purchases.date_created', 'desc');
+		$query = $this -> db -> get('purchases');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
+	public function getPurchasesCtr() {
+		$this -> db -> select('*');
+		$this -> db -> from('purchases');
+		$query = $this -> db -> get();
+		$result = $query -> num_rows();
+		return $result;
+	}
+	
+	/**
+	 * Get Purchase Record function
+	 * 
+	 * 
+	 */
+	function get_purchase_rec($pid) {
+		
+		$this->db->join('users','users.id = purchases.user_id','left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this -> db -> where('purchase_id', $pid);
+		$q = $this -> db -> get('purchases');
+		
+		return $q -> result();
+
+	}
+	
+	/** Search Purchases **/
+	function search_p($keyword)
+    {
+    	
+		if($this -> session -> userdata('is_logged_in')){
+    		
+	    	$var = urldecode($keyword);		
+			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+	    	$this->db->join('products','products.product_id = purchases.product_id','left');
+			
+	        $this->db->like('purchase_id', $var);
+			$this->db->or_like('product_name', $var);
+			$this->db->or_like('supplier_name', $var);
+			$this->db->or_like('reference', $var);
+	        $this->db->or_like('total', $var);
+			$this->db->or_like('purchases.date_created', $var);
+			
+			$query = $this -> db -> get('purchases');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
+			return $query -> result();
+		}
+	
+	}
+
+	
+	function get_total_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		
+		$this->db->where('date_created >=',$start);
+		$this->db->where('date_created <=',$end);
+		
+		$this->db->select('sum(total) as total');
+		
+		$q = $this->db->get('purchases');
+		return $q->row();
+	}
+	
+	function get_total(){
+		
+		$this->db->select('sum(total) as total');
+		
+		$q = $this->db->get('purchases');
+		return $q->row();
+	}
+	
+	
+	function get_purchases_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		$this->db->where('purchases.date_created >=',$start);
+		$this->db->where('purchases.date_created <=',$end);
+		$this->db->join('users','users.id = purchases.user_id','left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this->db->order_by('purchases.date_created','desc');
+		$query = $this->db->get('purchases');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	/*****************************************************************/
+	/*********************  PRODUCTION	*****************************/
+	/***************************************************************/
+	
+	public function getProducts($limit, $start) {
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('purchases.date_created', 'desc');
+		$this -> db -> where('rm_ID !=', '0');
+		$query = $this -> db -> get('purchases');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
+	public function getProducedCtr() {
+		$this -> db -> select('*');
+		$this -> db -> from('purchases');
+		$query = $this -> db -> get();
+		$result = $query -> num_rows();
+		return $result;
+	}
+	
+	/**
+	 * Get Purchase Record function
+	 * 
+	 * 
+	 */
+	function get_production_rec($pid) {
+		
+		$this->db->join('users','users.id = purchases.user_id','left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this -> db -> where('purchase_id', $pid);
+		$q = $this -> db -> get('purchases');
+		
+		return $q -> result();
+
+	}
+	
+	/** Search Production **/
+	function search_prod($keyword)
+    {
+    	
+		if($this -> session -> userdata('is_logged_in')){
+    		
+	    	$var = urldecode($keyword);		
+			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+	    	$this->db->join('products','products.product_id = purchases.product_id','left');
+			
+	        $this->db->like('purchase_id', $var);
+			$this->db->or_like('product_name', $var);
+			$this->db->or_like('supplier_name', $var);
+			$this->db->or_like('reference', $var);
+	        $this->db->or_like('total', $var);
+			$this->db->or_like('purchases.date_created', $var);
+			
+			$query = $this -> db -> get('purchases');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
+			return $query -> result();
+		}
+	
 	}
 }
 ?>

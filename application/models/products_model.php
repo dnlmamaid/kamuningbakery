@@ -194,8 +194,101 @@ class products_model extends CI_Model{
 		return $data;
 	}	
 	
-
 	
+	function new_purchase_order()
+    {
+		
+		$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		
+		$val = $this->db->get('products');
+		if($val->num_rows() == 1){
+			$this->session->set_flashdata('error','Product already exist. If you want to replenish a product use the Purchase Order Form');
+		}
+
+		else{
+			
+			$data = array(
+				'product_Name' => $this->input->post('product_Name'),
+				'quantity' => $this->input->post('quantity'),
+				'price' => $this->input->post('price'),
+				'supplier_ID' => $this->input->post('supplier_ID'),
+				'category_ID' => $this->input->post('category_ID'),
+				'class_ID' => $this->input->post('class_ID'),
+				'rm_ID' => $rm_ID,
+				'description' => $this->input->post('description'),
+				'um' => $this->input->post('um'),
+				'date_created'=> date('Y-m-j H:i:s'),
+				'product_status' => $this->input->post('product_status'),
+	        );
+			  
+			$this->db->insert('products', $data);
+			$this->session->set_flashdata('success','You have successfully added a new product');
+			
+			$remark_id = $this->db->insert_id();
+			$total = $this->input->post('price') * $this->input->post('quantity');
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created/purchased product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+			$code = random_string('alnum',11);
+			
+			$purchase = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'product_id'	=> $remark_id,
+				'supplier_id'	=> $this->input->post('supplier_ID'),
+				'reference'	=> $code,
+				'total'	=> $total,
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('purchases', $purchase);
+	        
+		}
+	}
+	
+	function purchase_order($id)
+    {
+			$data = array(
+				'quantity' => $this->input->post('quantity'),					
+		    );
+		
+			$this->db->where('product_ID', $id);
+			$this->db->update('products', $data);
+			
+			$total = $this->input->post('price') * $this->input->post('quantity');
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $id,
+				'remarks'	=> 'purchased additional product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+			
+			$code = random_string('alnum',11);
+			
+			$purchase = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'product_id'	=> $id,
+				'supplier_id'	=> $this->input->post('supplier_ID'),
+				'reference'	=> $code,
+				'total'	=> $total,
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('purchases', $purchase);
+	}
 
 	/**
 	  * update_product function.
@@ -216,7 +309,7 @@ class products_model extends CI_Model{
 			
 			$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'quantity' => $this->input->post('quantity'),
+					
 					'price' => $this->input->post('price'),
 					'supplier_ID' => $this->input->post('supplier_ID'),
 					'category_ID' => $this->input->post('category_ID'),
@@ -532,17 +625,21 @@ class products_model extends CI_Model{
 	}
 	
 	/**
-	 * Add Product Function
-	 * checks name and code if available then creates new product
+	 * Produce Finished Good Function
+	 * creates Finished Good from raw materials
 	 */
-	function addProduct()
+	function produceFG()
     {
-    	$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		if($this->input->post('rm_ID1')){
+			$this->db->where('product_id',$this->input->post('rm_ID1'));
+			$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		}
+		
+		
 		
 		$val = $this->db->get('products');
 		if($val->num_rows() == 1){
-			$this->session->set_flashdata('error','Product already exists.');
+			$this->session->set_flashdata('error','Product already exist. If you want to replenish a product use the Purchase Order Form');
 		}
 
 		else{
@@ -579,17 +676,30 @@ class products_model extends CI_Model{
 			$this->session->set_flashdata('success','You have successfully added a new product');
 			
 			$remark_id = $this->db->insert_id();
-			
+			$total = $this->input->post('price') * $this->input->post('quantity');
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
 				'module'	=> 'Products',
 				'remark_id'	=> $remark_id,
-				'remarks'	=> 'created product',
+				'remarks'	=> 'created/purchased product',
 				'date_created'=> date('Y-m-j H:i:s'),
 				
 			);
 			
 			$this->db->insert('audit_trail', $audit);
+			$code = random_string('alnum',11);
+			
+			$purchase = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'product_id'	=> $remark_id,
+				'supplier_id'	=> $this->input->post('supplier_ID'),
+				'reference'	=> $code,
+				'total'	=> $total,
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('purchases', $purchase);
 	        
 		}  
 	}		

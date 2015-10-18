@@ -28,8 +28,8 @@
 	    			
 	    			<div class="col-lg-3 pull-right">
 		    			<a alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution pull-right" style="margin-right:5px;"><i class="fa fa-tags"></i></a>
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Create Finished Good" href="<?php echo base_url()?>products/create_new_finished_good" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Create Raw Material" href="<?php echo base_url()?>products/create_new_raw_material" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>production" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Raw Materials" href="<?php echo base_url()?>purchases" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
 					</div>
 	    				
 				</div>
