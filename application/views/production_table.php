@@ -27,7 +27,7 @@
 	    			</div>
 	    			
 	    			<div class="col-lg-3 pull-right">
-		    			<a alt="Produce a Product" data-toggle="tooltip" data-placement="top" title="Produce Finished Goods" href="<?php echo base_url()?>production/produce" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
+		    			<a alt="Produce a Product" data-toggle="tooltip" data-placement="top" title="Produce Finished Goods" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
 					</div>
 	    				
 				</div>

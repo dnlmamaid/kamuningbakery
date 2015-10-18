@@ -27,7 +27,7 @@
 	    			</div>
 	    			
 	    			<div class="col-lg-3 pull-right">
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchase Raw Material" href="<?php echo base_url()?>products/purchase" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchase Raw Material" href="<?php echo base_url()?>purchases/purchase_order" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
 					</div>
 	    				
 				</div>
