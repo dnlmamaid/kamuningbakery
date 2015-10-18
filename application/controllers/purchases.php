@@ -7,7 +7,8 @@ class purchases extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		
-		$this -> load -> model('reports_model');		
+		$this -> load -> model('reports_model');
+		$this -> load -> model('products_model');		
 		$this -> load -> model('users_model');
 	}
 

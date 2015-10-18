@@ -215,7 +215,6 @@ class products_model extends CI_Model{
 				'supplier_ID' => $this->input->post('supplier_ID'),
 				'category_ID' => $this->input->post('category_ID'),
 				'class_ID' => $this->input->post('class_ID'),
-				'rm_ID' => $rm_ID,
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
 				'date_created'=> date('Y-m-j H:i:s'),
