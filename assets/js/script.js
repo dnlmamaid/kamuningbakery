@@ -24,25 +24,6 @@ function initializeJS() {
 	    // Animation complete.
 	  });
 	});
-	
-	//dropdown add product
-	$('select[name="category_ID"]').bind('change',function(){
-		var showOrHide = ($(this).val() == 2) ? true : false;
-		$('#RM').toggle(showOrHide);
-		$('#RM2').toggle(showOrHide);
-	});
-	
-	$('select[name="category_ID"]').bind('change',function(){
-		var showOrHide = ($(this).val() == 1) ? true : false;
-		$('#materials').toggle(showOrHide);
-	});
-	
-	//dropdown quantity
-	$('select[name="rm_ID1"]').bind('change',function(){
-		var showOrHide = ($(this).val()) ? true : false;
-		$('#RM').toggle(showOrHide);
-		$('#RM2').toggle(showOrHide);
-	});
 	     
 	$('#searchbox').blur(function()
 	{ 
@@ -54,7 +35,7 @@ function initializeJS() {
 	 });
 	 
     //tool tips   
-  	$('[data-toggle="tooltip"]').tooltip()
+  	$('[data-toggle="tooltip"]').tooltip();
 
     //popovers
     jQuery('.popovers').popover();

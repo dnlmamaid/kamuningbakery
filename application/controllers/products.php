@@ -7,6 +7,7 @@ class products extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this -> load -> model('products_model');
+		$this -> load -> model('reports_model');
 	}
 
 	public function index($offset = 0) {
@@ -197,6 +198,7 @@ class products extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
+			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 						
 			$data['main_content'] = 'product_page';
@@ -273,16 +275,32 @@ class products extends CI_Controller {
 		}
 	}
 	
-	public function purchase() {
+	public function purchase(){
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-			$this -> products_model -> new_purchase_order();
-			redirect('products', 'refresh');
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+				$this -> products_model -> new_purchase_order();
+				redirect('products', 'refresh');
+		}
+		 
+		else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 	}
+	
+	public function replenish($id){
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+				$this -> products_model -> purchase_order($id);
+				redirect('products', 'refresh');
+		} 
+		else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+	}
+	
+	
 
 	public function add_class() {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')

@@ -69,7 +69,7 @@ class users extends CI_Controller {
 	public function profile()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '2')
 	    {			
 			$data['utype'] = $this->users_model->getuType();
 			

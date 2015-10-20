@@ -179,29 +179,33 @@ Class users_model extends CI_Model
 	public function update_user($id)
 	
 	{
-		$data = array(
-		'firstName'	=> $this->input->post('firstName'),
-		'lastName'	=> $this->input->post('lastName'),
-		'user_type'	=> $this->input->post('user_type'),
-		'is_active'	=> '1',
-		);
 		
-		$this->db->where('id', $id);
-		$this->db->update('users', $data);
-		$this->session->set_flashdata('success','You have Successfuly updated information');
-		
-		$remark_id = $id;
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Users',
-				'remark_id'	=> $remark_id,
-				'remarks'	=> 'updated a user account',
-				'date_created'=> date('Y-m-j H:i:s'),
-				
+			$data = array(
+			'firstName'	=> $this->input->post('firstName'),
+			'lastName'	=> $this->input->post('lastName'),
+			'username'	=> $this->input->post('username'),
+			'password' => $this->hash_password($this->input->post('password')),
+			'user_type'	=> $this->input->post('user_type'),
+			'is_active'	=> $this->input->post('is_active'),
 			);
 			
-		$this->db->insert('audit_trail', $audit);
+			$this->db->where('id', $id);
+			$this->db->update('users', $data);
+			$this->session->set_flashdata('success','You have Successfuly updated information');
+			
+			$remark_id = $id;
+				
+				$audit = array(
+					'user_id'	=> $this->session->userdata('user_id'),
+					'module'	=> 'Users',
+					'remark_id'	=> $remark_id,
+					'remarks'	=> 'updated a user account',
+					'date_created'=> date('Y-m-j H:i:s'),
+					
+				);
+				
+			$this->db->insert('audit_trail', $audit);
+		
 		
 	}
 	

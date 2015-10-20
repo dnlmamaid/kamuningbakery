@@ -1,4 +1,5 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php date_default_timezone_set('Asia/Manila');
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class products_model extends CI_Model{
  	
@@ -214,6 +215,7 @@ class products_model extends CI_Model{
 				'price' => $this->input->post('price'),
 				'supplier_ID' => $this->input->post('supplier_ID'),
 				'category_ID' => $this->input->post('category_ID'),
+				'rm_ID' => '0',
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
@@ -225,7 +227,23 @@ class products_model extends CI_Model{
 			$this->session->set_flashdata('success','You have successfully added a new product');
 			
 			$remark_id = $this->db->insert_id();
+			$code = random_string('alnum',11);
 			$total = $this->input->post('price') * $this->input->post('quantity');
+			
+			$purchase = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'product_id'	=> $remark_id,
+				'supplier_id'	=> $this->input->post('supplier_ID'),
+				'reference'	=> $code,
+				'purchase_quantity'	=> $this->input->post('quantity'),
+				'ppu'	=> $this->input->post('price'),
+				'ordering_cost'	=> $total,
+				'purchase_date'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('purchases', $purchase);
+			
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
 				'module'	=> 'Products',
@@ -236,33 +254,51 @@ class products_model extends CI_Model{
 			);
 			
 			$this->db->insert('audit_trail', $audit);
-			$code = random_string('alnum',11);
 			
-			$purchase = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'product_id'	=> $remark_id,
-				'supplier_id'	=> $this->input->post('supplier_ID'),
-				'reference'	=> $code,
-				'total'	=> $total,
-				'date_created'=> date('Y-m-j H:i:s'),
-				
-			);
-			
-			$this->db->insert('purchases', $purchase);
 	        
 		}
 	}
 	
 	function purchase_order($id)
     {
+    	
+			$this->db->select('price');
+			$this->db->from('products');
+			$this->db->where('product_id', $id);
+			$oldprice = $this->db->get()->row('price');
+    		$newprice = ($this->input->post('price') + $oldprice)/2;
+			
+			$this->db->select('quantity');
+			$this->db->from('products');
+			$this->db->where('product_id', $id);
+			$oldquantity = $this->db->get()->row('quantity');
+    		$newquantity = $this->input->post('quantity') + $oldquantity;
+			
 			$data = array(
-				'quantity' => $this->input->post('quantity'),					
+				'quantity' => $newquantity,
+				'price' => $newprice,					
 		    );
 		
 			$this->db->where('product_ID', $id);
 			$this->db->update('products', $data);
 			
 			$total = $this->input->post('price') * $this->input->post('quantity');
+			$code = random_string('alnum',11);
+			
+			$purchase = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'product_id'	=> $id,
+				'supplier_id'	=> $this->input->post('supplier_id'),
+				'reference'	=> $code,
+				'purchase_quantity'	=> $this->input->post('quantity'),
+				'ppu'	=> $this->input->post('price'),
+				'ordering_cost'	=> $total,
+				'purchase_date'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('purchases', $purchase);
+			
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
 				'module'	=> 'Products',
@@ -274,19 +310,10 @@ class products_model extends CI_Model{
 			
 			$this->db->insert('audit_trail', $audit);
 			
-			$code = random_string('alnum',11);
 			
-			$purchase = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'product_id'	=> $id,
-				'supplier_id'	=> $this->input->post('supplier_ID'),
-				'reference'	=> $code,
-				'total'	=> $total,
-				'date_created'=> date('Y-m-j H:i:s'),
-				
-			);
 			
-			$this->db->insert('purchases', $purchase);
+			
+			$this->session->set_flashdata('success','Successfully Purchased Product.');
 	}
 
 	/**
@@ -393,7 +420,8 @@ class products_model extends CI_Model{
 				
 			);
 			
-			$this->db->insert('audit_trail', $audit);
+		$this->db->insert('audit_trail', $audit);
+		
 		
 	}
 	
@@ -693,7 +721,7 @@ class products_model extends CI_Model{
 				'product_id'	=> $remark_id,
 				'supplier_id'	=> $this->input->post('supplier_ID'),
 				'reference'	=> $code,
-				'total'	=> $total,
+				'ordering_cost'	=> $total,
 				'date_created'=> date('Y-m-j H:i:s'),
 				
 			);

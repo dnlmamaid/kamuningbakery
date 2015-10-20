@@ -17,12 +17,13 @@
 					</div>
 					
 					
-					<div class="col-lg-6 form-inline align-center">
+					<div class="col-lg-6">
 	    				<?php echo form_open('purchases/search')?>
 						<div class="input-group">
+							
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
 		      				<span class="input-group-btn"><button class="btn btn-theme" type="submit"><i class="glyphicon glyphicon-search"></i></button></span>
-		      				<?php echo form_close()?>
+		      			<?php echo form_close()?>
 		    			</div>
 	    			</div>
 	    			
@@ -51,53 +52,34 @@
 							<table class="table table-advance">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference No.</th>
+										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 			                            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
 			                            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
+			                            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
 			                            
-			                            <th class="col-md-1"><i class="icon_cogs"></i> Action</th>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/view_purchase/<?php echo $row->purchase_id?>">
-								  		<td class="col-md-1-b"><?php echo $row->reference ?></td>
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                                <td class="col-md-1-b"><?php echo $row->total?></td>
-		                                
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!-- <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a> -->
-						                    </div>
-	                                	</td>
+								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
+								  		<td class="col-md-1"><?php echo $row->reference ?></td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo $row->ordering_cost?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/view_purchase/<?php echo $row->purchase_id?>">
-								  		<td class="col-md-1-b"><?php echo $row->reference ?></td>
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                                <td class="col-md-1-b"><?php echo $row->total?></td>
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
+								  		<td class="col-md-1"><?php echo $row->reference ?></td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo $row->ordering_cost?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
 		                                
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!-- <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->purchase_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a> -->
-						                    </div>
-	                                	</td>
 	                                </tr>
 	                                <?php endforeach;		                               
 									else:?>

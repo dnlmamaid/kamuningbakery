@@ -74,7 +74,6 @@ class purchases extends CI_Controller {
 	    {
 			
 			$data['cls'] = $this -> products_model -> getClass();
-			$data['rm'] = $this -> products_model -> getRawMats();
 			$data['supplier'] = $this -> products_model -> getSupplier();
 
 			$data['main_content'] = 'purchase_raw_material';
@@ -158,7 +157,7 @@ class purchases extends CI_Controller {
 	}
 	
 	
-	public function view_purchase()
+	public function purchase_invoice()
 	{
 		
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')

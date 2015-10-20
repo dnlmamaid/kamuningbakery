@@ -77,7 +77,7 @@ Class reports_model extends CI_Model {
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
 		$this->db->join('products','products.product_id = purchases.product_id','left');
 		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('purchases.date_created', 'desc');
+		$this -> db -> order_by('purchase_date', 'desc');
 		$query = $this -> db -> get('purchases');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -113,6 +113,29 @@ Class reports_model extends CI_Model {
 		return $q -> result();
 
 	}
+
+	/**
+	 * Get Product Purchase History function
+	 * -- gets product purchase history
+	 * 
+	 */
+	function getPurchaseHistory($pid)
+	{
+		if($this -> session -> userdata('is_logged_in'))
+		{
+			$this->db->join('users','users.id = purchases.user_id','left');
+			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+			$this->db->join('products','products.product_id = purchases.product_id','left');
+			$this->db->from('purchases');
+			$this -> db -> order_by('purchase_date', 'desc');	
+			$this -> db -> where('purchases.product_id', $pid);
+			$query = $this -> db -> get();
+			$data = $query -> result_array();
+			return $data;
+		}
+	}
+	
+	
 	
 	/** Search Purchases **/
 	function search_p($keyword)
@@ -128,8 +151,9 @@ Class reports_model extends CI_Model {
 			$this->db->or_like('product_name', $var);
 			$this->db->or_like('supplier_name', $var);
 			$this->db->or_like('reference', $var);
-	        $this->db->or_like('total', $var);
-			$this->db->or_like('purchases.date_created', $var);
+	        $this->db->or_like('ordering_cost', $var);
+			$this->db->or_like('purchase_date', $var);
+			$this->db->or_like('ppu', $var);
 			
 			$query = $this -> db -> get('purchases');
 			$rows = $query -> num_rows();
@@ -144,10 +168,10 @@ Class reports_model extends CI_Model {
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
 		
-		$this->db->where('date_created >=',$start);
-		$this->db->where('date_created <=',$end);
+		$this->db->where('purchase_date >=',$start);
+		$this->db->where('purchase_date <=',$end);
 		
-		$this->db->select('sum(total) as total');
+		$this->db->select('sum(ordering_cost) as total');
 		
 		$q = $this->db->get('purchases');
 		return $q->row();
@@ -155,7 +179,7 @@ Class reports_model extends CI_Model {
 	
 	function get_total(){
 		
-		$this->db->select('sum(total) as total');
+		$this->db->select('sum(ordering_cost) as total');
 		
 		$q = $this->db->get('purchases');
 		return $q->row();
@@ -165,12 +189,12 @@ Class reports_model extends CI_Model {
 	function get_purchases_by_date(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
-		$this->db->where('purchases.date_created >=',$start);
-		$this->db->where('purchases.date_created <=',$end);
+		$this->db->where('purchase_date >=',$start);
+		$this->db->where('purchase_date <=',$end);
 		$this->db->join('users','users.id = purchases.user_id','left');
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
 		$this->db->join('products','products.product_id = purchases.product_id','left');
-		$this->db->order_by('purchases.date_created','desc');
+		$this->db->order_by('purchase_date','desc');
 		$query = $this->db->get('purchases');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -186,12 +210,13 @@ Class reports_model extends CI_Model {
 	/***************************************************************/
 	
 	public function getProducts($limit, $start) {
-		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('purchases.date_created', 'desc');
+		$this -> db -> order_by('date_created', 'desc');
 		$this -> db -> where('rm_ID !=', '0');
-		$query = $this -> db -> get('purchases');
+		$query = $this -> db -> get('products');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
@@ -204,7 +229,7 @@ Class reports_model extends CI_Model {
 	
 	public function getProducedCtr() {
 		$this -> db -> select('*');
-		$this -> db -> from('purchases');
+		$this -> db -> from('products');
 		$query = $this -> db -> get();
 		$result = $query -> num_rows();
 		return $result;
@@ -217,11 +242,11 @@ Class reports_model extends CI_Model {
 	 */
 	function get_production_rec($pid) {
 		
-		$this->db->join('users','users.id = purchases.user_id','left');
-		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('products','products.product_id = purchases.product_id','left');
-		$this -> db -> where('purchase_id', $pid);
-		$q = $this -> db -> get('purchases');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+		$this -> db -> where('product_id', $pid);
+		$q = $this -> db -> get('products');
 		
 		return $q -> result();
 
@@ -234,17 +259,16 @@ Class reports_model extends CI_Model {
 		if($this -> session -> userdata('is_logged_in')){
     		
 	    	$var = urldecode($keyword);		
-			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-	    	$this->db->join('products','products.product_id = purchases.product_id','left');
-			
-	        $this->db->like('purchase_id', $var);
-			$this->db->or_like('product_name', $var);
+			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+	        $this->db->or_like('product_Name', $var);
+			$this->db->or_like('price', $var);
 			$this->db->or_like('supplier_name', $var);
-			$this->db->or_like('reference', $var);
-	        $this->db->or_like('total', $var);
-			$this->db->or_like('purchases.date_created', $var);
-			
-			$query = $this -> db -> get('purchases');
+	        $this->db->or_like('category_name', $var);
+			$this->db->or_like('class_Name', $var);
+			$this->db->or_like('products.description', $var); 
+			$query = $this -> db -> get('products');
 			$rows = $query -> num_rows();
 			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
 			return $query -> result();

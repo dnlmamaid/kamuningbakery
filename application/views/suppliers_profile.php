@@ -7,7 +7,7 @@
 				<div class="col-lg-4 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa fa-briefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
+					<li><i class="fa fariefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
 					<li><i class="fa fa-truck"></i> <?php echo $r->supplier_name?></li>
 				</ol>
 				</div>
@@ -88,48 +88,45 @@
 				</div>
 				</div>
 				<div class="col-lg-6">
-				<h3>Supplied Products</h3>
-				<div class="table-responsive"> 
-							<table class="table table-advance">
-								<tbody>
-									<tr>
-										<th class="col-md-1"><i class="fa icon_cart"></i> Product Name</th>
-			                            
-			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
-			                            <th class="col-md-1"><i class="fa fa-tag"></i> Category</th>
-			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			                            <!--<th class="col-md-1"><i class="icon_cogs"></i> Action</th>-->
-	                              	</tr>
-	                              	
-	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>">
-										<td class="col-md-1-b"><?php echo $row['product_Name'] ?></td>
-										<td class="col-md-1-b"><?php echo $row['class_Name']?></td>
-		                                <td class="col-md-1-b"><?php echo $row['category_name'] ?></td>
-		                                
-		                                <td class="col-md-1-b"><?php echo $row['quantity']?></td>
-		                                <!--
-		                                <td class="col-md-1">
-			                                <div class="btn-group">
-			                                  <a class="btn btn-success" href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>"><i class="icon_check_alt2"></i></a>
-			                                  <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>Products/remove/<?php echo $row['product_id']?>" data-toggle="tooltip" data-placement="right" title="delete product"><i class="icon_close_alt2"></i></a>
-			                                </div>
-	                                	</td>-->
-	                                </tr>	
-									<?php endforeach;	                               
-									else:?>
-									<tr>											
-										<th>No records</th>
-										<th>No records</th>
-										<th>No records</th>
-										<th>No records</th>
-										<th>No records</th>
-									</tr>
-									<?php endif; ?>      
-	                               	
-	                           </tbody>
-	                        </table>
-	                     </div>
+					<h3>Supplied Products</h3>
+					<div class="table-responsive"> 
+						<table class="table table-advance">
+							<tbody>
+								<tr>
+									<th class="col-md-1"><i class="fa icon_cart"></i> Product Name</th>
+				                    <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
+				                    <th class="col-md-1"><i class="fa fa-tag"></i> Category</th>
+				                    <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
+				                    <!--<th class="col-md-1"><i class="icon_cogs"></i> Action</th>-->
+		                       	</tr>
+		                              	
+		                        <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
+								<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>">
+									<td class="col-md-1"><?php echo $row['product_Name'] ?></td>
+									<td class="col-md-1"><?php echo $row['class_Name']?></td>
+			                       	<td class="col-md-1"><?php echo $row['category_name'] ?></td>
+			                        <td class="col-md-1"><?php echo $row['quantity']?></td>
+			                        <!--<td class="col-md-1">
+				                        	<div class="btn-group">
+				                                  <a class="btn btn-success" href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>"><i class="icon_check_alt2"></i></a>
+				                                  <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>Products/remove/<?php echo $row['product_id']?>" data-toggle="tooltip" data-placement="right" title="delete product"><i class="icon_close_alt2"></i></a>
+				                                </div>
+		                                </td>-->
+								</tr>	
+								<?php endforeach;	                               
+								else:?>
+								<tr>											
+									<th>No records</th>
+									<th>No records</th>
+									<th>No records</th>
+									<th>No records</th>
+									<th>No records</th>
+								</tr>
+								<?php endif; ?>      
+		                        
+							</tbody>
+						</table>
+					</div>
 				</div>
 				
 				

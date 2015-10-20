@@ -47,11 +47,7 @@
 			         </form>
 				</div>
 			</div>  
-			
-			
-				
-			    
-					
+						
 			
 		</div>
 	</div>
@@ -89,9 +85,10 @@
 						<td class="col-md-1"><?php echo $row->reference ?></td>
 						<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                <td class="col-md-1"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                <td class="col-md-1"><?php echo $row->total?></td>
-						<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
+		                
+		                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+						<td class="col-md-1"><?php echo $row->ordering_cost?></td>
+						<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
 	                </tr>	
 					<?php endforeach;	                               
 					else:?>

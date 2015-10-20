@@ -156,15 +156,14 @@ p {
 	font-family: 'Open Sans Light';
 }
 .form-group {
+	
 	margin: 0 auto;
-	margin-bottom: 15px;
 	width: 95%;
 }
 
 .form-control {
 	color: #003300;
-	border: none;
-	outline: none;
+	outline:none;
 	margin: 0;
 	max-width: 100%;
 	display: block;
@@ -174,12 +173,6 @@ p {
 	border-radius: 0px !important;
 }
 
-.inline {
-	display: inline-block;
-}
-
-
-}
 
 a {
 	color: #0B6738;
@@ -214,6 +207,7 @@ a:hover {
 /*-------------------------------*/
 
 #wrapper {
+	width: 100%;
 	
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -250,6 +244,7 @@ a:hover {
 }
 
 .bg-panel{
+	height:100%;
 	background: #FFF;
 	border-radius: 5px;
 	padding-bottom:50px;
@@ -257,10 +252,20 @@ a:hover {
 	box-shadow: 3px 3px 3px #000;
 }
 
+.bg-panel2{
+	height:100%;
+	background: #FFF;
+	border-radius: 5px;
+	padding-bottom:50px;
+	margin-bottom:50px;
+	box-shadow: 0.5px 0.5px 0.5px 3px #000;
+}
+
 
 #page-content-wrapper {
     width: 100%;
     padding-top: 70px;
+
 }
 
 #wrapper.toggled #page-content-wrapper {

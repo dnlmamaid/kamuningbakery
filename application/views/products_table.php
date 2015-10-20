@@ -17,7 +17,7 @@
 					</div>
 					
 					
-					<div class="col-lg-6 form-inline align-center">
+					<div class="col-lg-6">
 	    				<?php echo form_open('products/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -68,7 +68,7 @@
 		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
 		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php echo $row->um?></td>
+		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                
 		                                <td class="col-md-1">
 			                                <div class="">
@@ -77,7 +77,7 @@
 						                		<?php } else if ($row->product_status != '1'){?>
 						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
 						                		<?php } ?>
-						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
+						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
 	                                </tr>	
@@ -88,7 +88,7 @@
 		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
 		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?></td>
+		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                
 		                                <td class="col-md-1">
 			                                 <div class="">
@@ -97,7 +97,7 @@
 						                		<?php } else if ($row->is_active != '1'){?>
 						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
 						                		<?php } ?>
-						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
+						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
 	                               </tr>
