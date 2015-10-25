@@ -7,7 +7,7 @@
 			<div class="col-lg-12">
 				
 				<h1 class="page-header"><i class="fa fa-users"></i> Users</h1>
-				<div class="col-lg-3 pull-left">
+				<div class="col-lg-3 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fa-users"></i><a href="<?php echo base_url()?>users"> Users</a></li>
@@ -15,17 +15,19 @@
 				</div>
 					
 					
-				<div class="col-lg-6 form-inline align-center">
+				<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
 	    			<?php echo form_open('users/search')?>
 					<div class="input-group">
 		      			<input type="text" class="form-control" placeholder="Looking for Something?" name="search">
-		      			<span class="input-group-btn"><button class="btn btn-theme" type="submit"><i class="glyphicon glyphicon-search"></i></button></span>
+		      			<span class="input-group-btn"><button type="button" data-toggle="tooltip" data-placement="top" title="Search Users Module" class="btn btn-theme" type="submit"><i class="glyphicon glyphicon-search"></i></button></span>
 		      		<?php echo form_close()?>
 		    		</div>
 	    		</div>
 	    		
-	    		<div class="col-lg-3 pull-right">
-	    			<a href="#" data-target="#addUser" class="btn btn-theme pull-right" data-toggle="modal" data-placement="top" title="Create New User"><i class="fa fa-user-plus"></i></a>
+	    		<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
+	    			<span data-target="#addUser" data-toggle="modal" >
+	    				<a href="#" class="btn btn-theme" data-toggle="tooltip" data-placement="top" title="Create New User"><i class="fa fa-user-plus"></i></a>
+	    			</span>
 				</div>
 	    				
 			</div>
@@ -34,7 +36,7 @@
 		<!-- page start-->
 		<div class="row">
 			<div class="col-lg-12">
-			<section class="panel">
+			<section class="col-lg-12 panel">
 			<?php if($this->session->flashdata('success')){ ?>
 				<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 			<?php } ?>

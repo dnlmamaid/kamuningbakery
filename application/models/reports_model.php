@@ -138,7 +138,7 @@ Class reports_model extends CI_Model {
 	
 	
 	/** Search Purchases **/
-	function search_p($keyword)
+	function search_purchases($keyword)
     {
     	
 		if($this -> session -> userdata('is_logged_in')){
@@ -164,7 +164,7 @@ Class reports_model extends CI_Model {
 	}
 
 	
-	function get_total_by_date(){
+	function get_total_purchases_by_date(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
 		
@@ -177,7 +177,7 @@ Class reports_model extends CI_Model {
 		return $q->row();
 	}
 	
-	function get_total(){
+	function get_total_purchases(){
 		
 		$this->db->select('sum(ordering_cost) as total');
 		
@@ -205,6 +205,140 @@ Class reports_model extends CI_Model {
 		}
 		return false;
 	}
+	
+	/*****************************************************************/
+	/*********************  SALES	*****************************/
+	/***************************************************************/
+	
+	public function getSales($limit, $start) {
+		$this->db->join('users','users.id = sales.user_ID','left');
+		$this->db->join('products','products.product_id = sales.product_ID','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('sales_date', 'desc');
+		$query = $this -> db -> get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
+	public function getSalesCtr() {
+		$this -> db -> select('*');
+		$this -> db -> from('sales');
+		$query = $this -> db -> get();
+		$result = $query -> num_rows();
+		return $result;
+	}
+	
+	/**
+	 * Get Purchase Record function
+	 * 
+	 * 
+	 */
+	function get_sales_rec($sid) {
+		
+		$this->db->join('users','users.id = sales.user_ID','left');
+		$this->db->join('products','products.product_id = sales.product_ID','left');
+		$this -> db -> where('sales_id', $sid);
+		$q = $this -> db -> get('sales');
+		
+		return $q -> result();
+
+	}
+
+	/**
+	 * Get Product Purchase History function
+	 * -- gets product purchase history
+	 * 
+	 */
+	function getSalesHistory($sid)
+	{
+		if($this -> session -> userdata('is_logged_in'))
+		{
+			$this->db->join('users','users.id = sales.user_ID','left');
+			$this->db->join('products','products.product_id = sales.product_ID','left');
+			$this->db->from('sales');
+			$this -> db -> order_by('sales_date', 'desc');	
+			$this -> db -> where('sales.product_id', $sid);
+			$query = $this -> db -> get();
+			$data = $query -> result_array();
+			return $data;
+		}
+	}
+	
+	
+	
+	/** Search Sales **/
+	function search_sales($keyword)
+    {
+    	
+		if($this -> session -> userdata('is_logged_in')){
+    		
+	    	$var = urldecode($keyword);		
+			$this->db->join('users','users.id = sales.user_ID','left');
+			$this->db->join('products','products.product_id = sales.product_ID','left');
+			
+	        $this->db->like('sales_id', $var);
+			$this->db->or_like('firstName', $var);
+			$this->db->or_like('lastName', $var);
+			$this->db->or_like('username', $var);
+			$this->db->or_like('invoice_code', $var);
+			$this->db->or_like('sales_date', $var);
+			
+			$query = $this -> db -> get('sales');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows.' matching record(s) found.');
+			return $query -> result();
+		}
+	
+	}
+
+	
+	function get_total_sales_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		
+		$this->db->where('sales_date >=',$start);
+		$this->db->where('sales_date <=',$end);
+		
+		$this->db->select('sum(total_sales) as total');
+		
+		$q = $this->db->get('sales');
+		return $q->row();
+	}
+	
+	function get_total_sales(){
+		
+		$this->db->select('sum(total_sales) as total');
+		
+		$q = $this->db->get('sales');
+		return $q->row();
+	}
+	
+	
+	function get_sales_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		$this->db->where('sales_date >=',$start);
+		$this->db->where('sales_date <=',$end);
+		$this->db->join('users','users.id = sales.user_id','left');
+		$this->db->join('products','products.product_id = sales.product_id','left');
+		$this->db->order_by('sales_date','desc');
+		$query = $this->db->get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
 	/*****************************************************************/
 	/*********************  PRODUCTION	*****************************/
 	/***************************************************************/

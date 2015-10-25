@@ -143,7 +143,7 @@ class purchases extends CI_Controller {
       			
     		}   
     		
-    		$data['total'] = $this->reports_model->get_total();
+    		$data['total'] = $this->reports_model->get_total_purchases();
 			$data['purchases'] = $this->reports_model->getPurchases($config['per_page'], $offset);
 
 			$data['main_content'] = 'purchases_report';
@@ -183,13 +183,69 @@ class purchases extends CI_Controller {
 		$data['sdate'] = $this->input->post('sdate');
 		$data['edate'] = $this->input->post('edate');
 		
-		$data['total'] = $this->reports_model->get_total_by_date();
+		$data['total'] = $this->reports_model->get_total_purchases_by_date();
 		$data['purchases'] = $this->reports_model->get_purchases_by_date();
 		
 		$data['main_content'] = 'purchases_report';
 		$this -> load -> view('includes/admintemplate', $data);
 	}
 	
+	
+	
+	function search() {
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+			
+			$search = $this -> input -> post('search');
+			redirect('purchases/search_result/'.$search);
+						
+		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+			
+			$search = $this -> input -> post('search');
+			redirect('purchases/search_result/'.$search);
+			
+		} else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	
+	}
+
+	function search_result($search) {
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+				
+			$data['search'] = $this -> reports_model -> search_purchases($search);
+			
+			$data['main_content'] = 'purchases_table';
+			$this -> load -> view('includes/adminTemplate', $data);
+		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+			$data['cat'] = $this -> products_model -> getCategory();
+			$data['cls'] = $this -> products_model -> getClass();
+						
+			
+			
+			$data['search'] = $this -> products_model -> search($search);
+			
+			$data['main_content'] = 'purchases_table';
+			$this -> load -> view('includes/memberTemplate', $data);
+		} else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	
+	}
 	
 
 	

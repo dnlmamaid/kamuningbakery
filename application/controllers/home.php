@@ -7,6 +7,8 @@ class home extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this -> load -> model('users_model');
+		$this -> load -> model('reports_model');		
+		$this -> load -> model('products_model');
 	}
 
 
@@ -17,6 +19,8 @@ class home extends CI_Controller {
 	function index() {
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '1'))
 	    {
+	    	$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+	    	$data['audit'] = $this->reports_model->getAudit('5', $offset);	
 			$data['main_content'] = 'home';
 			$this->load->view('includes/admintemplate', $data);		
 		}

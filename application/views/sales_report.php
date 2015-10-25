@@ -16,7 +16,7 @@
 			
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
-					<h2 align="center">Production Report</h2>
+					<h2 align="center">Sales Report</h2>
 					<?php if($body == 'report'){?>
 						<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
 					<?php }
@@ -29,7 +29,7 @@
 			
 			<div class="row">
 				<div class="col-md-3">
-					<h4>Total Finished Goods: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>
+					<h4>Total Sales: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>
 				</div>
 			</div>
 					
@@ -39,7 +39,7 @@
 				</div>
 				
 				<div class="col-md-9 btn-group pull-right">
-					<form action="<?php echo base_url();?>Production/by_date" method="post" accept-charset="utf-8" class="form-inline" style="float:right">
+					<form action="<?php echo base_url();?>sales/by_date" method="post" accept-charset="utf-8" class="form-inline" style="float:right">
 			              <input name="sdate" id="sdate"  class="form-control  hidden-print" placeholder="Start Date">
 			              <input name="edate" id="edate"  class="form-control  hidden-print"  placeholder="End Date">
 			              <button type="submit" class="btn btn-theme  hidden-print pull-right" name="search" value="Search" style="margin-bottom:12px;"><i class="fa fa-search"></i> Search</button>
@@ -58,7 +58,7 @@
     <!-- page start-->
     <div class="row">
 	    <div class="col-lg-12">
-    		<section class="panel">
+    		<section class="col-lg-12 panel">
             <?php if($this->session->flashdata('success')){ ?>
 			<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 			<?php } ?>
@@ -74,23 +74,22 @@
 				<table class="table table-advance">
 					<tbody>
 					<tr>
-						<th class="col-md-1"><i class="fa fa-barcode"></i> Reference No.</th>
+						<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice ID</th>
 			            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
-			            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
+			            <th class="col-md-1"><i class="fa fa-user"></i> Employee</th>
 			            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 			            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
 			            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
-			            
 					</tr>
 	                              	
-	                <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
+	                <?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?> 
 					<tr class="conf clickable-row" data-href="<?php echo base_url()?>Production/view_purchase/<?php echo $row->purchase_id?>">
-						<td class="col-md-1"><?php echo $row->reference ?></td>
+						<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 						<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                <td class="col-md-1"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                <td class="col-md-1"><?php echo $row->total?></td>
-						<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
+		                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
+		                <td class="col-md-1"><?php echo $row->total_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                <td class="col-md-1"><?php echo $row->total_sales?></td>
+		                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
 	                </tr>	
 					<?php endforeach;	                               
 					else:?>
@@ -115,7 +114,7 @@
 		<div class="col-lg-8 col-lg-offset-4">
 			<div id="pagination">
 				<ul class="tsc_pagination">
-				<?php if(is_array($products) && sizeof($products)>0){?> 
+				<?php if(is_array($sales) && sizeof($sales)>0){?> 
 					<div class="pagination pull-left" style="margin:10px 0px 5px 0px;"><?php echo (!empty($pagermessage) ? $pagermessage : ''); ?></div>
 						<?php echo $paginglinks; }?>
 				</ul>

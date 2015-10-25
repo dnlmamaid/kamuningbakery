@@ -7,17 +7,17 @@
 			
 		  <div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"><i class="fa fa-birthday-cake"></i> Finished Goods</h1>
+					<h1 class="page-header"><i class="fa fairthday-cake"></i> Finished Goods</h1>
 					
-					<div class="col-lg-3 pull-left">
+					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
-						<li><i class="fa fa-birthday-cake"></i> Finished Goods</li>
+						<li><i class="fa fairthday-cake"></i> Finished Goods</li>
 					</ol>
 					</div>
 					
 					
-					<div class="col-lg-6 form-inline align-center">
+					<div class="col-lg-6 col-xs-12" style="marginottom:15px;">
 	    				<?php echo form_open('production/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -26,8 +26,8 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-3 pull-right">
-		    			<a alt="Produce a Product" data-toggle="tooltip" data-placement="top" title="Produce Finished Goods" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
+	    			<div class="col-lg-1 col-xs-2 pull-right" style="marginottom:15px;">
+		    			<a alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme pull-right"><i class="fa fa-plus"></i></a>
 					</div>
 	    				
 				</div>
@@ -35,7 +35,7 @@
             <!-- page start-->
               	<div class="row">
 					<div class="col-lg-12">
-                      <section class="panel">
+                      <section class="col-lg-12 panel">
                         <?php if($this->session->flashdata('success')){ ?>
 							<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 						<?php } ?>
@@ -47,6 +47,8 @@
 						<?php echo $this -> session -> flashdata('search'); ?>
 							</div>
 						<?php } ?> 
+						
+						<p style="color:red;">**ALL COSTS ARE PER UNIT</p>
 						<div class="table-responsive"> 
 							<table class="table table-advance">
 								<tbody>
@@ -54,53 +56,30 @@
 										<th class="col-md-1"><i class="fa icon_cart"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Price</th>
-			                            
-			                            <th class="col-md-1"><i class="icon_cogs"></i> Action</th>
+			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Cost</th>
+			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Sale Price</th>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                
-		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
-		                                
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                                
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
-						                    </div>
-	                                	</td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1"><?php echo $row->quantity?> <?php echo $row->um?></td>
+		                                <td class="col-md-1">Php <?php echo $row->price?></td>
+		                                <td class="col-md-1">Php <?php echo $row->sale_Price?></td>
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                
-		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
-		                                
-		                                <td class="col-md-1-b"><?php echo $row->quantity?></td>
-		                                
-		                                <td class="col-md-1">
-			                                 <div class="">
-						                		<?php if($row->is_active == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->is_active != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>
-						                    </div>
-	                                	</td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1"><?php echo $row->quantity?> <?php echo $row->um?></td>
+		                                <td class="col-md-1"><?php echo $row->sale_Price?></td>
 	                               </tr>
 	                                <?php endforeach;		                               
 									else:?>
 									<tr>											
+										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>

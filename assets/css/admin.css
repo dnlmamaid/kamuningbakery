@@ -145,7 +145,6 @@ p {
 	}
 }
 
-
 .modal-title {
 	font-family: 'Open Sans';
 	font-weight:bold;
@@ -287,8 +286,6 @@ a:hover {
 }
 
 
-    
-
 .sidebar-nav li {
     position: relative; 
     line-height: 20px;
@@ -296,7 +293,7 @@ a:hover {
     width: 100%;
 }
 
-.sidebar-nav li:before {
+.sidebar-nav li:before, .sidebar-nav li:focus {
     content: '';
     position: absolute;
     top: 0;
@@ -377,14 +374,15 @@ a:hover {
 	margin-left: 40px;
     font-size: 12px;
     background: none;
-    position: absolute;
-    bottom: 40px;
+    display:block;
+    position: relative;
+    top:500px;
     width: 220px;   
 }
 
 .sidebar-header {
     background: none;
-    position: absolute;
+    position: relative;
     top: 50px;
     margin-left: -40px;
 }
@@ -400,10 +398,6 @@ a:hover {
     box-shadow: none;
 }
 
-.nav-footer{
-	
-	top:500px;
-}
 /*-------------------------------*/
 /*       Hamburger-Cross         */
 /*-------------------------------*/

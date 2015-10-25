@@ -69,7 +69,7 @@ class users extends CI_Controller {
 	public function profile()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '2')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {			
 			$data['utype'] = $this->users_model->getuType();
 			
@@ -80,23 +80,46 @@ class users extends CI_Controller {
 			$this->load->view('includes/adminTemplate', $data);
 		}
 		
-		else if($this->session->userdata('is_logged_in') && !$this->session->userdata('user_type'))
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '2')
 	    {
 	    	
+			$data['utype'] = $this->users_model->getuType();
 			
-			/* User Data */
-			$id = $this -> session -> userdata('user_id');
-			$data['log'] = $this -> users_model -> get_log($id);
+			$mid = $this -> uri -> segment(3);
+			$data['rec'] = $this -> users_model -> get_member_rec($mid);
 			
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/mgrTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
+	    {
+	    	
+			$data['utype'] = $this->users_model->getuType();
 			
-			$data['main_content'] = 'users_table';
-			$this->load->view('includes/memberTemplate', $data);
+			$mid = $this -> uri -> segment(3);
+			$data['rec'] = $this -> users_model -> get_member_rec($mid);
+			
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/mgrTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
+	    {
+	    	
+			$data['utype'] = $this->users_model->getuType();
+			
+			$mid = $this -> uri -> segment(3);
+			$data['rec'] = $this -> users_model -> get_member_rec($mid);
+			
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/accTemplate', $data);
 		}
 		
 		else
 	    {
 			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
+			$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 		

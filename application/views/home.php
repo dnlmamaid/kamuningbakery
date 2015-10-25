@@ -6,7 +6,7 @@
 			<div class="col-lg-12">
 				
 				<div class="col-lg-4 col-xs-4">
-					<a href="<?php echo base_url()?>users" data-toggle="tooltip" data-placement="top" title="Total Number of Users">
+					<a href="<?php echo base_url()?>users" data-toggle="tooltip" data-placement="top" title="Users">
 					<div class="info-box green-bg">
 						<i class="fa fa-users"></i>
 						<div class="count">
@@ -20,7 +20,7 @@
 				</div><!--/.col-->
 
 				<div class="col-lg-4 col-xs-4">
-					<a href="<?php echo base_url()?>inventory" data-toggle="tooltip" data-placement="top" title="Total Number of Products">
+					<a href="<?php echo base_url()?>products" data-toggle="tooltip" data-placement="top" title="Products">
 					<div class="info-box blue-bg">
 						<i class="fa fa-shopping-cart"></i>
 						<div class="count">
@@ -34,7 +34,7 @@
 				</div><!--/.col-->
 						
 				<div class="col-lg-4 col-xs-4">
-					<a href="<?php echo base_url()?>products" data-toggle="tooltip" data-placement="top" title="Total Number of Products">
+					<a href="<?php echo base_url()?>sales/report" data-toggle="tooltip" data-placement="top" title="Sales">
 					<div class="info-box greenLight-bg">
 						<i class="fa fa-dollar"></i>
 						<div class="count">
@@ -53,22 +53,7 @@
 		<div class="row">
 			
 			<div class="col-lg-6 col-xs-6">
-			<h3><i class="fa fa-dollar"></i> Highest Selling Products</h3>
-			
-				
-					
-			<?php if($this->session->flashdata('message')){ ?>
-				<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('message'); ?></div>
-			<?php } ?>
-			<?php if($this->session->flashdata('search')){?>	
-				<div class="alert alert-info" role="alert"><?php echo $this -> session -> flashdata('search'); ?></div>
-			<?php } ?>
-			<?php if($this->session->flashdata('message_sent')){?>
-				<div class="alert alert-success" role="alert">
-			<?php echo $this -> session -> flashdata('message_sent'); ?>
-				</div>
-			<?php } ?>
-
+				<h3><i class="fa fa-dollar"></i> Highest Selling Products</h3>
 				<div class="table-responsive"> 
 					<table class="table table-advance">
 					<tbody>
@@ -93,22 +78,7 @@
 			
 			<div class="col-lg-6 col-xs-6">
 			<h3><i class="fa fa-exclamation-triangle" style="color:red;"></i> Low Inventory Products</h3>
-			
-				
-					
-			<?php if($this->session->flashdata('message')){ ?>
-				<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('message'); ?></div>
-			<?php } ?>
-			<?php if($this->session->flashdata('search')){?>	
-				<div class="alert alert-info" role="alert"><?php echo $this -> session -> flashdata('search'); ?></div>
-			<?php } ?>
-			<?php if($this->session->flashdata('message_sent')){?>
-				<div class="alert alert-success" role="alert">
-			<?php echo $this -> session -> flashdata('message_sent'); ?>
-				</div>
-			<?php } ?>
-
-			<div class="table-responsive"> 
+				<div class="table-responsive"> 
 					<table class="table table-advance">
 					<tbody>
 						<tr>
@@ -127,6 +97,42 @@
                     </table>
                 </div>
                 
+			</div>
+			
+			<div class="col-lg-6">
+				<h3><i class="fa fa-history"></i> Recent Activities</h3>
+				<div class="table-responsive"> 
+					<table class="table table-advance">
+						<tbody>
+							<tr>
+								<th class="col-md-1"><i class="fa fa-barcode"></i> Module</th>
+								<th class="col-md-2"><i class="fa fa-cog"></i> Action</th>
+								<th class="col-md-1"><i class="fa fa-user"></i> Modified By</th>
+			                    <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
+	                        </tr>
+	                              	
+	                        <?php if(isset($audit) && is_array($audit)) : foreach($audit as $row): ?> 
+							<tr class="conf clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
+								<td class="col-md-1"><?php echo $row->module ?></td>
+								<td class="col-md-2"><?php echo $row->remarks ?></td>
+								<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
+		                        <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
+	                       	</tr>	
+							<?php endforeach;	                               
+						   			                               
+							else:?>
+							<tr>											
+								<th>No records</th>
+								<th>No records</th>
+								<th>No records</th>
+								<th>No records</th>
+								<th>No records</th>
+							</tr>
+							<?php endif; ?>      
+	                               	
+						</tbody>
+					</table>
+				</div>
 			</div>
 			
 		</div>

@@ -9,7 +9,7 @@
 				<div class="col-lg-12">
 					<h1 class="page-header"><?php if($body == 'category' && $pg == '2'){ ?><i class="fa fa-lemon-o"></i> Raw Materials <?php } else if($body == 'category' && $pg == '1'){ ?><i class="fa icon_cart"></i> Finished Goods <?php } else {?><i class="fa icon_cart"></i> Products <?php } ?></h1>
 					
-					<div class="col-lg-3 pull-left">
+					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 						<li><?php if($body == 'category' && $pg == '2'){ ?><i class="fa fa-lemon-o"></i><a href="<?php echo base_url()?>inventory/category/2"> Raw Materials</a><?php } else if($body == 'category' && $pg == '1'){ ?><i class="fa icon_cart"></i><a href="<?php echo base_url()?>inventory/category/1"> Finished Goods</a><?php } else {?><i class="fa icon_cart"></i><a href="<?php echo base_url()?>Products"> Products</a><?php } ?></li>
@@ -17,7 +17,7 @@
 					</div>
 					
 					
-					<div class="col-lg-6">
+					<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
 	    				<?php echo form_open('products/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -26,10 +26,10 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-3 pull-right">
-		    			<a alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution pull-right" style="margin-right:5px;"><i class="fa fa-tags"></i></a>
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchases" href="<?php echo base_url()?>purchases" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-lemon-o"></i></a>
+	    			<div class="col-lg-2 col-xs-3 pull-right" style="margin-bottom:15px;">
+		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
+		    			<a type="button" alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-theme" ><i class="fa fa-cart-plus"></i></a>
+		    			<a type="button" alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchases" href="<?php echo base_url()?>purchases" class="btn btn-theme" ><i class="fa fa-lemon-o"></i></a>
 					</div>
 	    				
 				</div>
@@ -37,7 +37,7 @@
             <!-- page start-->
               	<div class="row">
 					<div class="col-lg-12">
-                      <section class="panel">
+                      <section class="col-lg-12 panel">
                         <?php if($this->session->flashdata('success')){ ?>
 							<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 						<?php } ?>
@@ -64,11 +64,11 @@
 	                              	
 	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->category_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                
 		                                <td class="col-md-1">
 			                                <div class="">
@@ -84,11 +84,11 @@
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1-b"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->category_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1-b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1-b"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1"><?php echo $row->category_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1"><?php echo $row->quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                
 		                                <td class="col-md-1">
 			                                 <div class="">

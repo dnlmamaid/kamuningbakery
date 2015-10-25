@@ -9,7 +9,7 @@
 				<div class="col-lg-12">
 					<h1 class="page-header"><i class="fa fa-lemon"></i> Production</h1>
 					
-					<div class="col-lg-3 pull-left">
+					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 						<li><i class="fa fa-lemon-o"></i> Production</li>
@@ -17,7 +17,7 @@
 					</div>
 					
 					
-					<div class="col-lg-6 form-inline align-center">
+					<div class="col-lg-6 col-xs-12">
 	    				<?php echo form_open('production/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -26,7 +26,7 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-3 pull-right">
+	    			<div class="col-lg-3 col-xs-1 pull-right">
 		    			<a alt="Produce a Product" data-toggle="tooltip" data-placement="top" title="Produce Finished Goods" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme pull-right" style="margin-right:5px;"><i class="fa fa-cart-plus"></i></a>
 					</div>
 	    				

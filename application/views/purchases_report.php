@@ -15,7 +15,7 @@
 		
 			
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
+				<div class="col-md-6 col-md-offset-3" style="margin-top:15px;">
 					<h2 align="center">Purchases Report</h2>
 					<?php if($body == 'report'){?>
 						<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
@@ -55,7 +55,7 @@
     <!-- page start-->
     <div class="row">
 	    <div class="col-lg-12">
-    		<section class="panel">
+    		<section class="col-lg-12 panel">
             <?php if($this->session->flashdata('success')){ ?>
 			<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 			<?php } ?>

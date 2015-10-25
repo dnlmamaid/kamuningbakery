@@ -3,10 +3,10 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header"><i class="fa fa-cart-plus"></i> Create Finished Goods</h1>
-				<div class="col-lg-5 pull-left">
+				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa icon_cart"></i><a href="<?php echo base_url()?>inventory"> Inventory</a></li>
+					<li><a href="<?php echo base_url()?>production"> Production</a></li>
 					<li><i class="fa fa-cart-plus"></i> Create Finished Goods</li>
 				</ol>
 				</div>
@@ -45,18 +45,18 @@
 					</div>
 						
 						
-					<div id="materials" class="form-group">
+					<div class="form-group" id="materials" >
 						<div id="rm">
 							
-							<div class="col-lg-4 col-xs-3">						
+							
+							<div class="col-lg-4 col-xs-4">						
 								<label class="control-label">Quantity per Unit</label>
-								<input type="number" name="quantity" class="form-control inline" value="" required>
+								<input type="number" step="0.001" name="qpu[]" class="form-control inline" value="" required>
 							</div>
-							
-							
+												
 							<label class="control-label">Raw Material</label>
-							<div class="col-lg-8 col-xs-9 input-group">
-								<select name="rm_ID1" class="form-control" required>
+							<div class="col-lg-8 col-xs-8 input-group">
+								<select name="rm_ID[]" class="form-control" required>
 									<option value="">Select Raw Material/s</option>
 									<?php if(!empty($rm)){
 										if (is_array($rm)){                      
@@ -77,6 +77,8 @@
 						     	</span>
 							</div>
 							
+							
+								
 						</div>	
 					</div>
 					
@@ -85,6 +87,7 @@
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label class="control-label">Class</label>
+							
 							<div class="input-group">
 								<select name="class_ID" class="form-control" required>
 									<option value="">Select Class</option>
@@ -108,30 +111,34 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-lg-4">						
+						<div class="col-lg-4 col-xs-4">						
 							<label class="control-label">Total Cost</label>
 							<input type="number" name="price" class="form-control inline" value="" disabled>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<div class="col-lg-4">						
+						<div class="col-lg-4 col-xs-4">						
 							<label class="control-label">Quantity</label>
-							<input type="number" name="price" class="form-control inline" value="" required>
+							<input type="number" name="quantity" class="form-control inline" value="" required>
 						</div>
 					</div>	
-						
+					
+					<div class="col-lg-4">
+						<label class="control-label">Unit</label>
+						<input type="text" name="um" class="form-control inline" value="" required>
+					</div>
 					
 						
 					<div class="form-group">
-						<div class="col-lg-6">
+						<div class="col-lg-8">
 							<label for="terms">Description</label>
 							<textarea name="description" class="form-control inline" required></textarea>
 						</div>
 					</div>
 						
 					<div class="form-group">
-						<div class="col-lg-2">
+						<div class="col-lg-4">
 							<label class="control-label">Enabled</label>
 							<select name="product_status" class="form-control" required>
 								<option value="1" selected>Yes</option>

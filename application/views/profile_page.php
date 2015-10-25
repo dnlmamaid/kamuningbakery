@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header"><i class="fa fa-user"></i> <?php echo $r->firstName?>'s Profile</h1>
-				<div class="col-lg-4 pull-left">
+				<div class="col-lg-4 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fa-users"></i><a href="<?php echo base_url()?>users"> Users</a></li>
@@ -18,7 +18,7 @@
 		<!-- page start-->
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="col-lg-6 col-lg-offset-3 bg-panel2">
+				<div class="col-lg-6 col-lg-offset-3  col-xs-10 col-xs-offset-1 bg-panel2">
 					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>users/update/<?php echo $r->id?>">
 					<h1>Personal Information</h1>
 					<?php if($this->session->flashdata('success')){?>
@@ -66,7 +66,7 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-lg-4">
+						<div class="col-lg-4 col-xs-7">
 						<label for="User Type">User Type</label>
 						
 						<select name="user_type" class="form-control inline" value="<?php echo $r->user_type ?>" required>
@@ -87,7 +87,7 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-lg-3">
+						<div class="col-lg-3 col-xs-5">
 							<label for="is_active">Enabled</label>
 							<select name="is_active" class="form-control">
 								<option value="1">Yes</option>

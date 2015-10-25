@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header"><i class="fa fa-history"></i> Audit Information</h1>
-				<div class="col-lg-4 pull-left">
+				<div class="col-lg-4 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fa-archive"></i><a href="<?php echo base_url()?>audit_trail"> Audit Trail</a></li>
@@ -18,7 +18,8 @@
 		<!-- page start-->
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="col-lg-8 col-lg-offset-2 bg-panel">
+				<div class="col-lg-6 col-lg-offset-3 col-xs-10 col-xs-offset-1 bg-panel">
+					<h1 align="center">Details</h1>
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label for="supplier_name">User Involved: </label>

@@ -191,18 +191,20 @@ class products extends CI_Controller {
 	}
 
 	public function view_product() {
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '1')
 	    {	
 			$pid = $this -> uri -> segment(3);
 			$data['supplier'] = $this -> products_model -> getSupplier();
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
+			$data['rm'] = $this -> products_model -> getRawMats();
+			
 			
 			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 						
 			$data['main_content'] = 'product_page';
-			$this -> load -> view('includes/adminTemplate', $data);
+			$this->load->view('includes/productionTemplate', $data);
 		}
 		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
 	    {
@@ -210,7 +212,7 @@ class products extends CI_Controller {
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 			$data['products'] = $this -> products_model -> getSimilarProducts($pid);	
-			
+			$data['rm'] = $this -> products_model -> getRawMats();
 			
 			$data['main_content'] = 'product_page';
 			$this -> load -> view('includes/memberTemplate', $data);
@@ -267,8 +269,20 @@ class products extends CI_Controller {
 	public function produce() {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-			$this -> products_model -> process();
+			$this -> products_model -> produce_newFG();
 			redirect('products', 'refresh');
+		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect('profile', 'refresh');
+		}
+	}
+	
+	public function reproduce($id) {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+	    {
+			$this -> products_model -> produce_FG($id);
+			redirect('products', 'refresh');
+			
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect('profile', 'refresh');

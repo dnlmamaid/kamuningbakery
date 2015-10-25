@@ -3,11 +3,16 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class products_model extends CI_Model{
  	
+	
+	/***************************************************/
+	/**********          PRODUCTS            **********/
+	/*************************************************/
 	/**
 	 * Products Counter Function
 	 */
 	public function getProductsCtr() {
-		if($this -> session -> userdata('is_admin')){
+		if($this -> session -> userdata('is_logged_in')){
+			
 			return $this->db->count_all_results('products');
 		}
 		else{
@@ -15,6 +20,7 @@ class products_model extends CI_Model{
 			return $this->db->count_all_results('products');
 		}
 	}
+	
 	
 	/**
 	 * Products Counter Function
@@ -74,18 +80,105 @@ class products_model extends CI_Model{
 	}
 
 	/**
-	 * get product by category function
+	 * get product record function
+	 * for viewing
+	 * 
+	 */
+	function get_product_rec($pid)
+	{
+
+		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		$this -> db -> where('product_ID', $pid);
+		$q = $this -> db -> get('products');
+		
+		return $q -> result();
+	}
+	
+	/**
+	  * update_product function.
+	 * 
+	 * @access public
+	 */
+	public function update_product($id)
+	{
+		$this->db->where('product_id !=',$id);
+		$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		
+		$val = $this->db->get('products');
+		if(($val->num_rows() == 1)){
+			$this->session->set_flashdata('error','Product already exist.');
+		}
+
+		else{
+			
+			foreach($_POST['rm_ID'] as $val => $rm)
+			{
+						
+				//Gets Total Cost
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $rm);
+				$price = $this->db->get()->row('price');
+				$total = ($price + $total);
+		
+			}
+			
+			$qty = explode(' ', $this->input->post('qpu'));
+			$rm = explode(' ', $this->input->post('rm_ID'));
+			
+			$data = array(
+					'product_Name' => $this->input->post('product_Name'),
+					'price' => $total,
+					'supplier_ID' => $this->input->post('supplier_ID'),
+					'category_ID' => $this->input->post('category_ID'),
+					'class_ID' => $this->input->post('class_ID'),
+					'description' => $this->input->post('description'),
+					'um' => $this->input->post('um'),
+					'qpu' => $this->input->post('qpu'),
+					'rm_ID' => $this->input->post('rm_ID'),
+					'selling_Price' => $this->input->post('selling_Price'),
+					'holding_cost' => $this->input->post('holding_cost'),
+					'date_created'=> date('Y-m-j H:i:s'),
+					'product_status' => $this->input->post('product_status'),
+		    );
+		
+			$this->db->where('product_ID', $id);
+			$this->db->update('products', $data);
+			
+			$this->session->set_flashdata('success','Successfuly updated information.');
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products',
+				'remark_id'	=> $id,
+				'remarks'	=> 'updated product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			
+			$this->db->insert('audit_trail', $audit);
+		}
+	}
+	
+	
+	
+	/**
+	 * get Raw Materials  function
 	 * 
 	 * 
 	 */
-	function get_product_by_category($limit, $start, $cid) {
+	function get_product_by_rm($limit, $start) {
 		if($this -> session -> userdata('is_logged_in')){
 			
 			$this->db->limit($limit, $start);
 			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
 			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this -> db -> where('products.category_ID', $cid);
+			$this -> db -> where('products.category_ID', '2');
 			$this -> db -> order_by('date_created', 'desc');
 			$query = $this->db->get('products');
 			if ($query->num_rows() > 0) {
@@ -117,7 +210,50 @@ class products_model extends CI_Model{
 
 	}
 	
-	
+	/**
+	 * get Finished Goods function
+	 * 
+	 * 
+	 */
+	function get_product_by_fg($limit, $start) {
+		if($this -> session -> userdata('is_logged_in')){
+			
+			$this->db->limit($limit, $start);
+			$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+			$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+			$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+			$this -> db -> where('products.category_ID', '1');
+			$this -> db -> order_by('date_created', 'desc');
+			$query = $this->db->get('products');
+			if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+			$data[] = $row;
+			}
+			
+			return $data;
+			}
+			return false;
+		}
+		else if(!$this -> session -> userdata('is_admin')){
+			$this->db->limit($limit, $start);
+			$this -> db -> join('product_category', 'product_category.category_ID = products.category_ID', 'left');
+			$this -> db -> where('products.status', '1');
+			$this -> db -> where('products.category_ID', $cid);
+			$this -> db -> order_by('date_created', 'desc');
+			$query = $this->db->get('products');
+			if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+			$data[] = $row;
+			}
+			
+			return $data;
+			}
+			return false;
+			
+		}
+
+	}
+
 	/**
 	 * Get Products Supplier Function
 	 * -- gets products supplied by the supplier
@@ -139,52 +275,24 @@ class products_model extends CI_Model{
 		
 	}
 	
+	
 	/**
-	 * get product record function
-	 * 
-	 * 
+	 * RawMats Counter Function
 	 */
-	function get_product_rec($pid)
-	{
-
-		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
-		$this -> db -> where('product_ID', $pid);
-		$q = $this -> db -> get('products');
-		
-		return $q -> result();
+	public function getRawMatsCtr() {
+		if($this -> session -> userdata('is_logged_in')){
+			$this -> db -> where('category_ID', '2');
+			return $this->db->count_all_results('products');
+		}
+		else{
+			$this -> db -> where('products.product_status', '1');
+			return $this->db->count_all_results('products');
+		}
 	}
 	
 	
 	/**
-	 * get class record function
-	 * 
-	 * 
-	 */
-	function get_class_rec($clid) {
-		
-		$this -> db -> where('class_ID', $clid);
-		$q = $this -> db -> get('product_class');
-		
-		return $q -> result();
-	}
-	
-	/**
-	 * get category record function
-	 * 
-	 * 
-	 */
-	function get_cat_rec($cid) {
-		
-		$this -> db -> where('category_id', $cid);
-		$q = $this -> db -> get('product_category');
-		
-		return $q -> result();
-	}
-	
-	/**
-	 * Get Category Function 
+	 * Get RawMats Function 
 	 * 
 	 */
 	function getRawMats()
@@ -195,13 +303,85 @@ class products_model extends CI_Model{
 		return $data;
 	}	
 	
+	/**
+	 * Get RM Function 
+	 * 
+	 */
+	function getRM($pid)
+    {
+    	$this->db->select('product_id');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$rmid = $this->db->get()->row('rm_ID');
+		return $rmid;
+	}	
+
+	/*****************************************************/
+	/***********          SALES            **************/
+	/***************************************************/
+	function sale($pid)
+    {
+    	
+		$this->db->select('quantity');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$oldquantity = $this->db->get()->row('quantity');
+    	$newquantity = $oldquantity - $this->input->post('quantity');
+			
+		$data = array(
+			'quantity' => $newquantity,
+							
+		);
+		
+		$this->db->where('product_ID', $pid);
+		$this->db->update('products', $data);
+			
+    	
+		$this->db->select('sale_Price');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$cost = $this->db->get()->row('sale_Price');
+		$total = $cost * $this->input->post('quantity');
+		
+		$code = random_string('alnum',11);
+		
+		$sales = array(
+			'invoice_code'	=> $code,
+			'product_ID'	=> $pid,
+			'quantity'	=> $this->input->post('quantity'),
+			'total_sales'	=> $total,
+			'user_ID'	=> $this->session->userdata('user_id'),
+			'sales_date'=> date('Y-m-j H:i:s'),
+				
+		);
+		
+		$this->db->insert('sales', sales);
+		$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Sales',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'sold a product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+		$this->db->insert('audit_trail', $audit);
+			
+		
+		$this->session->set_flashdata('success','You have successfully sold the product');
+	}
+	/*********************************************/
+	/******       PURCHASE ORDERS         *******/
+	/*******************************************/
 	
 	function new_purchase_order()
     {
 		
 		$this->db->where('product_Name',$this->input->post('product_Name'));
 		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
-		
+		$this->db->where('category_ID',$this->input->post('category_ID'));
 		$val = $this->db->get('products');
 		if($val->num_rows() == 1){
 			$this->session->set_flashdata('error','Product already exist. If you want to replenish a product use the Purchase Order Form');
@@ -212,10 +392,12 @@ class products_model extends CI_Model{
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
 				'quantity' => $this->input->post('quantity'),
+				'current_count' => $this->input->post('current_count'),
 				'price' => $this->input->post('price'),
 				'supplier_ID' => $this->input->post('supplier_ID'),
 				'category_ID' => $this->input->post('category_ID'),
 				'rm_ID' => '0',
+				'qty' => '0',
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
@@ -316,61 +498,13 @@ class products_model extends CI_Model{
 			$this->session->set_flashdata('success','Successfully Purchased Product.');
 	}
 
-	/**
-	  * update_product function.
-	 * 
-	 * @access public
-	 */
-	public function update_product($id)
-	{
-		$this->db->where('product_id !=',$id);
-		$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
-		$val = $this->db->get('products');
-		if(($val->num_rows() == 1)){
-			$this->session->set_flashdata('error','Product already exist.');
-		}
-
-		else{
-			
-			$data = array(
-					'product_Name' => $this->input->post('product_Name'),
-					
-					'price' => $this->input->post('price'),
-					'supplier_ID' => $this->input->post('supplier_ID'),
-					'category_ID' => $this->input->post('category_ID'),
-					'class_ID' => $this->input->post('class_ID'),
-					'description' => $this->input->post('description'),
-					'um' => $this->input->post('um'),
-					'date_created'=> date('Y-m-j H:i:s'),
-					'product_status' => $this->input->post('product_status'),
-		    );
-		
-			$this->db->where('product_ID', $id);
-			$this->db->update('products', $data);
-			
-			$this->session->set_flashdata('success','Successfuly updated information.');
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Products',
-				'remark_id'	=> $id,
-				'remarks'	=> 'updated product',
-				'date_created'=> date('Y-m-j H:i:s'),
-				
-			);
-			
-			$this->db->insert('audit_trail', $audit);
-		}
-	}
 	
-		/**
+	/**
 	  * Disable function.
 	 *  disables a product so that lower level user won't be able to interact with it
 	 * @access public
 	 */
-	public function disable($id)
-	
+	function disable($id)
 	{
 		$data = array(
 		'product_status'	=> '0',
@@ -400,7 +534,6 @@ class products_model extends CI_Model{
 	 * @access public
 	 */
 	public function enable($id)
-	
 	{
 		$data = array(
 		'product_status'	=> '1',
@@ -424,8 +557,37 @@ class products_model extends CI_Model{
 		
 		
 	}
+
+    
+	/**
+	 * Get Supplier Function 
+	 * 
+	 */
+	function getSupplier()
+    {
+		$this->db->order_by('supplier_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
+		$q = $this->db->get('suppliers');
+		$data = $q->result_array();
+		return $data;
+	}	
 	
 	
+		
+	/*****************************************************/
+	/***********           CLASSES         **************/
+	/***************************************************/
+	/** Get Class Function 
+	 * 
+	 */
+	function getClass()
+    {
+		$this->db->order_by('class_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
+		$q = $this->db->get('product_Class');
+		$data = $q->result_array();
+		return $data;
+	}	
 	/**
 	  * update_class function.
 	 * 
@@ -464,7 +626,86 @@ class products_model extends CI_Model{
 			$this->db->insert('audit_trail', $audit);			
 		}
 	}
+	/**
+	 * Add Classification Function
+	 * 
+	 */
+	function addClass()
+    {
+    	$this->db->where('class_Name', $this->input->post('class_Name'));
+		$val = $this->db->get('product_Class');
+		if($val->num_rows() == 1){
+			$this->session->set_flashdata('message','Class already exists.');
+		}
+		
+		else{
+				
+			$data = array(
+				'class_Name' => $this->input->post('class_Name'),
+				'is_active' => $this->input->post('is_active'),
+	        );
+			  
+			$this->db->insert('product_Class', $data);
+			$this->session->set_flashdata('success','You have successfully added a new product class.');
+			
+			$remark_id = $this->db->insert_id();
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Products/Classes',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'created class',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+	        
+		}  
+	}
+	/**
+	 * Get Class for Products Function 
+	 * 
+	 */
+	function getClassFP()
+    {
+		$this->db->order_by('is_active', 'asc');
+		$this->db->order_by('class_ID', 'desc'); 
+		
+		$q = $this->db->get('product_class');
+		$data = $q->result_array();
+		return $data;
+	}	
+	/**
+	 * get class record function
+	 * 
+	 * 
+	 */
+	function get_class_rec($clid) {
+		
+		$this -> db -> where('class_ID', $clid);
+		$q = $this -> db -> get('product_class');
+		
+		return $q -> result();
+	}
 	
+	
+	
+	
+	/******************************/
+	/*****      CATEGORY     *****/
+	/****************************/
+	/*
+	 * Get Category Function  
+	 */
+	function getCategory()
+    {
+		$this->db->order_by('category_id', 'asc'); 
+		$this -> db -> where('is_active', '1');
+		$q = $this->db->get('product_category');
+		$data = $q->result_array();
+		return $data;
+	}	
 	/**
 	  * update_category function.
 	 * 
@@ -504,36 +745,6 @@ class products_model extends CI_Model{
 			$this->db->insert('audit_trail', $audit);
 		}
 	}
-	
-	
-    
-	/**
-	 * Get Category Function 
-	 * 
-	 */
-	function getCategory()
-    {
-		$this->db->order_by('category_id', 'asc'); 
-		$this -> db -> where('is_active', '1');
-		$q = $this->db->get('product_category');
-		$data = $q->result_array();
-		return $data;
-	}	
-	
-	
-	/**
-	 * Get Supplier Function 
-	 * 
-	 */
-	function getSupplier()
-    {
-		$this->db->order_by('supplier_id', 'asc'); 
-		$this -> db -> where('is_active', '1');
-		$q = $this->db->get('suppliers');
-		$data = $q->result_array();
-		return $data;
-	}	
-	
 	/**
 	 * Get Category for Products Function 
 	 * 
@@ -545,22 +756,6 @@ class products_model extends CI_Model{
 		$data = $q->result_array();
 		return $data;
 	}	
-	
-	/**
-	 * Get Class for Products Function 
-	 * 
-	 */
-	function getClassFP()
-    {
-		$this->db->order_by('is_active', 'asc');
-		$this->db->order_by('class_ID', 'desc'); 
-		
-		$q = $this->db->get('product_class');
-		$data = $q->result_array();
-		return $data;
-	}	
-	
-	
 	/**
 	 * Add Category Function
 	 * 
@@ -599,100 +794,89 @@ class products_model extends CI_Model{
 		}  
 	}
 	
-	
 	/**
-	 * Get Class Function 
+	 * get category record function
+	 * 
 	 * 
 	 */
-	function getClass()
-    {
-		$this->db->order_by('class_id', 'asc'); 
-		$this -> db -> where('is_active', '1');
-		$q = $this->db->get('product_Class');
-		$data = $q->result_array();
-		return $data;
-	}	
-	
-	/**
-	 * Add Classification Function
-	 * 
-	 */
-	function addClass()
-    {
-    	$this->db->where('class_Name', $this->input->post('class_Name'));
-		$val = $this->db->get('product_Class');
-		if($val->num_rows() == 1){
-			$this->session->set_flashdata('message','Class already exists.');
-		}
+	function get_cat_rec($cid) {
 		
-		else{
-				
-			$data = array(
-				'class_Name' => $this->input->post('class_Name'),
-				'is_active' => $this->input->post('is_active'),
-	        );
-			  
-			$this->db->insert('product_Class', $data);
-			$this->session->set_flashdata('success','You have successfully added a new product class.');
-			
-			$remark_id = $this->db->insert_id();
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Products/Classes',
-				'remark_id'	=> $remark_id,
-				'remarks'	=> 'created class',
-				'date_created'=> date('Y-m-j H:i:s'),
-				
-			);
-			
-			$this->db->insert('audit_trail', $audit);
-	        
-		}  
+		$this -> db -> where('category_id', $cid);
+		$q = $this -> db -> get('product_category');
+		
+		return $q -> result();
 	}
 	
+	
+	/***************************************************/
+	/**********      FINISHED GOODS          **********/
+	/*************************************************/
 	/**
 	 * Produce Finished Good Function
 	 * creates Finished Good from raw materials
 	 */
-	function produceFG()
+	function produce_newFG()
     {
-		if($this->input->post('rm_ID1')){
-			$this->db->where('product_id',$this->input->post('rm_ID1'));
-			$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
-		}
-		
-		
+    	
+		$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+		$this->db->where('category_ID',$this->input->post('category_ID'));
 		
 		$val = $this->db->get('products');
+		
 		if($val->num_rows() == 1){
-			$this->session->set_flashdata('error','Product already exist. If you want to replenish a product use the Purchase Order Form');
+			$this->session->set_flashdata('error','Product already exist. If you want to produce more go to the product page.');
 		}
 
 		else{
 			
-			$rm_ID = array(
-				$this->input->post('rm_ID1'),
-				$this->input->post('rm_ID2'),
-				$this->input->post('rm_ID3'),
-				$this->input->post('rm_ID4'),
-				$this->input->post('rm_ID5'),
-				$this->input->post('rm_ID6'),
-				$this->input->post('rm_ID7'),
-				$this->input->post('rm_ID8'),
-				$this->input->post('rm_ID9'),
-				$this->input->post('rm_ID10'),
-			);
-			$rm_ID = implode('', $rm_ID);
-		
+			$total = 0;
+			foreach($_POST['rm_ID'] as $val => $rm)
+			{
+				
+				//Gets Raw Material 			
+				$this->db->select('quantity');
+				$this->db->from('products');
+				$this->db->where('product_id', $rm);
+				$oldqty = $this->db->get()->row('quantity');
+				$nqty = (($oldqty) - ($this->input->post('quantity') * $_POST['qpu'][$val]));
+				
+				//Gets Total Cost
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $rm);
+				$price = $this->db->get()->row('price');
+				$total = ($price + $total);
+				
+				//Updates Quantity	
+				$process = array(
+					'current_count' => $nqty,
+				);
+					
+				$this->db->where('product_id', $rm);
+				$this->db->update('products', $process);
+					
+				
+			
+				
+			}
+			
+			$qty = explode(' ', $this->input->post('qpu'));
+			$rm = explode(' ', $this->input->post('rm_ID'));
+			
+			
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
 				'quantity' => $this->input->post('quantity'),
-				'price' => $this->input->post('price'),
-				'supplier_ID' => $this->input->post('supplier_ID'),
-				'category_ID' => $this->input->post('category_ID'),
+				'current_count' => $this->input->post('quantity'),
+				'holding_cost' => $this->input->post('holding_cost'),
+				'price' => $total,
+				'sale_Price' => $total,
+				'supplier_ID' => '1',
+				'category_ID' => '1',
 				'class_ID' => $this->input->post('class_ID'),
-				'rm_ID' => $rm_ID,
+				'rm_ID' =>  $rm,
+				'qty' => $qty,
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
 				'date_created'=> date('Y-m-j H:i:s'),
@@ -706,31 +890,82 @@ class products_model extends CI_Model{
 			$total = $this->input->post('price') * $this->input->post('quantity');
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Products',
+				'module'	=> 'Production',
 				'remark_id'	=> $remark_id,
-				'remarks'	=> 'created/purchased product',
+				'remarks'	=> 'Produced a new product',
 				'date_created'=> date('Y-m-j H:i:s'),
 				
 			);
 			
 			$this->db->insert('audit_trail', $audit);
-			$code = random_string('alnum',11);
-			
-			$purchase = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'product_id'	=> $remark_id,
-				'supplier_id'	=> $this->input->post('supplier_ID'),
-				'reference'	=> $code,
-				'ordering_cost'	=> $total,
-				'date_created'=> date('Y-m-j H:i:s'),
-				
-			);
-			
-			$this->db->insert('purchases', $purchase);
-	        
 		}  
 	}		
+	
+	/**
+	 * Reproduce Finished Goods Function
+	 * 
+	 */
+	function produce_FG($id)
+    {
+    	foreach($_POST['rm_ID'] as $val => $rm)
+		{
+			$this->db->select('price');
+			$this->db->from('products');
+			$this->db->where('product_id', $id);
+			$oldprice = $this->db->get()->row('price');
+	    	$newprice = ($this->input->post('price') + $oldprice)/2;
+				
+			$this->db->select('quantity');
+			$this->db->from('products');
+			$this->db->where('product_id', $id);
+			$oldquantity = $this->db->get()->row('quantity');
+	    	$newquantity = $this->input->post('quantity') + $oldquantity;
+				
+			$data = array(
+				'current_count' => $newquantity,
+			);
 			
+			$this->db->where('product_ID', $id);
+			$this->db->update('products', $data);
+		}
+			
+		$total = $this->input->post('price') * $this->input->post('quantity');
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Production',
+			'remark_id'	=> $id,
+			'remarks'	=> 'produced a product',
+			'date_created'=> date('Y-m-j H:i:s'),
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+
+		$this->session->set_flashdata('success','Successfully Produced Product.');
+	}
+
+	/**
+	 * FinishedGoods Counter Function
+	 */
+	public function getFGCtr() {
+		if($this -> session -> userdata('is_logged_in')){
+			$this -> db -> where('products.category_ID', '1');
+			return $this->db->count_all_results('products');
+		}
+		else{
+			$this -> db -> where('products.product_status', '1');
+			return $this->db->count_all_results('products');
+		}
+	}
+	
+	
+	
+	
+	
+	
+	/***************************************************/
+	/**********      DELETE FUNCTIONS        **********/
+	/*************************************************/
 	/*
 	 * delete product function
 	 */	
@@ -786,6 +1021,7 @@ class products_model extends CI_Model{
 			$this->db->insert('audit_trail', $audit);
     }
     
+	
    
     function search($keyword)
     {

@@ -112,8 +112,8 @@
 					</div>
 					
 					<div class="col-lg-4">
-					<label class="control-label">Price per unit</label>
-					<input type="number" step="0.001" name="price" class="form-control inline" value="" required>
+						<label class="control-label">Price per unit</label>
+						<input type="number" step="0.001" name="price" class="form-control inline" value="" required>
 					</div>
 				</div>
 				

@@ -6,7 +6,7 @@
 				<div class="col-lg-12">
 					<h1 class="page-header"><i class="fa fa-archive"></i> Audit Trail</h1>
 					
-					<div class="col-lg-3 pull-left">
+					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 						<li><i class="fa fa-archive"></i><a href="<?php echo base_url()?>audit_trail"> Audit Trail</a></li>
@@ -14,7 +14,7 @@
 					</div>
 					
 					
-					<div class="col-lg-6 form-inline align-center">
+					<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
 	    				<?php echo form_open('audit_trail/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -30,7 +30,7 @@
             <!-- page start-->
               	<div class="row">
 					<div class="col-lg-12">
-                      <section class="panel">
+                      <section class="col-lg-12 panel">
                         <?php if($this->session->flashdata('success')){ ?>
 							<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 						<?php } ?>

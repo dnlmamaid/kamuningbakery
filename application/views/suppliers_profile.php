@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header"><i class="fa fa-truck"></i> <?php echo $r->supplier_name?></h1>
-				<div class="col-lg-4 pull-left">
+				<div class="col-lg-4 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fariefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
@@ -27,67 +27,68 @@
 					</div>
 				</div>
 				<?php } ?>
-				<div class="col-lg-6">
-				<div class="form-group">
-					<div class="col-lg-12">
-						<label for="supplier_name">Supplier</label>
-						<input type="text" name="supplier_name" class="form-control inline" value="<?php echo $r->supplier_name?>" required>
+				<div class="col-lg-6 col-xs-12">
+					<div class="form-group">
+						<div class="col-lg-12">
+							<label>Supplier</label>
+							<input type="text" name="supplier_name" class="form-control inline" value="<?php echo $r->supplier_name?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-6 col-xs-6">
+							<label>Contact Person</label>
+							<input type="text" name="contact_Person" class="form-control inline" value="<?php echo $r->contact_Person?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-6 col-xs-6">
+							<label>Contact</label>
+							<input type="text" name="contact" class="form-control inline" value="<?php echo $r->contact?>" required>
+						</div>
+					</div>
+					
+					
+					<div class="form-group">
+						<div class="col-lg-8 col-xs-12">
+							<label>Address</label>
+							<input type="text" name="st_Address" class="form-control inline" value="<?php echo $r->st_Address?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-4 col-xs-5">
+							<label>City</label>
+							<input type="text" name="city" class="form-control inline" value="<?php echo $r->city?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-6 col-xs-9">
+							<label>Terms</label>
+							<textarea name="terms" class="form-control inline" required><?php echo $r->terms?></textarea>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-3 col-xs-5">
+							<label class="control-label">Enabled</label>
+					  		<select name="is_active" class="form-control" required>
+					  			<?php if($r->is_active){?>
+					  			<option value="1" selected>Yes</option> 
+								<option value="0">No</option>
+								<?php } else { ?>
+								<option value="1">Yes</option> 
+								<option value="0" selected>No</option>	
+								<?php } ?>
+								
+							</select>
+						</div>
 					</div>
 				</div>
 				
-				<div class="form-group">
-					<div class="col-lg-6 col-xs-6">
-						<label for="contact_Person">Contact Person</label>
-						<input type="text" name="contact_Person" class="form-control inline" value="<?php echo $r->contact_Person?>" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-6 col-xs-6">
-						<label for="contact">Contact</label>
-						<input type="text" name="contact" class="form-control inline" value="<?php echo $r->contact?>" required>
-					</div>
-				</div>
-				
-				
-				<div class="form-group">
-					<div class="col-lg-8 col-xs-8">
-						<label for="st_Address">Address</label>
-						<input type="text" name="st_Address" class="form-control inline" value="<?php echo $r->st_Address?>" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-4 col-xs-4">
-						<label for="city">City</label>
-						<input type="text" name="city" class="form-control inline" value="<?php echo $r->city?>" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-6">
-						<label for="terms">Terms</label>
-						<textarea name="terms" class="form-control inline" required><?php echo $r->terms?></textarea>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-3">
-						<label class="control-label">Enabled</label>
-				  		<select name="is_active" class="form-control" required>
-				  			<?php if($r->is_active){?>
-				  			<option value="1" selected>Yes</option> 
-							<option value="0">No</option>
-							<?php } else { ?>
-							<option value="1">Yes</option> 
-							<option value="0" selected>No</option>	
-							<?php } ?>
-							
-						</select>
-					</div>
-				</div>
-				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 col-xs-12">
 					<h3>Supplied Products</h3>
 					<div class="table-responsive"> 
 						<table class="table table-advance">

@@ -17,9 +17,7 @@
 			<ul class="dropdown-menu" role="menu">
 				<li class="dropdown-header">Activity</li>
 	            <li><a href="<?php echo base_url()?>purchases">Purchase History</a></li>
-	            <li><a href="<?php echo base_url()?>purchases/purchase_order">Purchase Order</a></li>
 		        <li><a href="<?php echo base_url()?>production">Production</a></li>
-		        <li><a href="<?php echo base_url()?>production/produce_goods">Produce Goods</a></li>
 			</ul>
 		</li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span class="caret"></span></a>
@@ -34,7 +32,6 @@
         	<ul class="dropdown-menu" role="menu">
             	<li class="dropdown-header">Admin</li>
                 <li><a href="<?php echo base_url()?>users/profile/<?php echo $this->session->userdata('user_id')?>">My Profile</a></li>
-                <li><a href="<?php echo base_url()?>users">Users</a></li>
                 <li><a href="<?php echo base_url()?>audit_trail">Audit Trail</a></li>
                 <li><a href="<?php echo base_url()?>logout">Logout</a></li>
             </ul>
