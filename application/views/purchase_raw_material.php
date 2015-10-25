@@ -3,12 +3,12 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa fa-lemon-o"></i> Purchase Raw Material</h1>
-				<div class="col-lg-5 pull-left">
+				<h1 class="page-header"><i class="fa icon_datareport"></i> Purchase Order</h1>
+				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa icon_cart"></i><a href="<?php echo base_url()?>inventory"> Inventory</a></li>
-					<li><i class="fa fa-lemon-o"></i> Purchase Raw Material</li>
+					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
+					<li><i class="fa flaticon-baguettes"></i> Purchase Order</li>
 				</ol>
 				</div>
 			</div>

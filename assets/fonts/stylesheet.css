@@ -4044,5 +4044,76 @@ text-shadow: none;
 	.glyph .fs1 {
 		font-size: 2em;
 	}
+	
+/* ==================================================
+FlatIcons for Kamuning
+================================================== */
 
 	
+@font-face {
+	font-family: "Flaticon";
+	src: url("flaticon.eot");
+	src: url("flaticon.eot#iefix") format("embedded-opentype"),
+	url("flaticon.woff") format("woff"),
+	url("flaticon.ttf") format("truetype"),
+	url("flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}.flaticon-baguettes:before {
+	content: "\e000";
+}
+.flaticon-baker8:before {
+	content: "\e001";
+}
+.flaticon-barcode12:before {
+	content: "\e002";
+}
+.flaticon-bill9:before {
+	content: "\e003";
+}
+.flaticon-breakfast27:before {
+	content: "\e004";
+}
+.flaticon-clipboard109:before {
+	content: "\e005";
+}
+.flaticon-credit29:before {
+	content: "\e006";
+}
+.flaticon-discount3:before {
+	content: "\e007";
+}
+.flaticon-discount5:before {
+	content: "\e008";
+}
+.flaticon-dollar91:before {
+	content: "\e009";
+}
+.flaticon-groceries2:before {
+	content: "\e00a";
+}
+.flaticon-ingredients1:before {
+	content: "\e00b";
+}
+.flaticon-list24:before {
+	content: "\e00c";
+}
+.flaticon-pastries:before {
+	content: "\e00d";
+}
+.flaticon-sale4:before {
+	content: "\e00e";
+}
+.flaticon-shopping159:before {
+	content: "\e00f";
+}
+.flaticon-supermarket31:before {
+	content: "\e010";
+}
