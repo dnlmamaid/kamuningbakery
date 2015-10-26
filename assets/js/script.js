@@ -10,6 +10,11 @@ function initializeJS() {
 			format : 'YYYY-MM-DD',
 	 });
 	 
+	 //forms
+	 $('select[name="supplier_ID"]').bind('change',function(){
+	    var showOrHide = ($(this).val() != 0) ? true : false;
+	    $('#prodInfo').toggle(showOrHide);
+ 	});
 	 //datepicker
 	 $('#edate').datetimepicker({
 			format : 'YYYY-MM-DD',

@@ -3,7 +3,7 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa icon_datareport"></i> Purchase Order</h1>
+				<h1 class="page-header"><i class="fa flaticon-baguettes" style=""></i> Purchase Order</h1>
 				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
@@ -37,8 +37,8 @@
 			</div>
 			<?php } ?>
 			
-			<div class="col-lg-6 col-lg-offset-3 bg-panel2">
-				<h1 align="center">Raw Material Information</h1>
+			<div class="col-lg-6">
+				<h3>Purchase Details</h3>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<label>Supplier</label>
@@ -63,18 +63,22 @@
 						</div>
 					</div>
 				</div>
+			</div>
 			
-			
-				<div class="form-group">
-					<div class="col-lg-12">
-					<label class="control-label">Name</label>
-					<input type="text" name="product_Name" class="form-control inline" value="" required>
-					<input type="hidden" name="category_ID" class="form-control inline" value="2" required>
+			<div id="prodInfo" class="col-lg-12" hidden>
+				<div class="col-lg-6">
+					<h3>Product details</h3>
+					<div class="form-group">
+						<div class="col-lg-12">
+						<label class="control-label">Name</label>
+						<input type="text" name="product_Name" class="form-control inline" value="" required>
+						<input type="hidden" name="category_ID" class="form-control inline" value="2" required>
+						</div>
 					</div>
 				</div>
-	
+				
 				<div class="form-group">
-					<div class="col-lg-10">
+					<div class="col-lg-6">
 					<label class="control-label">Class</label>
 						<div class="input-group">
 							<select name="class_ID" class="form-control" required>
@@ -99,7 +103,7 @@
 				</div>
 			
 		
-			
+				<div class="col-lg-6">
 				<div class="form-group">
 					<div class="col-lg-4">
 						<label class="control-label">Quantity</label>
@@ -133,7 +137,7 @@
 						</select>
 					</div>
 				</div>
-								
+				</div>	
 			
 				<!-- Page Form -->
 				<div class="form-group">	
