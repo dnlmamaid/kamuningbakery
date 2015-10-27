@@ -17,7 +17,7 @@
 			<ul class="dropdown-menu" role="menu">
 				<li class="dropdown-header">Activity</li>
 	            <li><a href="<?php echo base_url()?>purchases">Purchase History</a></li>
-	            <li><a href="<?php echo base_url()?>purchases/purchase_order">Purchase Order</a></li>
+	            <li><a href="<?php echo base_url()?>purchases/purchase_order/0<?php echo date('Y'); ?><?php echo random_string('alnum',6)?>">Purchase Order</a></li>
 		        <li><a href="<?php echo base_url()?>production">Production</a></li>
 		        <li><a href="<?php echo base_url()?>production/produce_goods">Produce Goods</a></li>
 			</ul>

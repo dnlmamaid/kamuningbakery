@@ -7,6 +7,8 @@ class products extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this -> load -> model('products_model');
+		$this -> load -> model('production_model');
+		$this -> load -> model('purchases_model');
 		$this -> load -> model('reports_model');
 	}
 
@@ -120,50 +122,14 @@ class products extends CI_Controller {
 		}
 
 	}
-	
-
-	
-
-	
-	public function categories()
-	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-			
-			$data['cat'] = $this -> products_model -> getCategoryFP();
-			
-			
-			
-
-			$data['main_content'] = 'category_table';
-			$this -> load -> view('includes/adminTemplate', $data);
-			
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('dashboard', 'refresh');
-			
-		} else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
-
-	}
 
 	public function classes()
-	{
+	{		
 		
-			
 			$data['cls'] = $this -> products_model -> getClassFP();
-			
-	
-
 			$data['main_content'] = 'class_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-			
-		
-
+					
 	}
 		
 	public function update($id)
@@ -201,6 +167,7 @@ class products extends CI_Controller {
 			
 			
 			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
+			
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 						
 			$data['main_content'] = 'product_page';
@@ -288,24 +255,12 @@ class products extends CI_Controller {
 			redirect('profile', 'refresh');
 		}
 	}
-	
-	public function purchase(){
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-				$this -> products_model -> new_purchase_order();
-				redirect('products', 'refresh');
-		}
-		 
-		else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect($base_url(), 'refresh');
-		}
-	}
+		
 	
 	public function replenish($id){
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-				$this -> products_model -> purchase_order($id);
+				$this -> purchases_model -> purchase_order($id);
 				redirect('products', 'refresh');
 		} 
 		else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {

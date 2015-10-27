@@ -5,20 +5,58 @@ function initializeJS() {
 	        window.document.location = $(this).data("href");
 	});	
 	
-	//datepicker
-	 $('#sdate').datetimepicker({
-			format : 'YYYY-MM-DD',
-	 });
+	
 	 
-	 //forms
+	 /*forms
 	 $('select[name="supplier_ID"]').bind('change',function(){
 	    var showOrHide = ($(this).val() != 0) ? true : false;
 	    $('#prodInfo').toggle(showOrHide);
- 	});
-	 //datepicker
-	 $('#edate').datetimepicker({
-			format : 'YYYY-MM-DD',
-	 });
+ 	});*/
+	 
+	 
+	$('#datep').datetimepicker({
+		lang : 'en',
+		timepicker : false,
+		format : 'Y-m-d'
+	});
+	
+	$('#date2').datetimepicker({
+		lang : 'en',
+		timepicker : false,
+		format : 'Y-m-d'
+	});
+
+	$('#sched').datetimepicker({
+		allowTimes : ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'],
+		lang : 'en',
+		format : 'Y/m/d H:i'
+	});
+
+	$('#timein').datetimepicker({
+		lang : 'en',
+		datepicker : false,
+		format : 'H:i',
+		step : 1
+	});
+
+	$('#timeout').datetimepicker({
+		lang : 'en',
+		datepicker : false,
+		format : 'H:i',
+		step : 1
+	});
+
+	$('#sdate').datetimepicker({
+		lang : 'en',
+		timepicker : false,
+		format : 'Y-m-d'
+	});
+
+	$('#edate').datetimepicker({
+		lang : 'en',
+		timepicker : false,
+		format : 'Y-m-d'
+	});
 	   
 	//searchboxanimate
 	$('#searchbox').focus(function()

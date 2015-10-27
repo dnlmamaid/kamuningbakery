@@ -28,7 +28,7 @@
 	    			</div>
 	    			
 	    			<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
-		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchase Raw Material" href="<?php echo base_url()?>purchases/purchase_order" class="btn btn-theme"><i class="fa fa-plus"></i></a>
+		    			<a alt="Add New Product" data-toggle="tooltip" data-placement="top" title="Purchase Raw Material" href="<?php echo base_url()?>purchases/purchase_order/0<?php echo date('Y'); ?><?php echo random_string('alnum',6)?>" class="btn btn-theme"><i class="fa fa-plus"></i></a>
 					</div>
 	    				
 				</div>
@@ -53,34 +53,27 @@
 							<table class="table table-advance">
 								<tbody>
 									<tr>
+										<th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
-			                            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
 			                            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
-			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
-			                            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
-			                            
+			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
-								  		<td class="col-md-1"><?php echo $row->reference ?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
+								  		<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_ordered))?></td>
+								  		<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo $row->ordering_cost?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
+		                                <td class="col-md-1"><?php echo $row->total_cost?></td>
+		                                
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
+								  		<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1"><?php echo $row->reference ?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo $row->ordering_cost?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
-		                                
+		                                <td class="col-md-1"><?php echo $row->total_cost?></td>		                                
 	                                </tr>
 	                                <?php endforeach;		                               
 									else:?>
@@ -89,7 +82,7 @@
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
-										<th>No records</th>
+										
 									</tr>
 									<?php endif; ?>      
 	                               	

@@ -74,10 +74,11 @@ Class reports_model extends CI_Model {
 	/***************************************************************/
 	
 	public function getPurchases($limit, $start) {
+			
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('products','products.product_id = purchases.product_id','left');
+		$this->db->join('users','users.id = purchases.user_id','left');
 		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('purchase_date', 'desc');
+		$this -> db -> order_by('date_received', 'desc');
 		$query = $this -> db -> get('purchases');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {

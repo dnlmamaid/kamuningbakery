@@ -4063,9 +4063,13 @@ FlatIcons for Kamuning
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
-        font-size: 20px;
-font-style: normal;
-margin-left: 20px;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+
 }.flaticon-baguettes:before {
 	content: "\e000";
 }

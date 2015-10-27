@@ -130,7 +130,7 @@
 <script src="<?php echo base_url();?>assets/js/vegasIn.js"></script>
 
 <!-- date picker -->
-<script src="<?php echo base_url()?>assets/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?php echo base_url()?>assets/datepicker/js/jquery.datetimepicker.js"></script>
 
 <!-- Custom -->
 <script src="<?php echo base_url();?>assets/js/script.js"></script>

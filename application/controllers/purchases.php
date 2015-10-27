@@ -8,13 +8,14 @@ class purchases extends CI_Controller {
 		parent::__construct();
 		
 		$this -> load -> model('reports_model');
-		$this -> load -> model('products_model');		
+		$this -> load -> model('products_model');
+		$this -> load -> model('purchases_model');		
 		$this -> load -> model('users_model');
 	}
 
 	public function index($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
 	    	
 			
@@ -70,33 +71,76 @@ class purchases extends CI_Controller {
 	}
 	
 	public function purchase_order() {
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
+			$code = $this->uri->segment(3);
 			
+			//Dropdowns 
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['supplier'] = $this -> products_model -> getSupplier();
-
+			
+			$data['po'] = $this -> purchases_model -> getPO($code);
+			$data['to'] = $this->purchases_model->get_total($code);
 			$data['main_content'] = 'purchase_raw_material';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
 		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+		else if($this->session->userdata('is_logged_in'))
 	    {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 		} 
 		
 		else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 
 	}
+	
+	
+	public function add_order($code){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> purchases_model -> add_order($code);
+			redirect('purchases/purchase_order/'.$code, 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
 
+	public function place_order($code){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> purchases_model -> place_order($code);
+			redirect('purchases/purchase_order/'.$code, 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
 	public function report($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
 	    	
 			//UserData
@@ -160,7 +204,7 @@ class purchases extends CI_Controller {
 	public function purchase_invoice()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {			
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> reports_model -> get_purchase_rec($pid);
@@ -194,7 +238,7 @@ class purchases extends CI_Controller {
 	
 	function search() {
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
 			
 			$data['cat'] = $this -> products_model -> getCategory();
@@ -203,7 +247,7 @@ class purchases extends CI_Controller {
 			$search = $this -> input -> post('search');
 			redirect('purchases/search_result/'.$search);
 						
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+		} else if ($this->session->userdata('is_logged_in') && !$this->session->userdata('is_admin')) {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 			
@@ -220,7 +264,7 @@ class purchases extends CI_Controller {
 
 	function search_result($search) {
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
@@ -229,7 +273,7 @@ class purchases extends CI_Controller {
 			
 			$data['main_content'] = 'purchases_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+		} else if ($this->session->userdata('is_logged_in') && !$this->session->userdata('is_admin')) {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 						
