@@ -50,7 +50,7 @@
 				<div class="alert alert-info" role="alert"><?php echo $this -> session -> flashdata('search'); ?></div>
 			<?php } ?> 
 				<div class="table-responsive"> 
-					<table class="table table-advance">
+					<table class="table table-advance table-hover">
 						<tbody>
 							<tr>
 								<th class="col-md-1"><i class="fa fa-codepen"></i> Username</th>
@@ -59,12 +59,12 @@
 		                        <th class="col-md-1"><i class="fa fa-clock-o"></i> Date Created</th>
 		                        <th class="col-md-1"><i class="fa icon_cogs"></i> Action</th>
 	                        </tr>
-	                        <?php if(isset($users) && is_array($users)): foreach($users as $row): ?> 
-							<tr class="conf clickable-row" data-href="<?php echo base_url()?>users/profile/<?php echo $row->id?>">
-								<td class="col-md-1-b"><?php echo $row->username ?></td>
-								<td class="col-md-1-b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-								<td class="col-md-1-b"><?php echo $row->type_name; ?></td>
-			                    <td class="col-md-1-b"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
+	                        <?php if(isset($users) && is_array($users)): foreach($users as $row): if($row->is_active):?> 
+							<tr class="clickable-row" data-href="<?php echo base_url()?>users/profile/<?php echo $row->id?>">
+								<td class="col-md-1 b"><?php echo $row->username ?></td>
+								<td class="col-md-1 b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
+								<td class="col-md-1 b"><?php echo $row->type_name; ?></td>
+			                    <td class="col-md-1 b"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
 			                    <td class="col-md-1">
 			                	<div class="">
 			                		<?php if($row->is_active == '1'){?>
@@ -75,14 +75,32 @@
 			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>users/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
 			                    </div>
 	                           	</td>
-							<?php endforeach; ?>
-							</tr>
-							<?php elseif(isset($search) && is_array($search)): foreach($search as $row): ?> 
+							<?php 
+							else: ?> 							
 							<tr class="conf clickable-row" data-href="<?php echo base_url()?>users/profile/<?php echo $row->id?>">
-								<td class="col-md-1-b"><?php echo $row->username ?></td>
-								<td class="col-md-1-b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-								<td class="col-md-1-b"><?php echo $row->type_name; ?></td>
-			                    <td class="col-md-1-b"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
+								<td class="col-md-1 b"><?php echo $row->username ?></td>
+								<td class="col-md-1 b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
+								<td class="col-md-1 b"><?php echo $row->type_name; ?></td>
+			                    <td class="col-md-1 b"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
+			                    <td class="col-md-1">
+			                	<div class="">
+			                		<?php if($row->is_active == '1'){?>
+			                		<a class="btn btn-caution" href="<?php echo base_url()?>users/disable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="disable user"><i class="icon_close_alt2"></i></a>
+			                		<?php } else if ($row->is_active != '1'){?>
+			                			<a class="btn btn-success" href="<?php echo base_url()?>users/enable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="enable user"><i class="icon_check_alt2"></i></a>
+			                		<?php } ?>
+			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>users/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
+			                    </div>
+	                           	</td>
+							<?php endif;
+							endforeach; ?>
+							</tr>
+							<?php elseif(isset($search) && is_array($search)): foreach($search as $row): if($row->is_active):?> 
+							<tr class="clickable-row" data-href="<?php echo base_url()?>users/profile/<?php echo $row->id?>">
+								<td class="col-md-1"><?php echo $row->username ?></td>
+								<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
+								<td class="col-md-1"><?php echo $row->type_name; ?></td>
+			                    <td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
 			                    <td class="col-md-1">
 			                	<div class="">
 			                		<?php if($row->is_active == '1'){?>
@@ -93,7 +111,25 @@
 			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>users/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
 			                    </div>
 	                           	</td>
-							<?php endforeach; ?>
+							<?php 
+							else: ?> 							
+							<tr class="conf clickable-row" data-href="<?php echo base_url()?>users/profile/<?php echo $row->id?>">
+								<td class="col-md-1 b"><?php echo $row->username ?></td>
+								<td class="col-md-1 b"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
+								<td class="col-md-1 b"><?php echo $row->type_name; ?></td>
+			                    <td class="col-md-1 b"><?php echo date('F d,Y (D)', strtotime($row->created_at))?></td>
+			                    <td class="col-md-1">
+			                	<div class="">
+			                		<?php if($row->is_active == '1'){?>
+			                		<a class="btn btn-caution" href="<?php echo base_url()?>users/disable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="disable user"><i class="icon_close_alt2"></i></a>
+			                		<?php } else if ($row->is_active != '1'){?>
+			                			<a class="btn btn-success" href="<?php echo base_url()?>users/enable/<?php echo $row->id?>" data-toggle="tooltip" data-placement="left" title="enable user"><i class="icon_check_alt2"></i></a>
+			                		<?php } ?>
+			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>users/remove/<?php echo $row->id?>" data-toggle="tooltip" data-placement="right" title="delete user"><i class="icon_close_alt2"></i></a>
+			                    </div>
+	                           	</td>
+							<?php endif;
+							endforeach; ?>
 							</tr>
 							
 							<?php else:?>

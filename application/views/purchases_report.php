@@ -72,23 +72,18 @@
 					<tbody>
 					<tr>
 						<th class="col-md-1"><i class="fa fa-barcode"></i> Reference No.</th>
-			            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
 			            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
-			            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 			            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
-			            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
+			            <th class="col-md-1"><i class="fa fa-clock-o"></i> Date</th>
 			            
 					</tr>
 	                              	
 	                <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
-					<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/view_purchase/<?php echo $row->purchase_id?>">
-						<td class="col-md-1"><?php echo $row->reference ?></td>
-						<td class="col-md-1"><?php echo $row->product_Name ?></td>
+					<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/view_purchase/<?php echo $row->purchase_id?>">
+						<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                
-		                <td class="col-md-1"><?php echo $row->purchase_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-						<td class="col-md-1"><?php echo $row->ordering_cost?></td>
-						<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
+						<td class="col-md-1"><?php echo $row->total_cost?></td>
+						<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_received))?></td>
 	                </tr>	
 					<?php endforeach;	                               
 					else:?>

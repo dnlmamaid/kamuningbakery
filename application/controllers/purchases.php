@@ -58,6 +58,10 @@ class purchases extends CI_Controller {
 				} 			
       			
     		}   
+    		
+    		//Dropdown
+			$data['supplier'] = $this -> products_model -> getSupplier();
+			
 			$data['purchases'] = $this->reports_model->getPurchases($config['per_page'], $offset);
 
 			$data['main_content'] = 'purchases_table';
@@ -70,18 +74,48 @@ class purchases extends CI_Controller {
 		}
 	}
 	
-	public function purchase_order() {
+	public function purchase_order()
+	{
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
 			$code = $this->uri->segment(3);
-			
 			//Dropdowns 
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['supplier'] = $this -> products_model -> getSupplier();
 			
 			$data['po'] = $this -> purchases_model -> getPO($code);
+			$data['orders'] = $this -> purchases_model -> getOrders($code);
 			$data['to'] = $this->purchases_model->get_total($code);
-			$data['main_content'] = 'purchase_raw_material';
+			
+			$data['main_content'] = 'purchase_order';
+			$this -> load -> view('includes/adminTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in'))
+	    {
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+
+	}
+	
+	
+	public function ordered_product($id) {
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			//Dropdowns 
+			$data['cls'] = $this -> products_model -> getClass();
+			$data['supplier'] = $this -> products_model -> getSupplier();
+			
+			$data['po'] = $this -> purchases_model -> getPOR($id);
+			
+			$data['main_content'] = 'order_info';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
 		
@@ -104,7 +138,26 @@ class purchases extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
 			$this -> purchases_model -> add_order($code);
-			redirect('purchases/purchase_order/'.$code, 'refresh');
+			redirect($this->agent->referrer(), 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
+	public function update_order($id){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> purchases_model -> update_po($id);
+			redirect($this->agent->referrer(), 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
@@ -119,11 +172,11 @@ class purchases extends CI_Controller {
 		}
 	}
 
-	public function place_order($code){
+	public function create_purchase_order(){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
-			$this -> purchases_model -> place_order($code);
-			redirect('purchases/purchase_order/'.$code, 'refresh');
+			$this -> purchases_model -> create_po();
+			redirect('purchases', 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
@@ -136,6 +189,31 @@ class purchases extends CI_Controller {
 			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
+	}
+	
+	
+	public function accept_purchase($id)
+	{
+		$this -> purchases_model -> receive_po($id);
+		redirect($this->agent->referrer(), 'refresh');
+	}
+	
+	public function receive($id)
+	{
+		$this -> purchases_model -> receive_order($id);
+		redirect($this->agent->referrer(), 'refresh');
+	}
+	
+	public function cancel_order($id)
+	{
+		$this -> purchases_model -> remove_order($id);
+		redirect('purchases', 'refresh');
+	}
+	
+	public function cancel_purchase($id)
+	{
+		$this -> purchases_model -> remove_purchase($id);
+		redirect('purchases', 'refresh');
 	}
 	
 	public function report($offset = 0)

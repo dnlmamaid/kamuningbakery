@@ -5,12 +5,58 @@ class purchases_model extends CI_Model{
  	
 	/**
 	 * get Purchase Order function
-	 * used for multiple orders in a single purchase
+	 * 
 	 */
 	function getPO($code)
 	{
 		
+		$this -> db -> where('purchases.purchase_reference', $code);
+		$this -> db -> join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$q = $this -> db -> get('purchases');
+		
+		if($q->num_rows()){
+			return $q -> result();
+		}
+		
+		else{
+			return false;	
+		}
+	}
+	
+	/**
+	 * get Orders function
+	 * used for multiple orders in a single purchase
+	 */
+	function getOrders($code)
+	{
+		
 		$this -> db -> where('purchase_orders.order_reference', $code);
+		
+		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'right');
+		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
+		$this -> db -> join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+		
+		$q = $this -> db -> get('purchase_orders');
+		
+		if($q->num_rows()){
+			return $q -> result();
+		}
+		
+		else{
+			return false;	
+		}
+	}
+	
+	/**
+	 * get Purchase Order Record function
+	 * gets specific purchase order record
+	 */
+	function getPOR($id)
+	{
+		
+		$this -> db -> where('order_id', $id);
 		
 		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
 		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'right');
@@ -56,7 +102,7 @@ class purchases_model extends CI_Model{
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
 				'date_created'=> date('Y-m-j H:i:s'),
-				'product_status' => $this->input->post('product_status'),
+				'product_status' => '0',
 	        );
 			  
 			$this->db->insert('products', $data);
@@ -88,17 +134,15 @@ class purchases_model extends CI_Model{
 		
 	}
 
-	function place_order($code)
+	function create_po()
     {
-    	$tc = $this->input->post('total_cost');
-		$dc = $this->input->post('discount')/100;
-		$tc = $tc - $dc;	
+	    $code = date('Y').'0'.random_string('alnum',6);
 		$purchase = array(
 			'user_id'	=> $this->session->userdata('user_id'),
-			'supplier_ID' => $this->input->post('supplier_id'),
+			'supplier_id' => $this->input->post('supplier_id'),
 			'purchase_reference'	=> $code,
-			'total_cost' => $tc,
-			'discount' => $this->input->post('discount'),
+			'total_cost' => '0',
+			'discount' => '0',
 			'date_ordered'=> date('Y-m-j H:i:s'),
 			'date_received'=> $this->input->post('date_received'),
 			'po_status'=> '0',
@@ -115,6 +159,33 @@ class purchases_model extends CI_Model{
 				'module'	=> 'Purchases',
 				'remark_id'	=> $remark_id,
 				'remarks'	=> 'Placed a purchase order',
+				'date_created'=> date('Y-m-j H:i:s'),
+		);
+				
+		$this->db->insert('audit_trail', $audit);
+	}
+
+
+	function update_po($id)
+    {
+	    
+		$purchase = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'supplier_id' => $this->input->post('supplier_id'),
+			'date_ordered'=> $this->input->post('date_ordered'),
+			'date_received'=> $this->input->post('date_received'),
+		);
+			  
+		$this->db->where('purchase_id', $id);  
+		$this->db->update('purchases', $purchase);
+		
+		$this->session->set_flashdata('success','You have successfully updated the purchase order');
+			
+		$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Purchases',
+				'remark_id'	=> $id,
+				'remarks'	=> 'Updated a purchase order',
 				'date_created'=> date('Y-m-j H:i:s'),
 		);
 				
@@ -173,6 +244,117 @@ class purchases_model extends CI_Model{
 	}
 
 	
+	function receive_order($id)
+    {
+    	
+		$order = array(			
+			'order_status'=> '1',
+		);
+				
+		$this->db->where('order_id',$id);
+		$this->db->update('purchase_orders', $order);
+		
+		$this->db->select('current_count');
+		$this->db->from('products');
+		$this->db->where('product_id', $this->input->post('product_id'));
+		$oldquantity = $this->db->get()->row('current_count');
+    	$newquantity = $oldquantity + $this->input->post('order_quantity');
+
+		$receive = array(
+			'current_count'	=> $newquantity,
+			'product_status'=> '1',
+		);
+		
+	    $this->db->where('product_id',$this->input->post('product_id'));
+		$this->db->update('products', $receive);
+		
+		
+		$this->db->select('total_cost');
+		$this->db->from('purchases');
+		$this->db->where('purchase_reference', $this->input->post('order_reference'));
+		$oamt = $this->db->get()->row('total_cost');
+    	$newamt = $oamt + $this->input->post('ordering_cost');
+		
+		$purchase = array(
+			'total_cost'	=> $newamt,
+		);
+		
+		$this->db->where('purchase_reference',$this->input->post('order_reference'));
+		$this->db->update('purchases', $purchase);
+		
+	    $this->session->set_flashdata('success','Product received and updated');
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $id,
+			'remarks'	=> 'received product',
+			'date_created'=> date('Y-m-j H:i:s'),
+				
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+    }
 	
+	function remove_order($id)
+    {
+	    $this->db->where('order_id',$id);
+		$query = $this->db->delete('purchase_orders');
+	    $this->session->set_flashdata('success','Entry Deleted.');
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $id,
+			'remarks'	=> 'deleted a product order',
+			'date_created'=> date('Y-m-j H:i:s'),
+				
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+    }
+	
+	
+	function receive_po($id)
+    {
+    	$receive = array(
+			'po_status'	=> '1',
+			'date_received'=> date('Y-m-j H:i:s'),
+		);
+		
+	    $this->db->where('purchase_id',$id);
+		$this->db->update('purchases', $receive);
+	    $this->session->set_flashdata('success','Cleared the purchase order');
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $id,
+			'remarks'	=> 'Cleared a purchase order',
+			'date_created'=> date('Y-m-j H:i:s'),
+				
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+    }
+	
+	
+	function remove_purchase($id)
+    {
+	    $this->db->where('purchase_id',$id);
+		$query = $this->db->delete('purchases');
+	    $this->session->set_flashdata('success','Entry Deleted.');
+			
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $id,
+			'remarks'	=> 'deleted a purchase order',
+			'date_created'=> date('Y-m-j H:i:s'),
+				
+		);
+			
+		$this->db->insert('audit_trail', $audit);
+    }
 	
 }

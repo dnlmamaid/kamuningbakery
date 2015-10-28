@@ -64,7 +64,7 @@
 						</tr>
                         
                         <tr class="conf clickable-row" data-href="#">
-							<td class="col-md-2-b"> Malungay pandesal</a></td>
+							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> Malungay pandesal</a></td>
                             <td class="col-md-2-b">Php 1</a></td>
                             <td class="col-md-2-b">3250 pcs</a></td>                                                           
                         </tr>
@@ -88,7 +88,7 @@
 						</tr>
                         
                         <tr class="conf clickable-row" data-href="#">
-							<td class="col-md-2-b"> Malungay pandesal</a></td>
+							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> Malungay pandesal</a></td>
                             <td class="col-md-2-b">Php 1</a></td>
                             <td class="col-md-2-b">3250 pcs</a></td>                                                           
                         </tr>
@@ -112,7 +112,7 @@
 	                        </tr>
 	                              	
 	                        <?php if(isset($audit) && is_array($audit)) : foreach($audit as $row): ?> 
-							<tr class="conf clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
+							<tr class="clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
 								<td class="col-md-1"><?php echo $row->module ?></td>
 								<td class="col-md-2"><?php echo $row->remarks ?></td>
 								<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>

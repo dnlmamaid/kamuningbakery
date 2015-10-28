@@ -139,7 +139,7 @@
 						<div class="form-group" style="margin-top:10px;">
 							<div class="col-lg-3 col-xs-3">						
 								<label class="control-label">Quantity</label>
-								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->quantity?>" disabled>
+								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->current_count ?>" disabled>
 							</div>
 						</div>
 						
@@ -292,7 +292,7 @@
 						<div class="form-group" style="margin-top:10px;">
 							<div class="col-lg-3 col-xs-3">						
 								<label class="control-label">Quantity</label>
-								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->quantity?>" disabled>
+								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->current_count ?>" disabled>
 							</div>
 						</div>
 						

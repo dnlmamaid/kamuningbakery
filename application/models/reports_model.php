@@ -124,12 +124,15 @@ Class reports_model extends CI_Model {
 	{
 		if($this -> session -> userdata('is_logged_in'))
 		{
-			$this->db->join('users','users.id = purchases.user_id','left');
 			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-			$this->db->join('products','products.product_id = purchases.product_id','left');
+			$this->db->join('users','users.id = purchases.user_id','left');
+			$this->db->join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
+			$this->db->join('products','products.product_id = purchase_orders.product_id','right');
+			
 			$this->db->from('purchases');
-			$this -> db -> order_by('purchase_date', 'desc');	
-			$this -> db -> where('purchases.product_id', $pid);
+			$this -> db -> order_by('date_received', 'desc');	
+			$this -> db -> where('products.product_id', $pid);
+			$this -> db -> where('po_status', '1');
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
 			return $data;
@@ -180,8 +183,7 @@ Class reports_model extends CI_Model {
 	
 	function get_total_purchases(){
 		
-		$this->db->select('sum(ordering_cost) as total');
-		
+		$this->db->select('sum(total_cost) as total');
 		$q = $this->db->get('purchases');
 		return $q->row();
 	}
