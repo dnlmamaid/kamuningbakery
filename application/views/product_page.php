@@ -459,7 +459,7 @@
 					</div>
 							
 					<div class="modal-body">
-					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>products/sold/<?php echo $r->product_id?>">
+					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>products/sell_product/<?php echo $r->product_id?>">
 						
 						<div class="form-group">
 							<div class="col-lg-6 col-xs-6">

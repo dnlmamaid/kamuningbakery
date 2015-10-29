@@ -319,40 +319,40 @@ class products_model extends CI_Model{
 	function sale($pid)
     {
     	
-		$this->db->select('quantity');
+		$this->db->select('current_count');
 		$this->db->from('products');
 		$this->db->where('product_id', $pid);
-		$oldquantity = $this->db->get()->row('quantity');
+		$oldquantity = $this->db->get()->row('current_count');
     	$newquantity = $oldquantity - $this->input->post('quantity');
 			
 		$data = array(
-			'quantity' => $newquantity,
+			'current_count' => $newquantity,
 							
 		);
 		
 		$this->db->where('product_ID', $pid);
 		$this->db->update('products', $data);
 			
-    	
+    	$markup = 1.93;
 		$this->db->select('sale_Price');
 		$this->db->from('products');
 		$this->db->where('product_id', $pid);
-		$cost = $this->db->get()->row('sale_Price');
+		$cost = ($this->db->get()->row('sale_Price')) + $markup;
 		$total = $cost * $this->input->post('quantity');
 		
-		$code = random_string('alnum',11);
+		$code = date('Y').random_string('alnum',1).date('m').random_string('alnum',1).date('d'); 
 		
 		$sales = array(
 			'invoice_code'	=> $code,
 			'product_ID'	=> $pid,
-			'quantity'	=> $this->input->post('quantity'),
+			'total_quantity'	=> $this->input->post('quantity'),
 			'total_sales'	=> $total,
 			'user_ID'	=> $this->session->userdata('user_id'),
 			'sales_date'=> date('Y-m-j H:i:s'),
 				
 		);
 		
-		$this->db->insert('sales', sales);
+		$this->db->insert('sales', $sales);
 		$remark_id = $this->db->insert_id();
 			
 			$audit = array(

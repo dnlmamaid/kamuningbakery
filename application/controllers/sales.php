@@ -155,7 +155,7 @@ class sales extends CI_Controller {
 			redirect(base_url(), 'refresh');
 		}
 	}
-	
+		
 	
 	public function view_sales_invoice()
 	{

@@ -63,23 +63,23 @@
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1"><?php echo $row->total_sales?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row->purchase_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice_invoice/<?php echo $row->sales_id?>">
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_quantity?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1"><?php echo $row->total_sales?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->purchase_date))?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 		                                
 	                                </tr>
 	                                <?php endforeach;		                               
