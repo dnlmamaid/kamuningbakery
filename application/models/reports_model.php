@@ -107,7 +107,7 @@ Class reports_model extends CI_Model {
 		
 		$this->db->join('users','users.id = purchases.user_id','left');
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('products','products.product_id = purchases.product_id','left');
+		
 		$this -> db -> where('purchase_id', $pid);
 		$q = $this -> db -> get('purchases');
 		
@@ -149,15 +149,13 @@ Class reports_model extends CI_Model {
     		
 	    	$var = urldecode($keyword);		
 			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-	    	$this->db->join('products','products.product_id = purchases.product_id','left');
+			$this->db->join('users','users.id = purchases.user_id','left');
 			
 	        $this->db->like('purchase_id', $var);
-			$this->db->or_like('product_name', $var);
 			$this->db->or_like('supplier_name', $var);
-			$this->db->or_like('reference', $var);
-	        $this->db->or_like('ordering_cost', $var);
-			$this->db->or_like('purchase_date', $var);
-			$this->db->or_like('ppu', $var);
+			$this->db->or_like('purchase_reference', $var);
+	        $this->db->or_like('total_cost', $var);
+			$this->db->or_like('date_received', $var);
 			
 			$query = $this -> db -> get('purchases');
 			$rows = $query -> num_rows();
@@ -346,14 +344,11 @@ Class reports_model extends CI_Model {
 	/*********************  PRODUCTION	*****************************/
 	/***************************************************************/
 	
-	public function getProducts($limit, $start) {
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
-		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+	public function getProduction($limit, $start) {
+		$this -> db -> join('products', 'products.product_id = production.product_id', 'left');
 		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('date_created', 'desc');
-		$this -> db -> where('rm_ID !=', '0');
-		$query = $this -> db -> get('products');
+		$this -> db -> order_by('date_produced', 'desc');
+		$query = $this -> db -> get('production');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;

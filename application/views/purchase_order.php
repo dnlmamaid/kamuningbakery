@@ -5,7 +5,7 @@
 				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Purchase Order</h1>
 				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
-					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
 					<li><i class="fa flaticon-ingredients1"></i> Purchase Order</li>
 				</ol>
@@ -246,21 +246,6 @@
 								</table>
 							</div>
 						</section>
-							
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="row">									
-									<div class="col-lg-2 pull-right">
-										<div class="form-group">
-											
-											
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-							
-						
 					</div>
 					<!-- /Table -->
 				
@@ -374,4 +359,5 @@
 			</div>
 		</div>
 	</div>
+	
 </div>

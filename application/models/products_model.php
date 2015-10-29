@@ -287,6 +287,20 @@ class products_model extends CI_Model{
 	}	
 	
 	/**
+	 * Get Ingredients Function 
+	 * 
+	 */
+	function getIng($pid)
+    {
+    	$this -> db -> join('products', 'products.product_id = ingredients.product_id', 'left');
+		$this -> db -> where('id_for', $pid);
+		$q = $this->db->get('ingredients');
+		return $q -> result();
+	}
+	
+	
+	
+	/**
 	 * Get RM Function 
 	 * 
 	 */

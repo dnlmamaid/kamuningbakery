@@ -318,17 +318,12 @@ class purchases extends CI_Controller {
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
-			
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-			
+		
 			$search = $this -> input -> post('search');
 			redirect('purchases/search_result/'.$search);
 						
 		} else if ($this->session->userdata('is_logged_in') && !$this->session->userdata('is_admin')) {
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-			
+						
 			$search = $this -> input -> post('search');
 			redirect('purchases/search_result/'.$search);
 			
@@ -344,18 +339,14 @@ class purchases extends CI_Controller {
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
-			$data['cat'] = $this -> products_model -> getCategory();
+			
 			$data['cls'] = $this -> products_model -> getClass();
-				
+		
 			$data['search'] = $this -> reports_model -> search_purchases($search);
 			
 			$data['main_content'] = 'purchases_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		} else if ($this->session->userdata('is_logged_in') && !$this->session->userdata('is_admin')) {
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-						
-			
 			
 			$data['search'] = $this -> products_model -> search($search);
 			

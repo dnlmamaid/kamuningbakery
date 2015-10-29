@@ -163,8 +163,9 @@ class products extends CI_Controller {
 			$data['supplier'] = $this -> products_model -> getSupplier();
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			$data['rm'] = $this -> products_model -> getRawMats();
 			
+			$data['rm'] = $this -> products_model -> getRawMats();
+			$data['ing'] = $this -> products_model -> getIng($pid);
 			
 			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
 			
@@ -236,8 +237,8 @@ class products extends CI_Controller {
 	public function produce() {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-			$this -> products_model -> produce_newFG();
-			redirect('products', 'refresh');
+			$this -> production_model -> produce_newFG();
+			redirect('production', 'refresh');
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect('profile', 'refresh');

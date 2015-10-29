@@ -354,21 +354,20 @@
 							
 						<div class="form-group" id="materials">
 							<div id="rm">
-							<?php $rawm = explode(" ",$r->rm_ID);
-								$qpu = explode(" ",$r->qty);
-							foreach($rawm as $val => $raw){ ?>
+							
+							<?php foreach($ing as $r2): ?>
 								<div class="col-lg-12 col-xs-12">
 									<div class="col-lg-4 col-xs-4">						
-										<input type="number" step="0.001" name="qpu[]" class="form-control inline" value="<?php echo $qpu[$val]?>" required>
+										<input type="number" step="0.001" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
 									</div>
 									
 									<div class="col-lg-8 col-xs-8">
 										<select name="rm_ID[]" class="form-control" required>
-										<option value="<?php echo $raw?>"><?php echo $raw?></option>
+										<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
 										<?php if(!empty($rm)){
 											if (is_array($rm)){                      
 									        	foreach ($rm as $row) {
-									            	if($row['product_id'] != $raw){?>
+									            	if($row['product_id'] != $r2->product_id){?>
 														<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
 													<?php } 
 												}
@@ -377,7 +376,7 @@
 										</select>
 									</div>
 								</div>
-								<?php } ?>
+								<?php endforeach;?>
 										
 							</div>	
 						</div>

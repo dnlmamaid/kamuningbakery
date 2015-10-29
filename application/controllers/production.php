@@ -10,6 +10,7 @@ class production extends CI_Controller {
 		$this -> load -> model('reports_model');		
 		$this -> load -> model('users_model');
 		$this -> load -> model('products_model');
+		$this -> load -> model('production_model');
 	}
 
 	public function index($offset = 0)
@@ -55,9 +56,9 @@ class production extends CI_Controller {
 				} 			
       			
     		}   
-			$data['products'] = $this->reports_model->getProducts($config['per_page'], $offset);
+			$data['production'] = $this->reports_model->getProduction($config['per_page'], $offset);
 
-			$data['main_content'] = 'finished_goods';
+			$data['main_content'] = 'production_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
 
@@ -73,15 +74,11 @@ class production extends CI_Controller {
 		
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {			
-			$pid = $this -> uri -> segment(3);
-			
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['rm'] = $this -> products_model -> getRawMats();
 			$data['supplier'] = $this -> products_model -> getSupplier();
-			
-			$data['rec'] = $this -> reports_model -> get_purchase_rec($pid);
-			
-			$data['main_content'] = 'produce_finished_good';
+			$data['to'] = $this->production_model->get_total(); 
+			$data['main_content'] = 'product_production';
 			$this->load->view('includes/productionTemplate', $data);
 		}
 	

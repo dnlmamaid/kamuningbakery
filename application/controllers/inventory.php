@@ -9,6 +9,7 @@ class inventory extends CI_Controller {
 		
 		$this -> load -> model('products_model');		
 		$this -> load -> model('users_model');
+		$this -> load -> model('production_model');
 	}
 
 	public function index($offset = 0)
@@ -137,7 +138,7 @@ class inventory extends CI_Controller {
 				
 			//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->products_model->getFGCtr();
+			$total_row = $this->production_model->getFGCtr();
 			
 			$config = array(
 			'total_rows' => $total_row,

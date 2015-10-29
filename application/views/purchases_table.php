@@ -79,14 +79,24 @@
 	                                </tr>
 									<?php endif;
 									endforeach;	                               
-						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
-								  		<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_ordered))?></td>
-								  		<td class="col-md-1"><?php echo $row->reference ?></td>
+						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if($row->po_status != '0'):?>
+									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
+								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
+								  		<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->total_cost?></td>		                                
+		                                <td class="col-md-1"><?php echo $row->total_cost?></td>
+		                                
 	                                </tr>
-	                                <?php endforeach;		                               
+									<?php else: ?>
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
+								  		<td class="col-md-2 b"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
+								  		<td class="col-md-1 b"><?php echo $row->purchase_reference ?></td>
+		                                <td class="col-md-1 b"><?php echo $row->supplier_name ?></td>
+		                                <td class="col-md-1 b"><?php echo $row->total_cost?></td>
+		                                
+	                                </tr>
+									<?php endif;
+									endforeach;		                               
 									else:?>
 									<tr>											
 										<th>No records</th>
