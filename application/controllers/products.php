@@ -245,10 +245,10 @@ class products extends CI_Controller {
 		}
 	}
 	
-	public function reproduce($id) {
+	public function reproduce($pid) {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
-			$this -> products_model -> produce_FG($id);
+			$this -> production_model -> produce_FG($pid);
 			redirect('products', 'refresh');
 			
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {

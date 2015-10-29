@@ -26,7 +26,7 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-2 col-xs-3 pull-right" style="margin-bottom:15px;">
+	    			<div class="col-lg-2 col-xs-5 pull-right" style="margin-bottom:15px;">
 		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
 		    			<a type="button" alt="Purchases" data-toggle="tooltip" data-placement="top" title="Purchases" href="<?php echo base_url()?>purchases" class="btn btn-success" ><i class="fa flaticon-ingredients1"></i></a>
 		    			<a type="button" alt="Production" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-theme" ><i class="fa flaticon-breakfast27"></i></a>

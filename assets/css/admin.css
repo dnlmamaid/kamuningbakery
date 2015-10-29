@@ -366,7 +366,7 @@ a:hover {
 
 .sidebar-nav li a {
     display: block;
-    color: #ddd;
+    color: #000;
     text-decoration: none;
     padding: 10px 15px 10px 30px;    
 }
@@ -832,4 +832,75 @@ a:hover {
     /* To center horizontally */
     margin: 0 auto;
     pointer-events:all;
+}
+
+
+
+/*********** PAGINATION ******************/
+
+ul.tsc_pagination li a{
+	border:solid 1px #66A366;
+	border-radius:1px;
+	-moz-border-radius:1px;
+	-webkit-border-radius:1px;
+	padding:6px 9px 6px 9px;
+}
+
+ul.tsc_pagination li{
+	padding-bottom:1px;
+}
+
+ul.tsc_pagination li a:hover,
+ul.tsc_pagination li a.current{
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+	color:#FFF;
+	background: #66A366;
+	box-shadow:0px 1px #66A366;
+	-moz-box-shadow:0px 1px #66A366;
+	-webkit-box-shadow:0px 1px #66A366;
+}
+
+ul.tsc_pagination{
+	margin:4px 0;
+	padding:0px;
+	height:100%;
+	overflow:hidden;
+	font:12px 'Tahoma';
+	list-style-type:none;
+}
+
+ul.tsc_pagination li{
+	float:left;
+	margin:0px;
+	padding:0px;
+	margin-left:5px;
+}
+
+ul.tsc_pagination li a{
+	color:black;
+	display:block;
+	text-decoration:none;
+	padding:7px 10px 7px 10px;
+}
+
+ul.tsc_pagination li a:hover{
+	color:#FFF;
+	background:#66A366;
+}
+
+ul.tsc_pagination li a:hover,
+ul.tsc_pagination li a.current{
+	text-shadow:0px 1px #388DBE;
+	background:#66A366;
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+	background:-moz-linear-gradient(top, #66A366; 1px, #63D0FE 1px, #58B0E7);
+	background:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0.02, #66A366), color-stop(0.02, #66A366), color-stop(1, #66A366));
 }

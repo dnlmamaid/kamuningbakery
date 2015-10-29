@@ -2,12 +2,12 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Purchase Order</h1>
+				<h1 class="page-header"><i class="fa flaticon-bill9" style=""></i> Purchase Order</h1>
 				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
-					<li><i class="fa flaticon-ingredients1"></i> Purchase Order</li>
+					<li><i class="fa flaticon-bill9"></i> Purchase Order</li>
 				</ol>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<?php if($r->order_status == '0') { ?>
+							<?php if(!$r->order_status) { ?>
 							<form action="<?php echo base_url(); ?>purchases/update_order/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							
@@ -76,7 +76,7 @@
 									</div>	
 								</div>
 								
-								<div class="col-lg-3 col-xs-5 pull-right">
+								<div class="col-lg-3 col-xs-3 pull-right">
 									<div class="form-group">
 										<label>Date Ordered</label>
 										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate">
@@ -114,7 +114,7 @@
 									</div>
 								</div>
 							</div>
-							<?php } else if($r->order_status == '1'){?>
+							<?php } else if($r->order_status){?>
 							<form action="<?php echo base_url(); ?>purchases/accept_purchase/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							
@@ -155,7 +155,7 @@
 									</div>	
 								</div>
 								
-								<div class="col-lg-3 col-xs-5 pull-right">
+								<div class="col-lg-3 col-xs-12 pull-right">
 									<div class="form-group">
 										<label>Date Ordered</label>
 										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate" disabled>
@@ -168,6 +168,7 @@
 									<div class="form-group">
 										<label>Reference ID</label>
 										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->purchase_reference ?>" style="text-transform: uppercase;" disabled>
+										<input type="hidden" name="total_cost" value="<?php echo $to->total?>">
 									</div>
 								</div>
 								
@@ -185,11 +186,13 @@
 								</div>
 								
 							</div>
+							
 							<?php if($r->po_status == '0'):?>
 							<div class="row">
 								<div class="col-lg-1 pull-right">
 									<div class="form-group">
 									<input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Receive Order"><i class="fa fa-check"></i>
+									
 									</div>
 								</div>
 							</div>
@@ -215,7 +218,7 @@
 						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
 										</tr>
 				                              	
-				                        <?php if(isset($orders)): foreach($orders as $row): if($row->order_status != '0'):?> 
+				                        <?php if(isset($orders) && is_array($orders)): foreach($orders as $row): if($row->order_status != '0'):?> 
 										<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/ordered_product/<?php echo $row->order_id?>">
 											<td class="col-md-1"><?php echo $row->order_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>

@@ -89,15 +89,12 @@ class purchases_model extends CI_Model{
 			
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
-				'quantity' => '0',
 				'current_count' => '0',
 				'price' => $this->input->post('price'),
 				'sale_Price' => '0',
 				'holding_cost' => $this->input->post('holding_cost'),
 				'supplier_ID' => $this->input->post('supplier_ID'),
 				'category_ID' => '2',
-				'rm_ID' => '0',
-				'qty' => '0',
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
@@ -207,11 +204,11 @@ class purchases_model extends CI_Model{
     	$newquantity = $this->input->post('quantity') + $oldquantity;
 			
 		$data = array(
-			'quantity' => $newquantity,
+			'current_count' => $newquantity,
 			'price' => $newprice,					
 		);
 		
-		$this->db->where('product_ID', $id);
+		$this->db->where('product_id', $id);
 		$this->db->update('products', $data);
 			
 		$total = $this->input->post('price') * $this->input->post('quantity');

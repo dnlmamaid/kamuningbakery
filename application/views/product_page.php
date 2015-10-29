@@ -18,13 +18,13 @@
 					</ol>
 					</div>
 					
-						<?php if ($r->category_ID == '1') {?>
+					<?php if ($r->category_ID == '1') {?>
 					<div class="col-lg-2 pull-right">
 						<span data-toggle="modal" href="#salesOrder" ><a alt="Sell" data-toggle="tooltip" data-placement="top" title="Sell" class="btn btn-theme"><i class="fa fa-dollar"></i></a></span>
 						<span data-toggle="modal" href="#produce" ><a alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce" class="btn btn-caution"><i class="fa fa-plus"></i></a></span>
-						<?php } else if ($r->category_ID == '2') {?>
+					<?php } else if ($r->category_ID == '2') {?>
 					<div class="col-lg-1 pull-right">
-							<span data-toggle="modal" href="#purchaseOrder" ><a alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce" class="btn btn-caution"><i class="fa fa-plus"></i></a></span>
+							<a href="<?php echo base_url()?>purchases"alt="Add Order" data-toggle="tooltip" data-placement="top" title="Order" class="btn btn-caution"><i class="fa fa-plus"></i></a>
 						<?php }?>
 					</div>
 				</div>
@@ -153,14 +153,14 @@
 						<div class="form-group">
 							<div class="col-lg-3 col-xs-3">
 								<label class="control-label">Price per unit</label>
-								<input type="number" step="0.01" name="price" class="form-control inline" value="<?php echo $r->price?>">
+								<input type="number" step="any" name="price" class="form-control inline" value="<?php echo $r->price?>">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<div class="col-lg-3 col-xs-3">
 								<label class="control-label">Holding Cost Per Unit</label>
-								<input type="number" step="0.01" name="holding_cost" class="form-control inline" value="<?php echo $r->holding_cost?>">
+								<input type="number" step="any" name="holding_cost" class="form-control inline" value="<?php echo $r->holding_cost?>">
 							</div>
 						</div>
 				
@@ -202,7 +202,7 @@
 							<table class="table table-advance">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference No.</th>
+										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference Code</th>
 					                    <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
 				                        <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 				                        <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
@@ -210,12 +210,12 @@
 			                       	</tr>
 			                              	
 			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
-										<td class="col-md-1"><?php echo $row['reference'] ?></td>
+									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
+										<td class="col-md-1"><?php echo $row['purchase_reference'] ?></td>
 										<td class="col-md-1"><?php echo $row['supplier_name'] ?></td>
-		                                <td class="col-md-1"><?php echo $row['purchase_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
+		                                <td class="col-md-1"><?php echo $row['order_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1"><?php echo $row['ordering_cost']?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row['purchase_date']))?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row['date_received']))?></td>
 									</tr>	
 									<?php endforeach;	                               
 									else:?>
@@ -306,7 +306,7 @@
 						<div class="form-group">
 							<div class="col-lg-3 col-xs-3">
 								<label class="control-label">Price per unit</label>
-								<input type="number" step="0.01" name="price" class="form-control inline" value="<?php echo $r->price?>" disabled>
+								<input type="number" step="any" name="price" class="form-control inline" value="<?php echo $r->price?>" disabled>
 							</div>
 						</div>
 							
@@ -358,7 +358,7 @@
 							<?php foreach($ing as $r2): ?>
 								<div class="col-lg-12 col-xs-12">
 									<div class="col-lg-4 col-xs-4">						
-										<input type="number" step="0.001" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
+										<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
 									</div>
 									
 									<div class="col-lg-8 col-xs-8">
@@ -423,7 +423,7 @@
 						<div class="form-group">
 							<div class="col-lg-8 col-xs-8">
 								<label> Price Per unit</label>
-								<input type="number" step="0.001" name="price" class="form-control inline" required>
+								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
 						</div>
 									
@@ -486,7 +486,7 @@
 		</div>
 	</div>
 	
-	<!-- Sales Order Modal-->			
+	<!-- Production Modal-->			
 	<div class="modal fade" id="produce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="vertical-alignment-helper">
 			<div class="modal-dialog vertical-align-center">
@@ -501,6 +501,28 @@
 							
 					<div class="modal-body">
 					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>products/reproduce/<?php echo $r->product_id?>">
+						<?php foreach($ing as $r2): ?>
+						<div class="col-lg-12 col-xs-12">
+							<div class="col-lg-4 col-xs-4">	
+								<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>">
+							</div>
+									
+							<div class="col-lg-8 col-xs-8">
+								<select name="rm_ID[]" class="form-control">
+								<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
+								<?php if(!empty($rm)){
+									if (is_array($rm)){                      
+										foreach ($rm as $row) {
+									    	if($row['product_id'] != $r2->product_id){?>
+												<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+											<?php } 
+										}
+									}
+								} ?>
+								</select>
+							</div>
+						</div>
+						<?php endforeach;?>
 						
 						<div class="form-group">
 							<div class="col-lg-6 col-xs-6">

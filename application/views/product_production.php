@@ -67,7 +67,6 @@
 											<?php if(!empty($rm)){
 												if (is_array($rm)){                      
 									            	foreach ($rm as $row) {?>
-									            		
 													<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
 													<?php }
 												}

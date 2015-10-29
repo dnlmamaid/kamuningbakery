@@ -3,13 +3,13 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa fa-info" style=""></i> Order Info</h1>
+				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Order Info</h1>
 				<div class="col-lg-6 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
-					<li><i class="fa flaticon-ingredients1"></i><a href="<?php echo base_url()?>purchases/purchase_order/<?php echo $r->order_reference?>"> Purchase Order</a></li>
-					<li><i class="fa fa-info"></i> Order Info</li>
+					<li><i class="fa flaticon-bill9"></i><a href="<?php echo base_url()?>purchases/purchase_order/<?php echo $r->order_reference?>"> Purchase Order</a></li>
+					<li><i class="fa flaticon-ingredients1"></i> Order Info</li>
 				</ol>
 				</div>
 			</div>
@@ -80,12 +80,16 @@
 									</div>
 								</div>
 								
-								<div class="col-lg-3 col-xs-3 pull-right">
+								<div class="col-lg-3 col-xs-4 pull-right">
 									<div class="form-group">
 										<label>Status</label>
 										<select name="purchase_status" class="form-control" disabled>
+											<?php if($r->po_status == '1'):?>
+											<option value="1"selected>Delivered</option>
+											<?php else:?>
 											<option value="0" selected>On Process</option>
-											<option value="1">Delivered</option>
+											<?php endif;?>
+											
 										</select>
 									</div>
 								</div>
@@ -141,6 +145,7 @@
 										<div class="col-lg-3 pull-right">
 											<div class="form-group">
 												<label><?php echo $r->ordering_cost?></label>
+												<input type="hidden" name="ordering_cost" class="form-control inline" value="<?php echo $r->ordering_cost?>">
 											</div>
 										</div>
 									</div>

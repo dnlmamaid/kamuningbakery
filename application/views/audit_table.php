@@ -43,7 +43,7 @@
 							</div>
 						<?php } ?> 
 						<div class="table-responsive"> 
-							<table class="table table-advance">
+							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Module</th>
@@ -54,7 +54,7 @@
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($audit) && is_array($audit)) : foreach($audit as $row): ?> 
-								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
 								  		<td class="col-md-1"><?php echo $row->module ?></td>
 								  		<td class="col-md-2"><?php echo $row->remarks ?></td>
 										<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
@@ -67,7 +67,7 @@
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
 								  		<td class="col-md-1"><?php echo $row->module ?></td>
 								  		<td class="col-md-2"><?php echo $row->remarks ?></td>
 										<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>

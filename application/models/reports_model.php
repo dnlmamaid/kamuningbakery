@@ -187,10 +187,10 @@ Class reports_model extends CI_Model {
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
 		
-		$this->db->where('purchase_date >=',$start);
-		$this->db->where('purchase_date <=',$end);
+		$this->db->where('date_received >=',$start);
+		$this->db->where('date_received <=',$end);
 		
-		$this->db->select('sum(ordering_cost) as total');
+		$this->db->select('sum(total_cost) as total');
 		
 		$q = $this->db->get('purchases');
 		return $q->row();
@@ -207,12 +207,12 @@ Class reports_model extends CI_Model {
 	function get_purchases_by_date(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
-		$this->db->where('purchase_date >=',$start);
-		$this->db->where('purchase_date <=',$end);
+		$this->db->where('date_received >=',$start);
+		$this->db->where('date_received <=',$end);
 		$this->db->join('users','users.id = purchases.user_id','left');
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('products','products.product_id = purchases.product_id','left');
-		$this->db->order_by('purchase_date','desc');
+		
+		$this->db->order_by('date_received','desc');
 		$query = $this->db->get('purchases');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {

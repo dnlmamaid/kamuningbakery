@@ -19,7 +19,7 @@ class production extends CI_Controller {
 	    {
 			//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->reports_model->getProducedCtr();
+			$total_row 	= $this->reports_model->getProducedCtr();
 			
 			$config = array(
 			'total_rows' => $total_row,

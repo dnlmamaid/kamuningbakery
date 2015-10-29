@@ -71,7 +71,7 @@
 	                                </tr>
 									<?php else: ?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">
-								  		<td class="col-md-2 b"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
+								  		<td class="col-md-1 b"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1 b"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->supplier_name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->total_cost?></td>

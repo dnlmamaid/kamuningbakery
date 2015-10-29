@@ -92,7 +92,6 @@
 						<th>No records</th>
 						<th>No records</th>
 						<th>No records</th>
-						<th>No records</th>
 					</tr>
 					<?php endif; ?>      
 	            	</tbody>

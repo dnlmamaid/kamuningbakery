@@ -58,8 +58,6 @@ class production_model extends CI_Model{
 			//$rm = explode(' ', $this->input->post('rm_ID'));
 			
 			
-			
-			
 			$data = array(
 				'product_Name' => $this->input->post('product_Name'),
 				'current_count' => $this->input->post('quantity'),
@@ -102,6 +100,8 @@ class production_model extends CI_Model{
 				
 			);
 			
+			
+			
 			$this->db->insert('production', $production);
 			
 			$audit = array(
@@ -121,36 +121,65 @@ class production_model extends CI_Model{
 	 * Reproduce Finished Goods Function
 	 * 
 	 */
-	function produce_FG($id)
+	function produce_FG($pid)
     {
+    	$total = 0;
     	foreach($_POST['rm_ID'] as $val => $rm)
 		{
+			//Gets Raw Material 			
+			$this->db->select('current_count');
+			$this->db->from('products');
+			$this->db->where('product_id', $rm);
+			$oldqty = $this->db->get()->row('current_count');
+			$nqty = (($oldqty) - ($this->input->post('quantity') * $_POST['qpu'][$val]));
+				
+			//Gets Total Cost
 			$this->db->select('price');
 			$this->db->from('products');
-			$this->db->where('product_id', $id);
-			$oldprice = $this->db->get()->row('price');
-	    	$newprice = ($this->input->post('price') + $oldprice)/2;
+			$this->db->where('product_id', $rm);
+			$price = $this->db->get()->row('price');
+			$total = ($price + $total);
 				
-			$this->db->select('quantity');
-			$this->db->from('products');
-			$this->db->where('product_id', $id);
-			$oldquantity = $this->db->get()->row('quantity');
-	    	$newquantity = $this->input->post('quantity') + $oldquantity;
-				
-			$data = array(
-				'current_count' => $newquantity,
+			//Updates Quantity	
+			$process = array(
+				'current_count' => $nqty,
 			);
-			
-			$this->db->where('product_ID', $id);
-			$this->db->update('products', $data);
+					
+			$this->db->where('product_id', $rm);
+			$this->db->update('products', $process);
+							
 		}
+		
+		 			
+		$this->db->select('current_count');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$oldc = $this->db->get()->row('current_count');
+		$nc = ($oldc) + ($this->input->post('quantity'));
 			
-		$total = $this->input->post('price') * $this->input->post('quantity');
+		$data = array(				
+			'current_count' => $nc,
+	    );
+		
+		$this->db->where('product_id', $pid);
+		$this->db->update('products', $data);
+			
+		$prod_cost = $price * $this->input->post('quantity');
+			
+		$production = array(
+			'product_id' 			=> $pid,
+			'total_produced'		=> $this->input->post('quantity'),
+			'total_production_cost'	=> $prod_cost,
+			'date_produced'			=> date('Y-m-j H:i:s'),
+			'process_status' 		=> '1',
+		);
+			
+		$this->db->insert('production', $production);
 			
 		$audit = array(
 			'user_id'	=> $this->session->userdata('user_id'),
 			'module'	=> 'Production',
-			'remark_id'	=> $id,
+			'remark_id'	=> $pid,
 			'remarks'	=> 'produced a product',
 			'date_created'=> date('Y-m-j H:i:s'),
 		);
@@ -165,11 +194,12 @@ class production_model extends CI_Model{
 	 */
 	public function getFGCtr() {
 		if($this -> session -> userdata('is_logged_in')){
-			
-			return $this->db->count_all_results('production');
+			$this -> db -> where('category_ID', '1');
+			return $this->db->count_all_results('products');
 		}
 		else{
-			return $this->db->count_all_results('production');
+			$this -> db -> where('category_ID', '1');
+			return $this->db->count_all_results('products');
 		}
 	}
 	
