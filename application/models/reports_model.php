@@ -1,6 +1,23 @@
 <?php
 Class reports_model extends CI_Model {
 	
+	
+	public function getLow($limit, $start) {
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
+		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('current_count', 'asc');
+		$query = $this -> db -> get('products');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
 
 	/******* AUDIT *******************/
 
@@ -227,6 +244,25 @@ Class reports_model extends CI_Model {
 		return false;
 	}
 	
+	public function getHSales($limit, $start) {
+		$this->db->join('users','users.id = sales.user_ID','left');
+		$this->db->join('products','products.product_id = sales.product_ID','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('total_quantity', 'desc');
+		
+		$query = $this -> db -> get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+		
+		
+	}
+	
 	public function getSalesCtr() {
 		$this -> db -> select('*');
 		$this -> db -> from('sales');
@@ -243,7 +279,7 @@ Class reports_model extends CI_Model {
 	function get_sales_rec($sid) {
 		
 		$this->db->join('users','users.id = sales.user_ID','left');
-		$this->db->join('products','products.product_id = sales.product_ID','left');
+		$this->db->join('products','products.product_id = sales.product_id','left');
 		$this -> db -> where('sales_id', $sid);
 		$q = $this -> db -> get('sales');
 		
@@ -256,7 +292,7 @@ Class reports_model extends CI_Model {
 	 * -- gets product purchase history
 	 * 
 	 */
-	function getSalesHistory($sid)
+	function getSalesHistory()
 	{
 		if($this -> session -> userdata('is_logged_in'))
 		{
@@ -264,7 +300,8 @@ Class reports_model extends CI_Model {
 			$this->db->join('products','products.product_id = sales.product_ID','left');
 			$this->db->from('sales');
 			$this -> db -> order_by('sales_date', 'desc');	
-			$this -> db -> where('sales.product_id', $sid);
+			
+			
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
 			return $data;

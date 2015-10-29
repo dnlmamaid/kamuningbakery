@@ -11,13 +11,13 @@
 					
 					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+						<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 						<li><i class="fa fa-dollar"></i> Sales</li>
 					</ol>
 					</div>
 					
 					
-					<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
+					<div class="col-lg-6 col-xs-12">
 	    				<?php echo form_open('sales/search')?>
 						<div class="input-group">
 							
@@ -27,7 +27,7 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
+	    			<div class="col-lg-1 col-xs-2 pull-right">
 		    			<a alt="Sales Report" data-toggle="tooltip" data-placement="top" title="Sales Report" href="<?php echo base_url()?>sales/report" class="btn btn-caution"><i class="fa fa-line-chart"></i></a>
 					</div>
 	    				
@@ -50,7 +50,7 @@
 							</div>
 						<?php } ?> 
 						<div class="table-responsive"> 
-							<table class="table table-advance">
+							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice ID</th>
@@ -73,7 +73,7 @@
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice_invoice/<?php echo $row->sales_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>

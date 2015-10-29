@@ -55,20 +55,27 @@
 			<div class="col-lg-6 col-xs-6">
 				<h3><i class="fa fa-dollar"></i> Highest Selling Products</h3>
 				<div class="table-responsive"> 
-					<table class="table table-advance">
+					<table class="table table-advance table-hover">
 					<tbody>
 						<tr>
 							<th class="col-md-2"><i class="fa icon_cart"></i> Product Name</th>
                             <th class="col-md-2"><i class="fa fa-dollar"></i> Price</th>
 							<th class="col-md-2"><i class="fa fa-dollar"></i> Total Sold</th>
 						</tr>
-                        
-                        <tr class="conf clickable-row" data-href="#">
-							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> Malungay pandesal</a></td>
-                            <td class="col-md-2-b">Php 1</a></td>
-                            <td class="col-md-2-b">3250 pcs</a></td>                                                           
+                        <?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
+                        <tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
+							<td class="col-md-2-b"> <?php echo $row->product_Name ?></a></td>
+                            <td class="col-md-2-b"> <?php echo $row->sale_Price ?></a></td>
+                            <td class="col-md-2-b"> <?php echo $row->current_count ?></a></td>                                                           
                         </tr>
-                              	
+                        <?php endforeach;	                               
+						else:?>
+						<tr>											
+							<th>No records</th>
+							<th>No records</th>
+							<th>No records</th>
+						</tr>
+						<?php endif; ?> 
 					</tbody>
                     </table>
                 </div>
@@ -79,19 +86,27 @@
 			<div class="col-lg-6 col-xs-6">
 			<h3><i class="fa fa-exclamation-triangle" style="color:red;"></i> Low Inventory Products</h3>
 				<div class="table-responsive"> 
-					<table class="table table-advance">
+					<table class="table table-advance table-hover">
 					<tbody>
 						<tr>
 							<th class="col-md-2"><i class="fa icon_cart"></i> Product Name</th>
-                            <th class="col-md-2"><i class="fa fa-dollar"></i> Price</th>
+                            <th class="col-md-2"><i class="fa fa-dollar"></i> Cost</th>
 							<th class="col-md-2"><i class="fa fa-exclamation-triangle"></i> Quantity</th>
 						</tr>
                         
-                        <tr class="conf clickable-row" data-href="#">
-							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> Malungay pandesal</a></td>
-                            <td class="col-md-2-b">Php 1</a></td>
-                            <td class="col-md-2-b">3250 pcs</a></td>                                                           
-                        </tr>
+                        <?php if(isset($products) && is_array($products)) : foreach($products as $row):?> 
+								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
+							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name?></a></td>
+                            <td class="col-md-2-b"> <?php echo $row->price ?></a></td>
+                            <td class="col-md-2-b"> <?php echo $row->current_count ?></a></td>                                                           
+                        <?php endforeach;	                               
+						else:?>
+						<tr>											
+							<th>No records</th>
+							<th>No records</th>
+							<th>No records</th>
+						</tr>
+						<?php endif; ?>
                               	
 					</tbody>
                     </table>
@@ -102,7 +117,7 @@
 			<div class="col-lg-6">
 				<h3><i class="fa fa-history"></i> Recent Activities</h3>
 				<div class="table-responsive"> 
-					<table class="table table-advance">
+					<table class="table table-advance table-hover">
 						<tbody>
 							<tr>
 								<th class="col-md-1"><i class="fa fa-barcode"></i> Module</th>

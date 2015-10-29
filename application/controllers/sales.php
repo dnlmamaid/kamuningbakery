@@ -73,11 +73,11 @@ class sales extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
 			
-			$data['cls'] = $this -> products_model -> getClass();
-			$data['supplier'] = $this -> products_model -> getSupplier();
-
-			$data['main_content'] = 'sales_invoice';
-			$this -> load -> view('includes/adminTemplate', $data);
+			$sid = $this -> uri -> segment(3);
+			$data['rec'] = $this -> reports_model -> get_sales_rec($sid);
+			
+			$data['main_content'] = 'view_sales_invoice';
+			$this->load->view('includes/adminTemplate', $data);
 		}
 		
 		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
