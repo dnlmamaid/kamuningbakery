@@ -82,7 +82,33 @@ class purchases_model extends CI_Model{
 		$val = $this->db->get('products');
 		
 		if($val->num_rows() == 1){
-			$this->session->set_flashdata('error','Product already exist. If you want to replenish a product use the Purchase Order Form');
+			
+			$this->db->select('product_id');
+			$this->db->from('products');
+			$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
+			$this->db->where('category_ID',$this->input->post('category_ID'));
+			$this->db->where('product_Name',$this->input->post('product_Name'));
+			$pid = $this->db->get()->row('product_id');			
+			
+			$order = array(
+				'product_id'=> $pid,
+				'order_reference'	=> $code,
+				'order_quantity'	=> $this->input->post('quantity'),
+				'ppu'	=> $this->input->post('price'),
+				'ordering_cost'	=> $total,				
+			);
+			
+			$this->db->insert('purchase_orders', $order);
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Purchases',
+				'remark_id'	=> $pid,
+				'remarks'	=> 'Added a product on a purchase order',
+				'date_created'=> date('Y-m-j H:i:s'),
+			);
+				
+			$this->db->insert('audit_trail', $audit);
 		}
 
 		else{
@@ -118,6 +144,16 @@ class purchases_model extends CI_Model{
 			);
 			
 			$this->db->insert('purchase_orders', $order);
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Purchases',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'Added a product on a purchase order',
+				'date_created'=> date('Y-m-j H:i:s'),
+			);
+				
+			$this->db->insert('audit_trail', $audit);
 		        
 		}
 	}
