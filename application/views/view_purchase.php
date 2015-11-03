@@ -6,7 +6,7 @@
 				<h1 class="page-header"><i class="fa fa-history"></i> Purchase Information</h1>
 				<div class="col-lg-5 pull-left">
 				<ol class="breadcrumb">
-					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fa-archive"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
 					<li><i class="fa fa-history"></i> Purchase Information</li>
 				</ol>

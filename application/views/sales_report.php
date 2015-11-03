@@ -36,6 +36,7 @@
 			<div class="row">
 				<div class="col-md-3">
 					<button onclick="print()" class="btn btn-theme  hidden-print"><span class="fa fa-print"></span> Print</button>
+					<a href="<?php echo base_url()?>sales" type="button" data-toggle="tooltip" data-placement="top" title="back to sales" class="btn btn-caution hidden-print"><i class="fa fa-dollar"></i></button></a>				
 				</div>
 				
 				<div class="col-md-9 btn-group pull-right">

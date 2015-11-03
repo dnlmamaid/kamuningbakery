@@ -15,7 +15,7 @@ class suppliers extends CI_Controller {
 	public function index($offset = 0)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
 	    {
 	    	
 	    	//Pagination
@@ -70,8 +70,7 @@ class suppliers extends CI_Controller {
 	public function profile()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){			
 			$data['utype'] = $this->users_model->getuType();
 			
 			/* Notification */
@@ -84,21 +83,12 @@ class suppliers extends CI_Controller {
 			$data['products'] = $this -> products_model -> getProductSupplier($mid);
 			$data['main_content'] = 'suppliers_profile';
 			$this->load->view('includes/adminTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in') && !$this->session->userdata('user_type'))
-	    {
-	    	
-			
-			$data['main_content'] = 'suppliers_table';
-			$this->load->view('includes/memberTemplate', $data);
-		}
-		
-		else
-	    {
-			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 		
 	}
@@ -106,65 +96,49 @@ class suppliers extends CI_Controller {
 
 	public function update($id)
 	{
-		if($this->session->userdata('is_logged_in')){
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$id = $this -> uri -> segment(3);
 			$this -> users_model -> update_supplier($id);
 			
 			redirect('suppliers/profile/'.$id, 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
-		
 	}
 	
 	
 	public function add()
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$this -> users_model -> create_supplier();
 			$this->session->set_flashdata('success','Successfully Created User');
 			redirect('suppliers', 'refresh');
-		}
-
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('home', 'refresh');
-		}
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
 	
 	public function remove($id)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type')=='1')
-		{
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <='2'){
 			$this -> users_model -> remove($id);
 			$this->session->set_flashdata('message','Successfully Deleted Entry');
 			redirect('suppliers', 'refresh');
-		}
-		
-		else if ($this -> session -> userdata('is_logged_in') && $this->session->userdata('user_type') != '1'){
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('home', 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
@@ -173,50 +147,35 @@ class suppliers extends CI_Controller {
 	public function disable($id)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			
 			$this -> users_model -> disable_s($id);
 			
 			$this->session->set_flashdata('success','Account Disabled');
 			redirect('suppliers', 'refresh');
-		}
-		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect($base_url, 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 
 	public function enable($id)
 	{		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			
 			$this -> users_model -> enable_s($id);
 			
 			$this->session->set_flashdata('success','Account Enabled');
 			redirect('suppliers', 'refresh');
-		}
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect($base_url, 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
@@ -224,35 +183,33 @@ class suppliers extends CI_Controller {
 	
 	function search() {
 		
-		if($this->session->userdata('is_logged_in'))
-		{			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){	
 			$search = $this -> input -> post('search');
 			redirect('suppliers/search_result/'.$search);
 						
-		}
-		
-		else 
-		{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	
 	}
 
 	function search_result($search) {
 		
-		if ($this -> session -> userdata('is_logged_in'))
-		{
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$data['search'] = $this -> users_model -> search_suppliers($search);
 			
 			$data['main_content'] = 'suppliers_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} 
-		else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	
 	}

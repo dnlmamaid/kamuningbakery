@@ -111,6 +111,7 @@
 											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
 										</span>
 										<input type="submit" class="btn btn-theme" value="Update Order" data-toggle="tooltip" data-placement="top" title="Update Order">
+										<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>
 									</div>
 								</div>
 							</div>
@@ -191,8 +192,7 @@
 							<div class="row">
 								<div class="col-lg-1 pull-right">
 									<div class="form-group">
-									<input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Receive Order"><i class="fa fa-check"></i>
-									
+									<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Clear Order" value="&#xF00c;">									
 									</div>
 								</div>
 							</div>

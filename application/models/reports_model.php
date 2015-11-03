@@ -288,19 +288,22 @@ Class reports_model extends CI_Model {
 	}
 
 	/**
-	 * Get Product Purchase History function
-	 * -- gets product purchase history
+	 * Get Product Sales History function
+	 * -- gets product sales history
 	 * 
 	 */
-	function getSalesHistory()
+	function getSalesHistory($pid)
 	{
 		if($this -> session -> userdata('is_logged_in'))
 		{
-			$this->db->join('users','users.id = sales.user_ID','left');
-			$this->db->join('products','products.product_id = sales.product_ID','left');
+			
+			$this->db->join('users','users.id = sales.user_id','left');
+			
+			$this->db->join('products','products.product_id = sales.product_id','right');
+			
 			$this->db->from('sales');
 			$this -> db -> order_by('sales_date', 'desc');	
-			
+			$this -> db -> where('products.product_id', $pid);
 			
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
@@ -398,7 +401,7 @@ Class reports_model extends CI_Model {
 	
 	public function getProducedCtr() {
 		$this -> db -> select('*');
-		$this -> db -> from('products');
+		$this -> db -> from('production');
 		$query = $this -> db -> get();
 		$result = $query -> num_rows();
 		return $result;
@@ -411,14 +414,75 @@ Class reports_model extends CI_Model {
 	 */
 	function get_production_rec($pid) {
 		
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
-		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+		$this -> db -> join('products', 'products.product_id = production.product_id', 'left');
 		$this -> db -> where('product_id', $pid);
-		$q = $this -> db -> get('products');
+		$q = $this -> db -> get('production');
 		
 		return $q -> result();
 
+	}
+	
+	/**
+	 * Get Product Production History function
+	 * -- gets product production history
+	 * 
+	 */
+	function getProductionHistory($pid)
+	{
+		if($this -> session -> userdata('is_logged_in'))
+		{
+			
+			$this->db->join('users','users.id = production.user_id','left');
+			$this->db->join('products','products.product_id = production.product_id','left');
+			
+			$this->db->from('production');
+			$this -> db -> order_by('date_produced', 'desc');	
+			$this -> db -> where('production.product_id', $pid);
+			$query = $this -> db -> get();
+			$data = $query -> result_array();
+			return $data;
+		}
+	}
+
+	function get_total_produced_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		
+		$this->db->where('date_produced >=',$start);
+		$this->db->where('date_produced <=',$end);
+		
+		$this->db->select('sum(net_fg_cost) as total');
+		
+		$q = $this->db->get('production');
+		return $q->row();
+	}
+	
+	function get_total_produced(){
+		
+		$this->db->select('sum(net_fg_cost) as total');
+		$q = $this->db->get('production');
+		return $q->row();
+	}
+	
+	
+	function get_produced_by_date(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		$this->db->where('date_produced >=',$start);
+		$this->db->where('date_produced <=',$end);
+		$this->db->join('users','users.id = purchases.user_id','left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		
+		$this->db->order_by('date_produced','desc');
+		$query = $this->db->get('production');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
 	}
 	
 	/** Search Production **/

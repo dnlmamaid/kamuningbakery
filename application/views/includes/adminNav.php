@@ -6,6 +6,7 @@
     <ul class="nav sidebar-nav">
     	<li><a href="<?php echo base_url()?>">Home</a></li>
 		<li><a href="<?php echo base_url()?>suppliers">Suppliers</a></li>
+		<li><a href="<?php echo base_url()?>requests">Requests</a></li>
 		<li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <span class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
 				<li class="dropdown-header">Inventory</li>
@@ -42,7 +43,7 @@
 		</li>
 	</ul>
     <ul class="nav sidebar-footer">
-    	<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/pandesal.jpg" style="height:100px;">
+    	<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/pandesal.jpg" style="height:80px;">
 		<p>&copy; Kamuning Bakery 2015</p>
 	</ul>            
 </nav>

@@ -11,9 +11,6 @@
 			<center><img src="<?php echo base_url()?>assets/images/kb_logo(edited).png" class="img-responsive" align="center"></center>
 			<b><p class="page-header" align="center">43 Judge Jimenez St. Corner K-1st, Kamuning Quezon City</p></b>
 					
-					
-		
-			
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" style="margin-top:15px;">
 					<h2 align="center">Purchases Report</h2>
@@ -37,6 +34,7 @@
 			<div class="row">
 				<div class="col-md-3">
 					<button onclick="print()" class="btn btn-theme  hidden-print"><span class="fa fa-print"></span> Print</button>
+					<a href="<?php echo base_url()?>purchases" type="button" data-toggle="tooltip" data-placement="top" title="back to purchases" class="btn btn-caution hidden-print"><i class="fa icon_datareport"></i></button></a>
 				</div>
 				
 				<div class="col-md-9 btn-group pull-right">
@@ -78,14 +76,14 @@
 			            
 					</tr>
 	                              	
-	                <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
+	                <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): if($row->po_status == '1'):?> 
 					<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/view_purchase/<?php echo $row->purchase_id?>">
 						<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
 						<td class="col-md-1"><?php echo $row->total_cost?></td>
 						<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_received))?></td>
 	                </tr>	
-					<?php endforeach;	                               
+					<?php endif;endforeach;	                               
 					else:?>
 					<tr>											
 						<th>No records</th>
@@ -100,10 +98,22 @@
 			</section>
 		</div>
 	</div>
-              
-	
 	<!-- page end-->
+	<?php if($body != 'search_result'){ ?>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
+			<div id="pagination">
+				<ul class="tsc_pagination">
+				<?php if(is_array($purchases) && sizeof($purchases)>0){?> 
+					<div class="pagination pull-left" style="margin:10px 0px 5px 0px;"><?php echo (!empty($pagermessage) ? $pagermessage : ''); ?></div>
+						<?php echo $paginglinks; }?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
 	            
 </div>
 <!-- /#page-content-wrapper -->
+</div>
  

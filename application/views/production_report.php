@@ -29,17 +29,18 @@
 			
 			<div class="row">
 				<div class="col-md-3">
-					<h4>Total Finished Goods: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>
+					<h4>Total Worth of Finished Goods: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>
 				</div>
 			</div>
 					
 			<div class="row">
 				<div class="col-md-3">
 					<button onclick="print()" class="btn btn-theme  hidden-print"><span class="fa fa-print"></span> Print</button>
+					<a href="<?php echo base_url()?>production" type="button" data-toggle="tooltip" data-placement="top" title="back to production" class="btn btn-caution hidden-print"><i class="fa flaticon-stone2"></i></button></a>
 				</div>
 				
 				<div class="col-md-9 btn-group pull-right">
-					<form action="<?php echo base_url();?>Production/by_date" method="post" accept-charset="utf-8" class="form-inline" style="float:right">
+					<form action="<?php echo base_url();?>production/by_date" method="post" accept-charset="utf-8" class="form-inline" style="float:right">
 			              <input name="sdate" id="sdate"  class="form-control  hidden-print" placeholder="Start Date">
 			              <input name="edate" id="edate"  class="form-control  hidden-print"  placeholder="End Date">
 			              <button type="submit" class="btn btn-theme  hidden-print pull-right" name="search" value="Search" style="margin-bottom:12px;"><i class="fa fa-search"></i> Search</button>
@@ -48,17 +49,13 @@
 			</div>  
 			
 			
-				
-			    
-					
-			
 		</div>
 	</div>
 	
     <!-- page start-->
     <div class="row">
 	    <div class="col-lg-12">
-    		<section class="panel">
+    		<section class="col-lg-12 panel">
             <?php if($this->session->flashdata('success')){ ?>
 			<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
 			<?php } ?>
@@ -71,32 +68,25 @@
 			</div>
 			<?php } ?> 
 			<div class="table-responsive"> 
-				<table class="table table-advance">
+				<table class="table table-advance table-hover">
 					<tbody>
 					<tr>
-						<th class="col-md-1"><i class="fa fa-barcode"></i> Reference No.</th>
-			            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
-			            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
-			            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
-			            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
-			            
+						<th class="col-md-1"><i class="fa fa-calendar"></i> Date Produced</th>
+						<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
+			            <th class="col-md-1"><i class="fa fa-tags"></i> Number of Goods Produced</th>
+						<th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th>
 					</tr>
 	                              	
 	                <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
-					<tr class="conf clickable-row" data-href="<?php echo base_url()?>Production/view_purchase/<?php echo $row->purchase_id?>">
-						<td class="col-md-1"><?php echo $row->reference ?></td>
+					<tr>
+						<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 						<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                <td class="col-md-1"><?php echo $row->quantity?> <?php echo $row->um?></td>
-		                <td class="col-md-1"><?php echo $row->total?></td>
-						<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
+		                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
 	                </tr>	
 					<?php endforeach;	                               
 					else:?>
 					<tr>											
-						<th>No records</th>
-						<th>No records</th>
 						<th>No records</th>
 						<th>No records</th>
 						<th>No records</th>
@@ -112,7 +102,7 @@
               
 	<?php if($body != 'search_result'){ ?>
 	<div class="row">
-		<div class="col-lg-8 col-lg-offset-4">
+		<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
 			<div id="pagination">
 				<ul class="tsc_pagination">
 				<?php if(is_array($products) && sizeof($products)>0){?> 

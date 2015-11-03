@@ -17,7 +17,7 @@ class home extends CI_Controller {
 	* 
 	*/	
 	function index() {
-		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '1'))
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2'))
 	    {
 	    	$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 	    	$data['audit'] = $this->reports_model->getAudit('5', $offset);
@@ -27,16 +27,11 @@ class home extends CI_Controller {
 			$this->load->view('includes/admintemplate', $data);		
 		}
 		
-		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '2'))
-	    {
-			$data['main_content'] = 'home';
-			$this->load->view('includes/mgrtemplate', $data);		
-		}
-		
+	
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '3'))
 	    {
 			$data['main_content'] = 'home';
-			$this->load->view('includes/acctanttemplate', $data);		
+			$this->load->view('includes/accTemplate', $data);		
 		}
 		
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '4'))

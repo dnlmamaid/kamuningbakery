@@ -105,7 +105,7 @@ class purchases_model extends CI_Model{
 			$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
 				'module'	=> 'Purchases',
-				'remark_id'	=> $remark_id,
+				'remark_id'	=> $pid,
 				'remarks'	=> 'Added a product on a purchase order',
 				'date_created'=> date('Y-m-j H:i:s'),
 			);
@@ -172,9 +172,9 @@ class purchases_model extends CI_Model{
 		
 	}
 
-	function create_po()
+	function create_po($code)
     {
-	    $code = date('Y').'0'.random_string('alnum',6);
+	    
 		$purchase = array(
 			'user_id'	=> $this->session->userdata('user_id'),
 			'supplier_id' => $this->input->post('supplier_id'),

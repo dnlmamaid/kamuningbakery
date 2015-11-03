@@ -7,7 +7,7 @@
 			<div class="col-lg-12">
 				<h3 class="page-header"><?php echo $r->class_Name?></h3>
 				<ol class="breadcrumb">
-					<li><i class="fa fa-laptop"></i><a href="<?php echo base_url()?>dashboard">Dashboard</a></li>
+					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>">Home</a></li>
 					<li><i class="icon_cart"></i><a href="<?php echo base_url()?>products">Products</a></li>
 					<li><i class="fa fa-tags"></i><a href="<?php echo base_url()?>products/classes">Product Classifications</a></li>
 					<li><?php echo $r->class_Name?></li>

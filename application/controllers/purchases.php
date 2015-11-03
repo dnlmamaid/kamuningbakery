@@ -175,8 +175,9 @@ class purchases extends CI_Controller {
 	public function create_purchase_order(){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
-			$this -> purchases_model -> create_po();
-			redirect('purchases', 'refresh');
+	    	$code = date('Y').'0'.random_string('alnum',6);	
+			$this -> purchases_model -> create_po($code);
+			redirect('purchases/purchase_order/'.$code, 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
@@ -206,19 +207,25 @@ class purchases extends CI_Controller {
 	
 	public function cancel_order($id)
 	{
-		$this -> purchases_model -> remove_order($id);
-		redirect('purchases', 'refresh');
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {	
+			$this -> purchases_model -> remove_order($id);
+			redirect('purchases', 'refresh');
+		}
 	}
 	
 	public function cancel_purchase($id)
 	{
-		$this -> purchases_model -> remove_purchase($id);
-		redirect('purchases', 'refresh');
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {	
+			$this -> purchases_model -> remove_purchase($id);
+			redirect('purchases', 'refresh');
+		}
 	}
 	
 	public function report($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
 	    {
 	    	
 			//UserData
@@ -282,7 +289,7 @@ class purchases extends CI_Controller {
 	public function purchase_invoice()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
 	    {			
 			$pid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> reports_model -> get_purchase_rec($pid);
@@ -301,32 +308,27 @@ class purchases extends CI_Controller {
 	}
 	
 	function by_date(){
-		
-		$data['sdate'] = $this->input->post('sdate');
-		$data['edate'] = $this->input->post('edate');
-		
-		$data['total'] = $this->reports_model->get_total_purchases_by_date();
-		$data['purchases'] = $this->reports_model->get_purchases_by_date();
-		
-		$data['main_content'] = 'purchases_report';
-		$this -> load -> view('includes/admintemplate', $data);
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {
+			$data['sdate'] = $this->input->post('sdate');
+			$data['edate'] = $this->input->post('edate');
+			
+			$data['total'] = $this->reports_model->get_total_purchases_by_date();
+			$data['purchases'] = $this->reports_model->get_purchases_by_date();
+			
+			$data['main_content'] = 'purchases_report';
+			$this -> load -> view('includes/admintemplate', $data);
+		}
 	}
 	
 	
 	
-	function search() {
-		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
-	    {
+	function search(){
+		if($this->session->userdata('is_logged_in')){
 		
 			$search = $this -> input -> post('search');
 			redirect('purchases/search_result/'.$search);
 						
-		} else if ($this->session->userdata('is_logged_in') && !$this->session->userdata('is_admin')) {
-						
-			$search = $this -> input -> post('search');
-			redirect('purchases/search_result/'.$search);
-			
 		} else {
 			//If no session, redirect to login page
 			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');

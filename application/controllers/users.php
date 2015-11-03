@@ -14,8 +14,7 @@ class users extends CI_Controller {
 	public function index($offset = 0)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 	    	
 	    	//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
@@ -56,21 +55,19 @@ class users extends CI_Controller {
 			$data['main_content'] = 'users_table';
 			$this->load->view('includes/adminTemplate', $data);
 			
-		}
-
-		else
-	    {
-			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 
 	public function profile()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {			
+		if($this->session->userdata('is_logged_in')){			
 			$data['utype'] = $this->users_model->getuType();
 			
 			$mid = $this -> uri -> segment(3);
@@ -78,46 +75,7 @@ class users extends CI_Controller {
 			
 			$data['main_content'] = 'profile_page';
 			$this->load->view('includes/adminTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '2')
-	    {
-	    	
-			$data['utype'] = $this->users_model->getuType();
-			
-			$mid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> users_model -> get_member_rec($mid);
-			
-			$data['main_content'] = 'profile_page';
-			$this->load->view('includes/mgrTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
-	    {
-	    	
-			$data['utype'] = $this->users_model->getuType();
-			
-			$mid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> users_model -> get_member_rec($mid);
-			
-			$data['main_content'] = 'profile_page';
-			$this->load->view('includes/mgrTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
-	    {
-	    	
-			$data['utype'] = $this->users_model->getuType();
-			
-			$mid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> users_model -> get_member_rec($mid);
-			
-			$data['main_content'] = 'profile_page';
-			$this->load->view('includes/accTemplate', $data);
-		}
-		
-		else
-	    {
+		} else {
 			//If no session, redirect to login page
 			$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect('login', 'refresh');
@@ -131,14 +89,13 @@ class users extends CI_Controller {
 		if($this->session->userdata('is_logged_in')){
 			$id = $this -> uri -> segment(3);
 			$this -> users_model -> update_user($id);
-			
-			redirect('users/profile/'.$id, 'refresh');
-		}
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+			redirect($this->agent->referrer(), 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 		
 	}
@@ -146,47 +103,34 @@ class users extends CI_Controller {
 	
 	public function add()
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
 	    {
 			$this -> users_model -> create();
 			$this->session->set_flashdata('success','Successfully Created User');
 			redirect('users', 'refresh');
-		}
-
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('home', 'refresh');
-		}
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
 	
 	public function remove($id)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type')=='1')
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <='2')
 		{
 			$this -> users_model -> remove($id);
 			$this->session->set_flashdata('message','Successfully Deleted Entry');
 			redirect('users', 'refresh');
-		}
-		
-		else if ($this -> session -> userdata('is_logged_in') && $this->session->userdata('user_type') != '1'){
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect('home', 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
@@ -194,51 +138,34 @@ class users extends CI_Controller {
 	
 	public function disable($id)
 	{
-		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
 	    {
 			
 			$this -> users_model -> disable($id);
 			
 			$this->session->set_flashdata('success','Account Disabled');
 			redirect('users', 'refresh');
-		}
-		
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect($base_url, 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 
 	public function enable($id)
 	{		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$this -> users_model -> enable($id);
-			
 			$this->session->set_flashdata('success','Account Enabled');
 			redirect('users', 'refresh');
-		}
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
-		{
-			
-			$this->session->set_flashdata('message','You don\'t have permission to access this page.');
-			redirect($base_url, 'refresh');
-		} 
-		
-		else{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 	
@@ -246,35 +173,33 @@ class users extends CI_Controller {
 	
 	function search() {
 		
-		if($this->session->userdata('is_logged_in'))
-		{			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){			
 			$search = $this -> input -> post('search');
 			redirect('users/search_result/'.$search);
-						
-		}
-		
-		else 
-		{
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+					
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	
 	}
 
 	function search_result($search) {
 		
-		if ($this -> session -> userdata('is_logged_in'))
-		{
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$data['search'] = $this -> users_model -> search_users($search);
 			
 			$data['main_content'] = 'users_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} 
-		else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	
 	}

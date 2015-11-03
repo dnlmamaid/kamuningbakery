@@ -17,7 +17,7 @@
 					</div>
 					
 					
-					<div class="col-lg-6 col-xs-12">
+					<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
 	    				<?php echo form_open('sales/search')?>
 						<div class="input-group">
 							
@@ -27,7 +27,7 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-1 col-xs-2 pull-right">
+	    			<div class="col-lg-1 col-xs-3 pull-right" style="margin-bottom:15px;">
 		    			<a alt="Sales Report" data-toggle="tooltip" data-placement="top" title="Sales Report" href="<?php echo base_url()?>sales/report" class="btn btn-caution"><i class="fa fa-line-chart"></i></a>
 					</div>
 	    				
@@ -103,7 +103,7 @@
               
            <?php if($body != 'search_result'){ ?>
 				<div class="row">
-					<div class="col-lg-8 col-lg-offset-4">
+					<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
 						<div id="pagination">
 							<ul class="tsc_pagination">
 							<?php if(is_array($sales) && sizeof($sales)>0){?> 

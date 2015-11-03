@@ -160,14 +160,18 @@ class products extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '1')
 	    {	
 			$pid = $this -> uri -> segment(3);
+			//Dropdowns
 			$data['supplier'] = $this -> products_model -> getSupplier();
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
-			
 			$data['rm'] = $this -> products_model -> getRawMats();
-			$data['ing'] = $this -> products_model -> getIng($pid);
 			
+			
+			//Record Values
+			$data['ing'] = $this -> products_model -> getIng($pid);
+			$data['production'] = $this -> reports_model -> getProductionHistory($pid);
 			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
+			$data['sales'] = $this -> reports_model -> getSalesHistory($pid);
 			
 			$data['rec'] = $this -> products_model -> get_product_rec($pid);
 						
@@ -249,7 +253,7 @@ class products extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
 			$this -> production_model -> produce_FG($pid);
-			redirect('products', 'refresh');
+			redirect($this->agent->referrer(), 'refresh');
 			
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');

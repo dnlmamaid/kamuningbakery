@@ -37,7 +37,7 @@ class production_model extends CI_Model{
 				$oldqty = $this->db->get()->row('current_count');
 				$nqty = (($oldqty) - ($this->input->post('quantity') * $_POST['qpu'][$val]));
 				
-				//Gets Total Cost
+				//Gets Total Cost Per Unit
 				$this->db->select('price');
 				$this->db->from('products');
 				$this->db->where('product_id', $rm);
@@ -76,7 +76,7 @@ class production_model extends CI_Model{
 			$this->db->insert('products', $data);
 			$this->session->set_flashdata('success','You have successfully added a new product');
 			
-			$prod_cost = $price * $this->input->post('quantity');
+			$net_cost = $total * $this->input->post('quantity');
 			$remark_id = $this->db->insert_id();
 			
 			foreach($_POST['rm_ID'] as $val => $rm)
@@ -84,6 +84,7 @@ class production_model extends CI_Model{
 				$ingr = array(
 					'id_for' => $remark_id,
 					'product_id' => $rm,
+					'ingredient_ctr' => $val,
 					'ingredient_qty' => $_POST['qpu'][$val],
 				);
 				
@@ -93,15 +94,15 @@ class production_model extends CI_Model{
 			
 			$production = array(
 				'product_id' => $remark_id,
+				'previous_count'		=> '0',
 				'total_produced'		=> $this->input->post('quantity'),
-				'total_production_cost'	=> $prod_cost,
+				'production_cost_pu'	=> $total,
+				'net_fg_cost'			=> $net_cost,
 				'date_produced'			=> date('Y-m-j H:i:s'),
 				'process_status' 		=> '1',
 				
 			);
-			
-			
-			
+				
 			$this->db->insert('production', $production);
 			
 			$audit = array(
@@ -133,7 +134,7 @@ class production_model extends CI_Model{
 			$oldqty = $this->db->get()->row('current_count');
 			$nqty = (($oldqty) - ($this->input->post('quantity') * $_POST['qpu'][$val]));
 				
-			//Gets Total Cost
+			//Gets Total Cost Per Unit
 			$this->db->select('price');
 			$this->db->from('products');
 			$this->db->where('product_id', $rm);
@@ -164,12 +165,14 @@ class production_model extends CI_Model{
 		$this->db->where('product_id', $pid);
 		$this->db->update('products', $data);
 			
-		$prod_cost = $price * $this->input->post('quantity');
+		$net_cost = $price * $this->input->post('quantity');
 			
 		$production = array(
 			'product_id' 			=> $pid,
+			'previous_count'		=> $oldc,
 			'total_produced'		=> $this->input->post('quantity'),
-			'total_production_cost'	=> $prod_cost,
+			'production_cost_pu'	=> $total,
+			'net_fg_cost'			=> $net_cost,
 			'date_produced'			=> date('Y-m-j H:i:s'),
 			'process_status' 		=> '1',
 		);
@@ -203,14 +206,23 @@ class production_model extends CI_Model{
 		}
 	}
 	
-	function get_total()
-	{
-		//$this->db->where('order_reference',$code);
-		$this->db->select('sum(total_production_cost) as total');
-		$q = $this->db->get('production');
-		return $q->row();
-		
+	function search($keyword) {
+
+		if ($this -> session -> userdata('is_logged_in')) {
+
+			$var = urldecode($keyword);
+			$this -> db -> join('products', 'products.product_id = production.product_id', 'left');
+			$this->db->or_like('product_Name', $var);
+			$this->db->or_like('price', $var);		
+			$this->db->or_like('products.description', $var);
+			$query = $this->db->get('production');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows . ' matching record(s) found.');
+			return $query -> result();
+		}
+
 	}
 
     
 }
+

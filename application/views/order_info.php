@@ -6,7 +6,7 @@
 				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Order Info</h1>
 				<div class="col-lg-6 col-xs-12 pull-left">
 				<ol class="breadcrumb">
-					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
 					<li><i class="fa flaticon-bill9"></i><a href="<?php echo base_url()?>purchases/purchase_order/<?php echo $r->order_reference?>"> Purchase Order</a></li>
 					<li><i class="fa flaticon-ingredients1"></i> Order Info</li>
@@ -115,7 +115,7 @@
 												<label>Price per unit </label>
 											</div>
 										</div>
-										<div class="col-lg-3 pull-right">
+										<div class="col-lg-4 pull-right">
 											<div class="form-group">
 												<label><?php echo $r->ppu?></label>
 											</div>
@@ -128,9 +128,9 @@
 												<label>Quantity </label>
 											</div>
 										</div>
-										<div class="col-lg-3 pull-right">
+										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->order_quantity?></label>
+												<label><?php echo $r->order_quantity?> <?php echo $r->um?></label>
 												<input type="hidden" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>">
 											</div>
 										</div>
@@ -142,7 +142,7 @@
 												<label>Total Amount </label>
 											</div>
 										</div>
-										<div class="col-lg-3 pull-right">
+										<div class="col-lg-4 pull-right">
 											<div class="form-group">
 												<label><?php echo $r->ordering_cost?></label>
 												<input type="hidden" name="ordering_cost" class="form-control inline" value="<?php echo $r->ordering_cost?>">
@@ -158,8 +158,8 @@
 									<div class="col-lg-4 pull-right">
 										<div class="form-group">
 											<?php if($r->order_status != '1'){?>
-											<a class="btn btn-danger" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="icon_close_alt2"></i></a>
-											<input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="right" title="Receive Order">
+											<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>
+											<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xF00c;">
 											<?php }?>
 										</div>
 									</div>

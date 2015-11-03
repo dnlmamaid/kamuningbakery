@@ -7,17 +7,17 @@
 			
 		  <div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"><i class="fa flaticon-breakfast27"></i> Production</h1>
+					<h1 class="page-header"><i class="fa flaticon-stone2"></i> Production</h1>
 					
 					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
-						<li><i class="fa flaticon-breakfast27"></i> Production</li>
+						<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
+						<li><i class="fa flaticon-stone2"></i> Production</li>
 					</ol>
 					</div>
 					
 					
-					<div class="col-lg-6 col-xs-12">
+					<div class="col-lg-6 col-xs-12" style="margin-bottom:15px;">
 	    				<?php echo form_open('production/search')?>
 						<div class="input-group">
 		      				<input type="text" class="form-control pull-right" placeholder="Looking for Something?" name="search">
@@ -26,8 +26,10 @@
 		    			</div>
 	    			</div>
 	    			
-	    			<div class="col-lg-1 col-xs-2 pull-right">
-		    			<a alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme pull-right"><i class="fa fa-plus"></i></a>
+	    			<div class="col-lg-2 col-xs-4 pull-right" style="margin-bottom:15px;">
+	    				<a href="<?php echo base_url()?>production/report" type="button" data-toggle="tooltip" data-placement="top" title="Production Report" class="btn btn-caution"><i class="fa fa-line-chart"></i></button></a>
+	    				<a type="button" alt="Finished Goods" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>inventory/finished_goods" class="btn btn-success"><i class="fa flaticon-breakfast27"></i></a>
+		    			<a type="button" alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce Goods" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme"><i class="fa flaticon-baker7"></i></a>
 					</div>
 	    				
 				</div>
@@ -53,31 +55,32 @@
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa icon_cart"></i> Date</th>
+										<th class="col-md-1"><i class="fa fa-calendar"></i> Date Produced</th>
+										<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Number of Goods Produced</th>
+			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Net Cost</th>
 			                            
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th>
-			                            <th class="col-md-1"><i class="fa fa-cogs"></i> Action</th>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($production) && is_array($production)) : foreach($production as $row): ?> 
-								  	<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row->production_id?>">
+								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->total_production_cost ?></td>
+		                                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
 		                                <!--<td class="col-md-1">Php <?php echo $row->sale_Price?></td>-->
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row->production_id?>">
+										<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->total_production_cost ?></td>
+		                                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
 	                               </tr>
 	                                <?php endforeach;		                               
 									else:?>
 									<tr>											
-										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
@@ -94,7 +97,7 @@
               
            <?php if($body != 'search_result'){ ?>
 				<div class="row">
-					<div class="col-lg-8 col-lg-offset-4">
+					<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
 						<div id="pagination">
 							<ul class="tsc_pagination">
 							<?php if(is_array($production) && sizeof($production)>0){?> 

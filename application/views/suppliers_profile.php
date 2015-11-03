@@ -6,7 +6,7 @@
 				<h1 class="page-header"><i class="fa fa-truck"></i> <?php echo $r->supplier_name?></h1>
 				<div class="col-lg-4 col-xs-12 pull-left">
 				<ol class="breadcrumb">
-					<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fariefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
 					<li><i class="fa fa-truck"></i> <?php echo $r->supplier_name?></li>
 				</ol>
@@ -106,7 +106,7 @@
 									<td class="col-md-1"><?php echo $row['product_Name'] ?></td>
 									<td class="col-md-1"><?php echo $row['class_Name']?></td>
 			                       	<td class="col-md-1"><?php echo $row['category_name'] ?></td>
-			                        <td class="col-md-1"><?php echo $row['quantity']?></td>
+			                        <td class="col-md-1"><?php echo $row['current_count']?></td>
 			                        <!--<td class="col-md-1">
 				                        	<div class="btn-group">
 				                                  <a class="btn btn-success" href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>"><i class="icon_check_alt2"></i></a>

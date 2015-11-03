@@ -149,8 +149,12 @@ var counter = 2;
 							 
 		var newSelectDiv = $(document.createElement('div'))
 		.attr("id", 'rm' + counter);
-							 
-		newSelectDiv.after().html('<div class="col-lg-12 col-xs-12"><div class="col-lg-4 col-xs-4"><input type="number" step="0.001" name="qpu[]" class="form-control inline" value="" required></div><div class="col-lg-8 col-xs-8"><select name="rm_ID[]" class="form-control" required><option value="">Select Raw Material/s</option>'
+							
+														
+									
+									
+									
+		newSelectDiv.after().html('<div class="col-lg-12 col-xs-12"><div class="col-lg-2 col-xs-4"><input type="number" step="any" name="qpu[]" class="form-control inline" value="" required></div><div class="col-lg-5 col-xs-8"><select name="rm_ID[]" class="form-control" required><option value="">Select Raw Material/s</option>'
 		+'<?php if(!empty($rm)){if (is_array($rm)){foreach ($rm as $row) {?>'
 		+' <option value="'+'<?php echo $row['product_id']?>'+'">'+'<?php echo $row['product_Name']; ?>'+'</option>'
 		+'<?php }}} ?>'+'</select></div></div>');

@@ -19,7 +19,7 @@
 					</a>
 				</div><!--/.col-->
 
-				<div class="col-lg-4 col-xs-4">
+				<!--<div class="col-lg-4 col-xs-4">
 					<a href="<?php echo base_url()?>products" data-toggle="tooltip" data-placement="top" title="Products">
 					<div class="info-box blue-bg">
 						<i class="fa fa-shopping-cart"></i>
@@ -29,7 +29,7 @@
 						<div class="title">
 							
 						</div>
-					</div><!--/.info-box-->
+					</div><!--/.info-box
 					</a>
 				</div><!--/.col-->
 						
@@ -51,6 +51,11 @@
                 
 		<!-- tables-->
 		<div class="row">
+			<?php if($this->session->flashdata('message')){ ?>
+			<div class="col-lg-12">
+				<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
+			</div>
+			<?php } ?>
 			
 			<div class="col-lg-6 col-xs-6">
 				<h3><i class="fa fa-dollar"></i> Highest Selling Products</h3>

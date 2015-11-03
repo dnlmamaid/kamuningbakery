@@ -8,9 +8,8 @@ class production extends CI_Controller {
 		parent::__construct();
 		
 		$this -> load -> model('reports_model');		
-		$this -> load -> model('users_model');
-		$this -> load -> model('products_model');
 		$this -> load -> model('production_model');
+		$this -> load -> model('products_model');
 	}
 
 	public function index($offset = 0)
@@ -77,7 +76,7 @@ class production extends CI_Controller {
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['rm'] = $this -> products_model -> getRawMats();
 			$data['supplier'] = $this -> products_model -> getSupplier();
-			$data['to'] = $this->production_model->get_total(); 
+			 
 			$data['main_content'] = 'product_production';
 			$this->load->view('includes/productionTemplate', $data);
 		}
@@ -120,15 +119,15 @@ class production extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {
 				
-			$data['search'] = $this -> reports_model -> search_p($search);
+			$data['search'] = $this -> production_model -> search($search);
 			
-			$data['main_content'] = 'finished_goods';
+			$data['main_content'] = 'production_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
 			
-			$data['search'] = $this -> reports_model -> search_p($search);
+			$data['search'] = $this -> production_model -> search($search);
 			
-			$data['main_content'] = 'purchases';
+			$data['main_content'] = 'production_table';
 			$this -> load -> view('includes/memberTemplate', $data);
 		} else {
 			//If no session, redirect to login page
@@ -183,7 +182,9 @@ class production extends CI_Controller {
 				} 			
       			
     		}   
-			$data['products'] = $this->reports_model->getProducts($config['per_page'], $offset);
+    		
+    		$data['total'] = $this->reports_model->get_total_produced();
+			$data['products'] = $this->reports_model->getProduction($config['per_page'], $offset);
 
 			$data['main_content'] = 'production_report';
 			$this -> load -> view('includes/adminTemplate', $data);

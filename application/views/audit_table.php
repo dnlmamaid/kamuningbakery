@@ -8,7 +8,7 @@
 					
 					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
+						<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 						<li><i class="fa fa-archive"></i><a href="<?php echo base_url()?>audit_trail"> Audit Trail</a></li>
 					</ol>
 					</div>
@@ -98,7 +98,7 @@
               
            <?php if($body != 'search_result'){ ?>
 				<div class="row">
-					<div class="col-lg-8 col-lg-offset-4">
+					<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
 						<div id="pagination">
 							<ul class="tsc_pagination">
 							<?php if(is_array($audit) && sizeof($audit)>0){?> 

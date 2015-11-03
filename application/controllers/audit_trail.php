@@ -13,7 +13,7 @@ class audit_trail extends CI_Controller {
 
 	public function index($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
 	    {
 			//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
@@ -58,10 +58,11 @@ class audit_trail extends CI_Controller {
 
 			$data['main_content'] = 'audit_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-		}
-
-		else
-	    {
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	}
@@ -70,8 +71,7 @@ class audit_trail extends CI_Controller {
 	public function view_action()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){			
 			$data['utype'] = $this->users_model->getuType();
 			
 			$aid = $this -> uri -> segment(3);
@@ -79,13 +79,12 @@ class audit_trail extends CI_Controller {
 			
 			$data['main_content'] = 'view_audit';
 			$this->load->view('includes/adminTemplate', $data);
-		}
-	
-		else
-	    {
-			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
-			redirect('login', 'refresh');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 		
 	}
@@ -93,21 +92,16 @@ class audit_trail extends CI_Controller {
 	function search()
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-		{
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 				
 			$search = $this -> input -> post('search');
 			redirect('audit_trail/search_result/'.$search);
 						
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			
-		
-			$search = $this -> input -> post('search');
-			redirect('audit_trail/search_result/'.$search);
-			
-		} else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	
@@ -116,22 +110,17 @@ class audit_trail extends CI_Controller {
 	function search_result($search)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-		{
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 				
 			$data['search'] = $this -> reports_model -> search($search);
 			
 			$data['main_content'] = 'audit_table';
 			$this -> load -> view('includes/adminTemplate', $data);
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			
-			$data['search'] = $this -> reports_model -> search($search);
-			
-			$data['main_content'] = 'audit_table';
-			$this -> load -> view('includes/memberTemplate', $data);
-		} else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	

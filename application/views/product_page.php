@@ -53,8 +53,8 @@
 					</div>
 					<?php } ?>
 <?php if ($r->category_ID == '2') {?>
-					<div class="col-lg-6 bg-panel2">
-						<h3>Details</h3>
+					<h3>Details</h3>
+					<div class="col-lg-6">
 						<div class="form-group">
 							<label class="col-lg-3 control-label">Supplier</label>
 							<div class="col-lg-8 input-group">
@@ -134,8 +134,10 @@
 									<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addClass"><i class="fa fa-plus"></i></button>
 				      			</span>
 							</div>
-						</div>
-						
+						</div>					
+					</div>
+					
+					<div class="col-lg-6">
 						<div class="form-group" style="margin-top:10px;">
 							<div class="col-lg-3 col-xs-3">						
 								<label class="control-label">Quantity</label>
@@ -171,7 +173,7 @@
 							</div>
 						</div>
 					
-									
+							
 							
 						<div class="form-group">
 							<div class="col-lg-3">
@@ -192,18 +194,19 @@
 							<input type="submit" class="btn btn-success pull-right" value="Update" style="margin-left:5px;">
 							</form>
 							<a href="javascript:window.history.go(-1);" class="btn btn-default pull-right" style="align">Back</a>
-						</div>		
+						</div>	
 						
 					</div>
 					
-					<div class="col-lg-6">
+					
+					<div class="col-lg-12">
 						<h3>Purchases</h3>
 						<div class="table-responsive"> 
-							<table class="table table-advance">
+							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference Code</th>
-					                    <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
+					                    <th class="col-md-1"><i class="fa fa-tags"></i> Inventory</th>
 				                        <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 				                        <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
 				                        <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
@@ -212,9 +215,9 @@
 			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
 									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
 										<td class="col-md-1"><?php echo $row['purchase_reference'] ?></td>
-										<td class="col-md-1"><?php echo $row['supplier_name'] ?></td>
+										<td class="col-md-1"><?php echo $row['qty_before_order'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1"><?php echo $row['order_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
-		                                <td class="col-md-1"><?php echo $row['ordering_cost']?></td>
+		                                <td class="col-md-1">Php <?php echo $row['ordering_cost']?></td>
 		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row['date_received']))?></td>
 									</tr>	
 									<?php endforeach;	                               
@@ -314,7 +317,7 @@
 						<div class="form-group" style="color:red; font-weight:bold;">
 							<div class="col-lg-3 col-xs-3">
 								<label class="control-label">Selling Price</label>
-								<input type="number" name="price" class="form-control inline" value="<?php echo $r->price?>" required>
+								<input type="number" step="any" name="sale_Price" class="form-control inline" value="<?php echo $r->sale_Price?>" required>
 							</div>
 						</div>
 						
@@ -388,6 +391,67 @@
 						</div>
 						
 					</div>
+					
+					<!-- Table -->
+					<div class="row">
+						<section class="col-lg-12 panel">
+						<div class="col-lg-6">
+						<h3>Production Table</h3>	
+							<div class="table-responsive"> 
+								<table class="table table-advance table-hover">
+									<tbody>
+										<tr>
+											<th class="col-md-1"><i class="fa fa-calendar"></i> Date</th>
+											<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Inventory</th>
+						                    <th class="col-md-1"><i class="fa flaticon-baker7"></i> Units Produced</th>
+						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Production Cost</th> 
+										</tr>
+				                              	
+				                        <?php if(isset($production) && is_array($production)): foreach($production as $row):?> 
+										<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row['production_id']?>">
+											<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row['date_produced']))?></td>
+											<td class="col-md-1"><?php echo $row['previous_count'] ?></td>
+		                               		<td class="col-md-1"><?php echo $row['total_produced'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
+		                                	<td class="col-md-1">Php <?php echo $row['net_fg_cost'] ?></td>
+										</tr>	
+										<?php 
+										endforeach;
+										endif;?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="col-lg-6">
+						<h3>Sales</h3>	
+							<div class="table-responsive"> 
+								<table class="table table-advance table-hover">
+									<tbody>
+										<tr>
+											<th class="col-md-1"><i class="fa fa-calendar"></i> Date</th>
+											<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice</th>
+											<th class="col-md-1"><i class="fa flaticon-dollar91"></i> Units Sold</th>	
+						                    
+						                    
+						                     
+										</tr>
+				                              	
+				                        <?php if(isset($sales) && is_array($sales)): foreach($sales as $row):?> 
+										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row['sales_id']?>">
+											<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row['sales_date']))?></td>
+											<td class="col-md-1"><?php echo $row['invoice_code'] ?></td>
+		                               		<td class="col-md-1"><?php echo $row['total_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
+										</tr>	
+										<?php 
+										endforeach;
+										endif;?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						</section>
+					</div>
+					<!-- /Table -->
+					
 					<?php } ?>
 				</div>
 			</div>
@@ -504,10 +568,10 @@
 						<?php foreach($ing as $r2): ?>
 						<div class="col-lg-12 col-xs-12">
 							<div class="col-lg-4 col-xs-4">	
-								<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>">
+								<input type="hidden" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>">
 							</div>
 									
-							<div class="col-lg-8 col-xs-8">
+							<div class="col-lg-8 col-xs-8" hidden>
 								<select name="rm_ID[]" class="form-control">
 								<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
 								<?php if(!empty($rm)){

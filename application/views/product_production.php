@@ -2,12 +2,12 @@
 			
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa flaticon-baker8"></i> Produce Goods</h1>
+				<h1 class="page-header"><i class="fa flaticon-baker7"></i> Produce Goods</h1>
 				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa flaticon-breakfast27"></i><a href="<?php echo base_url()?>production"> Production</a></li>
-					<li><i class="fa flaticon-baker8"></i> Produce Goods</li>
+					<li><i class="fa flaticon-stone2"></i><a href="<?php echo base_url()?>production"> Production</a></li>
+					<li><i class="fa flaticon-baker7"></i> Produce Goods</li>
 				</ol>
 				</div>
 			</div>
@@ -52,16 +52,22 @@
 							
 							<div class="row" id="materials">							
 								<div id="rm" class="col-lg-12">
-									
-									<div class="col-lg-2 col-xs-3">
-										<div class="form-group">						
+									<div class="row">
+										<div class="col-lg-2 col-xs-4">
 											<label class="control-label">Quantity per Unit</label>
+										</div>
+										<div class="col-lg-5 col-xs-8">
+											<label class="control-label">Raw Material</label>
+										</div>
+									</div>		
+									<div class="col-lg-2 col-xs-4">
+										<div class="form-group">						
 											<input type="number" step="any" name="qpu[]" class="form-control inline" value="" required>
 										</div>
 									</div>
-														
-									<label class="control-label">Raw Material</label>
-									<div class="col-lg-5 col-xs-5 input-group">
+									
+									
+									<div class="col-lg-5 col-xs-8 input-group">
 										<select name="rm_ID[]" class="form-control" required>
 											<option value="">Select Raw Material/s</option>
 											<?php if(!empty($rm)){
@@ -152,10 +158,7 @@
 							<div class="row">
 								<div class="col-lg-3 pull-right">
 									<div class="form-group">
-										<span data-toggle="modal" data-target="#addOrder">
-											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
-										</span>
-										<input type="submit" class="btn btn-theme" value="Update Order" data-toggle="tooltip" data-placement="top" title="Update Order">
+										<input type="submit" class="btn btn-theme fa" data-toggle="tooltip" data-placement="top" title="Process" value="&#xF00c;">
 									</div>
 								</div>
 							</div>
@@ -164,53 +167,7 @@
 							</form>
 						</div>
 					</div>
-					<!-- Table -->
-					<div class="row">
-						<section class="col-lg-12 panel">
-						<h3>Goods in Process</h3>	
-							<div class="table-responsive"> 
-								<table class="table table-advance table-hover">
-									<tbody>
-										<tr>
-											<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
-											<th class="col-md-1"><i class="fa fa-dollar"></i> Production Cost</th>
-						                    <th class="col-md-1"><i class="fa "></i> Quantity</th>
-						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th> 
-										</tr>
-				                              	
-				                        <?php if(isset($products)): foreach($products as $row): if($row->order_status != '0'):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>production/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1"><?php echo $row->order_reference ?></td>
-											<td class="col-md-1"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1">Php <?php echo $row->ordering_cost?></b></td>
-										</tr>	
-										<?php 
-										else:?>
-										<tr class="conf clickable-row" data-href="<?php echo base_url()?>production/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1 b"><?php echo $row->order_reference ?></td>
-											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1 b"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b">Php <?php echo $row->ordering_cost?></b></td>
-										</tr>	
-										<?php
-										endif;
-										endforeach;	                               
-										endif;?> 
-										
-										<tr>
-											<td class="col-md-1"><b>Total Amount</b></td>
-										   	<td class="col-md-1"></td>
-										   	<td class="col-md-1"></td>
-										   	<td class="col-md-1"><b>Php <?php echo $to->total?></b></td>	
-										</tr> 
-										 
-									</tbody>
-								</table>
-							</div>
-						</section>
-					</div>
-					<!-- /Table -->
+					
 				</div>
 			</div>
 		</div>
