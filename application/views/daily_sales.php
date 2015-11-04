@@ -2,18 +2,18 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa flaticon-bill9" style=""></i> Purchase Order</h1>
+				<h1 class="page-header"><i class="fa flaticon-dollar91" style=""></i> Daily Sales Tab</h1>
 				<div class="col-lg-5 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>purchases"> Purchases</a></li>
-					<li><i class="fa flaticon-bill9"></i> Purchase Order</li>
+					<li><i class="fa fa-dollar"></i><a href="<?php echo base_url()?>sales"> Sales</a></li>
+					<li><i class="fa flaticon-dollar91"></i> Daily Sales Tab</li>
 				</ol>
 				</div>
 			</div>
 		</div>
 		
-		<?php foreach($po as $r) ?>
+		<?php foreach($si as $r) ?>
 		<div class="row">
 			<div class="col-lg-12">
 				
@@ -36,50 +36,22 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<?php if(!$r->order_status) { ?>
-							<form action="<?php echo base_url(); ?>purchases/update_order/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
+							<?php if(!$r->sales_status) { ?>
+							<form action="<?php echo base_url(); ?>sales/update_sales/<?php echo $r->sales_id?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							
 							<div class="row">
 								<div class="col-lg-5 col-xs-7">
 									<div class="form-group">
-										<label>Supplier</label>
-										<div class="input-group">
-										<select name="supplier_id" class="form-control" required>
-											<option value="<?php echo $r->supplier_id?>"><?php echo $r->supplier_name?></option>
-											<?php if(!empty($supplier)){
-												if (is_array($supplier)){                      
-											    	foreach ($supplier as $row) {
-											    		if($row['supplier_id'] != $r->supplier_id){ ?>
-														<option value="<?php echo $row['supplier_id']?>"><?php echo $row['supplier_name']; ?></option>
-													<?php } }
-												}
-											}
-																				
-											else{	?>
-											<option value=""></option>
-											<?php }?>
-										</select>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
-									    </span>
-										</div>
-									</div>
-									
-									
-								</div>
-
-								<div class="col-lg-3 col-xs-5 pull-right">
-									<div class="form-group">
-										<label>Date of Delivery</label>
-										<input type="text" name="date_received" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_received)) ?>" id="datep">
+										<label>Employee</label>
+										<input type="text" name="user_id" class="form-control" value="<?php echo $r->lastName ?>, <?php echo $r->firstName ?>" disabled>
 									</div>	
 								</div>
-								
+
 								<div class="col-lg-3 col-xs-3 pull-right">
 									<div class="form-group">
 										<label>Date Ordered</label>
-										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate">
+										<input type="text" name="sales_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->sales_date)) ?>" id="edate" disabled>
 									</div>	
 								</div>
 							</div>
@@ -88,7 +60,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->purchase_reference ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="invoice_id" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;" disabled>
 									</div>
 								</div>
 								
@@ -107,16 +79,16 @@
 							<div class="row">
 								<div class="col-lg-3 pull-right">
 									<div class="form-group">
-										<span data-toggle="modal" data-target="#addOrder">
+										<span data-toggle="modal" data-target="#addSalesInvoice">
 											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
 										</span>
 										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
-										<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>
+										<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>sales/cancel_purchase/<?php echo $r->sales_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>
 									</div>
 								</div>
 							</div>
-							<?php } else if($r->order_status){?>
-							<form action="<?php echo base_url(); ?>purchases/accept_purchase/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
+							<?php } else if($r->sales_status){?>
+							<form action="<?php echo base_url(); ?>sales/accept_purchase/<?php echo $r->sales_id?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							
 							<div class="row">
@@ -159,7 +131,7 @@
 								<div class="col-lg-3 col-xs-12 pull-right">
 									<div class="form-group">
 										<label>Date Ordered</label>
-										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate" disabled>
+										<input type="text" name="sales_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->sales_date)) ?>" id="edate" disabled>
 									</div>	
 								</div>
 							</div>
@@ -168,7 +140,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->purchase_reference ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="invoice_id" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;" disabled>
 										<input type="hidden" name="total_cost" value="<?php echo $to->total?>">
 									</div>
 								</div>
@@ -207,31 +179,31 @@
 					<div class="row">
 						
 						<section class="col-lg-12 panel">
-						<h3>Products Ordered</h3>	
+						<h3>Products Sold</h3>	
 							<div class="table-responsive"> 
 								<table class="table table-advance table-hover">
 									<tbody>
 										<tr>
 											<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
-											<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product</th>
-						                    <th class="col-md-1"><i class="fa fa-truck"></i> Quantity</th>
+											<th class="col-md-1"><i class="fa flaticon-baked1"></i> Product</th>
+						                    <th class="col-md-1"><i class="fa"></i> Quantity</th>
 						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
 										</tr>
 				                              	
-				                        <?php if(isset($orders) && is_array($orders)): foreach($orders as $row): if($row->order_status != '0'):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1"><?php echo $row->order_reference ?></td>
+				                        <?php if(isset($invoices) && is_array($invoices)): foreach($invoices as $row): if($row->sales_status != '0'):?> 
+										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/ordered_product/<?php echo $row->order_id?>">
+											<td class="col-md-1"><?php echo $row->invoice_id ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1">Php <?php echo $row->ordering_cost?></b></td>
+					                        <td class="col-md-1"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+					                        <td class="col-md-1">Php <?php echo $row->total_sale?></b></td>
 										</tr>	
 										<?php 
 										else:?>
-										<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1 b"><?php echo $row->order_reference ?></td>
+										<tr class="conf clickable-row" data-href="<?php echo base_url()?>sales/ordered_product/<?php echo $row->order_id?>">
+											<td class="col-md-1 b"><?php echo $row->invoice_id ?></td>
 											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1 b"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b">Php <?php echo $row->ordering_cost?></b></td>
+					                        <td class="col-md-1 b"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+					                        <td class="col-md-1 b">Php <?php echo $row->total_sale?></b></td>
 										</tr>	
 										<?php
 										endif;
@@ -260,7 +232,7 @@
 	
 	
 	<!-- ADD ORDER MODAL -->
-	<div class="modal fade" id="addOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addSalesInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="vertical-alignment-helper">
 			<div class="modal-dialog vertical-align-center">
 							
@@ -269,21 +241,21 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title"><i class="fa flaticon-ingredients1"></i> Product Order Form</h4>
+						<h4 class="modal-title"><i class="fa flaticon"></i> Add Sales Invoice</h4>
 					</div>
 							
 					<div class="modal-body">
-					<form action="<?php echo base_url(); ?>purchases/add_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post">
+					<form action="<?php echo base_url(); ?>sales/add_order/<?php echo $r->invoice_code?>"  role="form" accept-charset="utf-8" method="post">
 					
 						<div class="col-lg-10">
 							<div class="form-group">
-							<label class="control-label">Class</label>
-								<div class="input-group">
+							<label class="control-label">Product</label>
+								
 									<select name="class_ID" class="form-control" required>
-										<option value="">Select Class</option>
-										<?php if(!empty($cls)){
-											if (is_array($cls)){                      
-										 		foreach ($cls as $row) {?>
+										<option value="">Select Product</option>
+										<?php if(!empty($product)){
+											if (is_array($product)){                      
+										 		foreach ($product as $row) {?>
 													<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
 												<?php }
 											}							
@@ -293,25 +265,10 @@
 										<option value=""></option>
 										<?php }?>
 									</select>
-									<span class="input-group-btn">
-										<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addClass"><i class="fa fa-plus"></i></button>
-							    	</span>
-								</div>
+								
 							</div>
 						</div>
-						
-						<div class="col-lg-10">
-							<div class="form-group">
-								<label class="control-label">Name</label>
-								<input type="text" name="product_Name" class="form-control inline" value="" required>
-								<input type="hidden" name="supplier_ID" class="form-control inline" value="<?php echo $r->supplier_id?>" required>
-								<input type="hidden" name="category_ID" class="form-control inline" value="2" required>
-							</div>
-						</div>
-					
-			
-					
-						
+
 						<div class="form-group">
 							<div class="col-lg-3">
 								<label class="control-label">Quantity</label>
@@ -319,33 +276,15 @@
 							</div>
 							
 							<div class="col-lg-3">
-								<label class="control-label">Unit</label>
-								<input type="text" name="um" class="form-control inline" required>
-							</div>
-		  
-							<div class="col-lg-3">
-								<label class="control-label">Price per unit</label>
-								<input id="price" type="number" step="any" name="price" class="form-control inline" required>
-							</div>
-							
-							<div class="col-lg-3">
 								<label class="control-label">Total Amount</label>
-								<input id="ordering_cost" type="number" name="ordering_cost" class="form-control inline" disabled>
+								<input id="total_sale" type="number" name="total_sale" class="form-control inline" disabled>
 								<input id="holding_cost" type="hidden" name="holding_cost" class="form-control inline">
 							</div>
 							
 							
 						</div>
 						
-	
-						<div class="col-lg-8">
-							<div class="form-group">
-								<label class="control-label">Product Description</label>
-								<textarea name="description" class="form-control inline" value="" required></textarea>
-							</div>
-						</div>
-								
-									
+				
 					</div>
 								
 								

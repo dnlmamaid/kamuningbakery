@@ -75,7 +75,7 @@ class production extends CI_Controller {
 	    {			
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['rm'] = $this -> products_model -> getRawMats();
-			$data['supplier'] = $this -> products_model -> getSupplier();
+			
 			 
 			$data['main_content'] = 'product_production';
 			$this->load->view('includes/productionTemplate', $data);
@@ -195,5 +195,79 @@ class production extends CI_Controller {
 			redirect(base_url(), 'refresh');
 		}
 	}
+
+	public function create_production_batch(){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+	    	$code = date('mdY').random_string('alnum',3);	
+			$this -> production_model -> create_batch($code);
+			redirect('production/production_batch/'.$code, 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
+	public function production_batch()
+	{
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$code = $this->uri->segment(3);
+			//Dropdowns 
+			$data['cls'] = $this -> products_model -> getClass();
+			$data['rm'] = $this -> products_model -> getRawMats();
+			$data['fg'] = $this -> production_model	 -> getFG();
+			
+			$data['batch'] = $this -> production_model -> getBatch($code);
+			$data['processed'] = $this -> production_model -> getProcessed($code);
+			$data['to'] = $this->production_model->get_total($code);
+			
+			$data['main_content'] = 'production_batch';
+			$this -> load -> view('includes/productionTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in'))
+	    {
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+
+	}
+
+	public function add_to_batch($code){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> production_model -> add_to_batch($code);
+			redirect($this->agent->referrer(), 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
+
+
 }
 ?>

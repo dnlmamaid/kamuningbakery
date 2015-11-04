@@ -30,7 +30,7 @@
 	    			<div class="col-lg-2 col-xs-2 pull-right" style="margin-bottom:15px;">
 	    				<a alt="Report" data-toggle="tooltip" data-placement="top" title="Purchases Report" href="<?php echo base_url()?>purchases/report" class="btn btn-caution"><i class="fa fa-line-chart"></i></a>
 	    				<span data-toggle="modal" data-target="#addPOrder">
-		    				<a alt="Purchase Order" data-toggle="tooltip" data-placement="top" title="Create Purchase Order" class="btn btn-theme"><i class="fa fa-plus"></i></a>
+		    				<a alt="Purchase Order" data-toggle="tooltip" data-placement="top" title="Create Purchase Order" class="btn btn-theme"><i class="fa flaticon-bill9"></i></a>
 		    			</span>
 					</div>
 	    				
@@ -75,7 +75,7 @@
 								  		<td class="col-md-1 b"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1 b"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->total_cost?></td>
+		                                <td class="col-md-1 b"> To be Processed</td>
 	                                </tr>
 									<?php endif;
 									endforeach;	                               
@@ -91,7 +91,7 @@
 								  		<td class="col-md-2 b"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1 b"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->total_cost?></td>
+		                                <td class="col-md-1 b"> To be Processed</td>
 		                                
 	                                </tr>
 									<?php endif;

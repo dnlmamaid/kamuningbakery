@@ -8,7 +8,7 @@ class sales extends CI_Controller {
 		parent::__construct();
 		
 		$this -> load -> model('reports_model');
-		$this -> load -> model('products_model');		
+		$this -> load -> model('sales_model');		
 		$this -> load -> model('users_model');
 	}
 
@@ -246,6 +246,54 @@ class sales extends CI_Controller {
 		}
 	}
 		
+	public function create_sales_tab(){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+	    	$code = date('dY').random_string('alnum',5);	
+			$this -> sales_model -> create_si($code);
+			redirect('sales/daily_sales/'.$code, 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
+	public function daily_sales()
+	{
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$code = $this->uri->segment(3);
+			//Dropdowns 
+			$data['products'] = $this -> sales_model -> getPonSale();
+			$data['si'] = $this -> sales_model -> getSI($code);
+			$data['invoices'] = $this -> sales_model -> getInvoices($code);
+			$data['to'] = $this->sales_model->get_total($code);
+			
+			$data['main_content'] = 'daily_sales';
+			$this -> load -> view('includes/adminTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in'))
+	    {
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+
+	}
 	
 	public function view_sales_invoice()
 	{

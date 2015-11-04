@@ -201,8 +201,9 @@ class purchases extends CI_Controller {
 	
 	public function receive($id)
 	{
+		$code = $this->input->post('order_reference');
 		$this -> purchases_model -> receive_order($id);
-		redirect($this->agent->referrer(), 'refresh');
+		redirect('purchases/purchase_order/'.$code, 'refresh');
 	}
 	
 	public function cancel_order($id)

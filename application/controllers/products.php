@@ -398,12 +398,6 @@ class products extends CI_Controller {
 		}
 	}
 	
-	public function sell_product($id)
-	{
-		$this -> products_model -> sale($id);
-		redirect($this->agent->referrer(), 'refresh');
-	}
-	
 	public function delete($id)
 	{
 		$this -> products_model -> remove($id);

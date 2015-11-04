@@ -9,6 +9,7 @@ class home extends CI_Controller {
 		$this -> load -> model('users_model');
 		$this -> load -> model('reports_model');		
 		$this -> load -> model('products_model');
+
 	}
 
 

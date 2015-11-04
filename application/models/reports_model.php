@@ -230,7 +230,9 @@ Class reports_model extends CI_Model {
 	
 	public function getSales($limit, $start) {
 		$this->db->join('users','users.id = sales.user_ID','left');
-		$this->db->join('products','products.product_id = sales.product_ID','left');
+		
+		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
+		
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('sales_date', 'desc');
 		$query = $this -> db -> get('sales');
@@ -246,10 +248,13 @@ Class reports_model extends CI_Model {
 	
 	public function getHSales($limit, $start) {
 		$this->db->join('users','users.id = sales.user_ID','left');
-		$this->db->join('products','products.product_id = sales.product_ID','left');
-		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('total_quantity', 'desc');
 		
+		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
+		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+		
+		$this -> db -> where('products.category_ID', '1');
+		$this -> db -> limit($limit, $start);
+	
 		$query = $this -> db -> get('sales');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -385,7 +390,8 @@ Class reports_model extends CI_Model {
 	/***************************************************************/
 	
 	public function getProduction($limit, $start) {
-		$this -> db -> join('products', 'products.product_id = production.product_id', 'left');
+		$this->db->join('users','users.id = production.user_id','left');
+		$this->db->join('production_batch','production_batch.batch_reference = production.batch_id','left');
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('date_produced', 'desc');
 		$query = $this -> db -> get('production');

@@ -222,7 +222,207 @@ class production_model extends CI_Model{
 		}
 
 	}
+	
+	
+	
+	function create_batch($code)
+    {
+	    
+		$prod = array(
+			'batch_id' => $code,
+			'user_id'	=> $this->session->userdata('user_id'),
+			'date_produced'=> date('Y-m-j H:i:s'),
+			'process_status'=> '0',
+		);
+			  
+		$this->db->insert('production', $prod);
+		
+		$this->session->set_flashdata('success','You have successfully created a production batch');
+			
+		$remark_id = $this->db->insert_id();
+			
+		$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Production',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'Created a Production Batch',
+				'date_created'=> date('Y-m-j H:i:s'),
+		);
+				
+		$this->db->insert('audit_trail', $audit);
+	}
+	
+	function add_to_batch($code)
+    {		
+		$this->db->where('product_Name',$this->input->post('product_Name'));
+		$this->db->where('supplier_ID','1');
+		$this->db->where('category_ID','1');
+		$val = $this->db->get('products');
+		
+		if($val->num_rows() == 1){
+			
+			$this->session->set_flashdata('error','Product already exist. If you want to produce more go to the product page.');
+			
+			
+		}
 
-    
+		else{
+			
+			$total = 0;
+			foreach($_POST['rm_ID'] as $val => $rm)
+			{
+				
+				//Gets Raw Material 			
+				$this->db->select('current_count');
+				$this->db->from('products');
+				$this->db->where('product_id', $rm);
+				$oldqty = $this->db->get()->row('current_count');
+				$nqty = (($oldqty) - ($this->input->post('quantity') * $_POST['qpu'][$val]));
+				
+				//Gets Total Cost Per Unit
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $rm);
+				$price = $this->db->get()->row('price');
+				$total = ($price + $total);
+				
+				//Updates Quantity	
+				$process = array(
+					'current_count' => $nqty,
+				);
+					
+				$this->db->where('product_id', $rm);
+				$this->db->update('products', $process);
+						
+			}
+			
+			//$qty = explode(' ', $this->input->post('qpu'));
+			//$rm = explode(' ', $this->input->post('rm_ID'));
+			
+			
+			$data = array(
+				'product_Name' => $this->input->post('product_Name'),
+				'current_count' => $this->input->post('quantity'),
+				'holding_cost' => $this->input->post('holding_cost'),
+				'price' => $total,
+				'sale_Price' => $total,
+				'supplier_ID' => '1',
+				'category_ID' => '1',
+				'class_ID' => $this->input->post('class_ID'),
+				'description' => $this->input->post('description'),
+				'um' => $this->input->post('um'),
+				'date_created'=> date('Y-m-j H:i:s'),
+				'product_status' => '1',
+	        );
+			  
+			$this->db->insert('products', $data);
+			$this->session->set_flashdata('success','You have successfully added a new product');
+			
+			$net_cost = $total * $this->input->post('quantity');
+			$remark_id = $this->db->insert_id();
+			
+			foreach($_POST['rm_ID'] as $val => $rm)
+			{
+				$ingr = array(
+					'id_for' => $remark_id,
+					'product_id' => $rm,
+					'ingredient_ctr' => $val,
+					'ingredient_qty' => $_POST['qpu'][$val],
+				);
+				
+				$this->db->insert('ingredients', $ingr);
+				
+			}
+			
+			$production = array(
+				'product_id' => $remark_id,
+				'previous_count'		=> '0',
+				'total_produced'		=> $this->input->post('quantity'),
+				'production_cost_pu'	=> $total,
+				'net_fg_cost'			=> $net_cost,
+				'date_produced'			=> date('Y-m-j H:i:s'),
+				'process_status' 		=> '1',
+				
+			);
+				
+			$this->db->insert('production', $production);
+			
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Production',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'Produced a new product',
+				'date_created'=> date('Y-m-j H:i:s'),
+				
+			);
+			
+			$this->db->insert('audit_trail', $audit);
+			        
+		}
+	}
+
+	
+	/**
+	 * get Purchase Order function
+	 * 
+	 */
+	function getBatch($code)
+	{
+		$this -> db -> where('production.batch_id', $code);
+		$this -> db -> join('users', 'users.id = production.user_id', 'left');
+		$this -> db -> join('production_batch', 'production_batch.batch_reference = production.batch_id', 'left');
+		$q = $this -> db -> get('production');
+		
+		if($q->num_rows()){
+			return $q -> result();
+		}
+		
+		else{
+			return false;	
+		}
+	}
+	
+	/**
+	 * get Orders function
+	 * used for multiple orders in a single purchase
+	 */
+	function getProcessed($code)
+	{
+		
+		$this -> db -> where('batch_reference', $code);
+		$this -> db -> join('products', 'products.product_id = production_batch.product_id', 'left');
+		$q = $this -> db -> get('production_batch');
+		
+		if($q->num_rows()){
+			return $q -> result();
+		}
+		
+		else{
+			return false;	
+		}
+	}
+	
+	
+	function get_total($code){
+		
+		$this->db->where('batch_reference',$code);
+		$this->db->select('sum(production_cpu) as total');
+		$q = $this->db->get('production_batch');
+		return $q->row();
+		
+	}
+	
+    /**
+	 * Get FG Function
+	 *	get Goods produced from the past for reproduction
+	 */
+	function getFG() {
+		$this->db->where('category_ID', '1');
+		$q = $this->db->get('products');
+		$data = $q -> result_array();
+		return $data;
+	}
+	
+	
 }
 

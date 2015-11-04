@@ -188,7 +188,7 @@ class purchases_model extends CI_Model{
 			  
 		$this->db->insert('purchases', $purchase);
 		
-		$this->session->set_flashdata('success','You have successfully ordered the product/s');
+		$this->session->set_flashdata('success','You have successfully created a purchase order');
 			
 		$remark_id = $this->db->insert_id();
 			

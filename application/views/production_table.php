@@ -29,7 +29,7 @@
 	    			<div class="col-lg-2 col-xs-4 pull-right" style="margin-bottom:15px;">
 	    				<a href="<?php echo base_url()?>production/report" type="button" data-toggle="tooltip" data-placement="top" title="Production Report" class="btn btn-caution"><i class="fa fa-line-chart"></i></button></a>
 	    				<a type="button" alt="Finished Goods" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>inventory/finished_goods" class="btn btn-success"><i class="fa flaticon-breakfast27"></i></a>
-		    			<a type="button" alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce Goods" href="<?php echo base_url()?>production/produce_goods" class="btn btn-theme"><i class="fa flaticon-baker7"></i></a>
+		    			<a href="<?php echo base_url()?>production/create_production_batch" type="button" alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce Goods" class="btn btn-theme"><i class="fa flaticon-baker7"></i></a>
 					</div>
 	    				
 				</div>
@@ -45,7 +45,7 @@
 							<div class="alert alert-danger" role="alert"><?php echo $this -> session -> flashdata('error'); ?></div>
 						<?php } ?>
 						<?php if($this->session->flashdata('search')){?>
-							<div class="alert alert-info" role="alert">
+							<div class="alert alert-production_batch" role="alert">
 						<?php echo $this -> session -> flashdata('search'); ?>
 							</div>
 						<?php } ?> 
@@ -63,20 +63,20 @@
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($production) && is_array($production)) : foreach($production as $row): ?> 
-								  	<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row->production_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>production/production_batch/<?php echo $row->batch_id ?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
+										<td class="col-md-1"><?php echo $row->batch_id ?></td>
+		                                <td class="col-md-1"></td>
+		                                <td class="col-md-1">Php</td>
 		                                <!--<td class="col-md-1">Php <?php echo $row->sale_Price?></td>-->
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row->production_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>production/production_batch/<?php echo $row->batch_id ?>">
 										<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
+										<td class="col-md-1"><?php echo $row->batch_id ?></td>
+		                                <td class="col-md-1"></td>
+		                                <td class="col-md-1">Php</td>
 	                               </tr>
 	                                <?php endforeach;		                               
 									else:?>
