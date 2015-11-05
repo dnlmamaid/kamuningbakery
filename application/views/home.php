@@ -1,10 +1,12 @@
 <!-- Page Content -->
 
-<div class="container bg-panel">
+	<div class="container bg-panel">
             	
 		<div class="row" style="margin-top:15px;">                   
 			<div class="col-lg-12">
 				
+				
+				<?php if($this->session->userdata('user_type') <= '2'): ?>
 				<div class="col-lg-2 col-xs-4">
 					<a href="<?php echo base_url()?>users" data-toggle="tooltip" data-placement="top" title="Users">
 					<div class="info-box green-bg">
@@ -229,7 +231,115 @@
 			</div>
 			
 		</div>
-              
+    	<?php endif; ?>
+    	
+    	<!--------------- BAKER --------------------->
+    	<!--------------- BAKER --------------------->
+    	<!--------------- BAKER --------------------->
+    	<!--------------- BAKER --------------------->
+    	<div class="row">
+    		<div class="col-lg-4">
+		    	
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>production" data-toggle="tooltip" data-placement="top" title="Production">
+					<div class="info-box red-bg">
+						<i class="fa flaticon-stone2"></i>
+						<div class="count">
+							Production
+						</div>
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+							
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>requests" data-toggle="tooltip" data-placement="top" title="Requests">
+					<div class="info-box magenta-bg">
+						<i class="fa fa-comments-o"></i>
+						<div class="count">
+							Requests
+						</div>
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+				
+			</div>
+			<div class="col-lg-8">
+				<?php if($this->session->flashdata('message')){ ?>
+				<div class="col-lg-12">
+					<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
+				</div>
+				<?php } ?>
+				<h3><i class="fa fa-comments-o"></i> Active Requests</h3>
+				<div class="table-responsive"> 
+					<table class="table table-advance table-hover">
+					<tbody>
+						<tr>
+							<th class="col-md-2"><i class="fa fa-calendar"></i> Date</th>
+							<th class="col-md-1"><i class="fa fa-user"></i> User</th>
+                            <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
+						</tr>
+                        <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
+                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id ?>">
+                        	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
+							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
+                            <td class="col-md-1 b"><?php echo $row->ro_id ?></a></td>
+                                                                                       
+                        </tr>
+                        <?php endforeach;	                               
+						else:?>
+						<tr>											
+							<th>No records</th>
+							<th>No records</th>
+							<th>No records</th>
+						</tr>
+						<?php endif; ?> 
+					</tbody>
+                    </table>
+                </div>
+			</div>
+			
+			<div class="col-lg-8">
+				<h3><i class="fa fa-comments-o"></i> Produced Goods</h3>
+				<div class="table-responsive"> 
+					<table class="table table-advance table-hover">
+					<tbody>
+						<tr>
+							<th class="col-md-2"><i class="fa fa-calendar"></i> Date</th>
+							<th class="col-md-1"><i class="fa fa-user"></i> User</th>
+                            <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
+						</tr>
+                        <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
+                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id ?>">
+                        	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
+							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
+                            <td class="col-md-1 b"><?php echo $row->ro_id ?></a></td>
+                                                                                       
+                        </tr>
+                        <?php endforeach;	                               
+						else:?>
+						<tr>											
+							<th>No records</th>
+							<th>No records</th>
+							<th>No records</th>
+						</tr>
+						<?php endif; ?> 
+					</tbody>
+                    </table>
+                </div>
+				
+			</div>	
+		</div>
+		
+		
+		
+		
+		
+		
+		
              
+	</div>
+	<!-- container bg -->
+
+
 </div>
 <!-- /#page-content-wrapper -->

@@ -38,13 +38,19 @@ class home extends CI_Controller {
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '4'))
 	    {
 			$data['main_content'] = 'home';
-			$this->load->view('includes/bakertemplate', $data);		
+			$this->load->view('includes/btemplate', $data);		
 		}
 		
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '5'))
 	    {
 			$data['main_content'] = 'home';
-			$this->load->view('includes/purchasertemplate', $data);		
+			$this->load->view('includes/ptemplate', $data);		
+		}
+		
+		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '6'))
+	    {
+			$data['main_content'] = 'home';
+			$this->load->view('includes/sktemplate', $data);		
 		}
 		
 		else
