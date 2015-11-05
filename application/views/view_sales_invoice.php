@@ -49,7 +49,7 @@
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label>Quantity: </label>
-							<?php echo $r->total_quantity?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?> 							
+							<?php echo $r->qty_sold?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?> 							
 						</div>
 					</div>
 					
@@ -63,7 +63,7 @@
 					<div class="form-group">
 						<b><div class="col-lg-12">
 							<label>Total: </label>
-							Php <?php echo $r->total_sales?>
+							Php <?php echo $r->total_sale?>
 						</div></b>
 					</div>
 					

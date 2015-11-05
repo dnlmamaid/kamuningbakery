@@ -54,7 +54,7 @@ class sales extends CI_Controller {
 				} 			
       			
     		}   
-			$data['sales'] = $this->reports_model->getSales($config['per_page'], $offset);
+			$data['sales'] = $this->sales_model->getSales($config['per_page'], $offset);
 
 			$data['main_content'] = 'sales_table';
 			$this -> load -> view('includes/adminTemplate', $data);
@@ -98,7 +98,7 @@ class sales extends CI_Controller {
 				} 			
       			
     		}   
-			$data['sales'] = $this->reports_model->getSales($config['per_page'], $offset);
+			$data['sales'] = $this->sales_model->getSales($config['per_page'], $offset);
 
 			$data['main_content'] = 'sales_table';
 			$this -> load -> view('includes/accTemplate', $data);
@@ -247,7 +247,7 @@ class sales extends CI_Controller {
 	}
 		
 	public function create_sales_tab(){
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '3'))
 	    {
 	    	$code = date('dY').random_string('alnum',5);	
 			$this -> sales_model -> create_si($code);
@@ -255,7 +255,7 @@ class sales extends CI_Controller {
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -268,8 +268,7 @@ class sales extends CI_Controller {
 	
 	public function daily_sales()
 	{
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
-	    {
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2')){
 			$code = $this->uri->segment(3);
 			//Dropdowns 
 			$data['products'] = $this -> sales_model -> getPonSale();
@@ -279,13 +278,23 @@ class sales extends CI_Controller {
 			
 			$data['main_content'] = 'daily_sales';
 			$this -> load -> view('includes/adminTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in'))
-	    {
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
-			redirect(base_url(), 'refresh');
+		} else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '3')){
+	    
+			$code = $this->uri->segment(3);
+			//Dropdowns 
+			$data['products'] = $this -> sales_model -> getPonSale();
+			$data['si'] = $this -> sales_model -> getSI($code);
+			$data['invoices'] = $this -> sales_model -> getInvoices($code);
+			$data['to'] = $this->sales_model->get_total($code);
+			
+			$data['main_content'] = 'daily_sales';
+			$this -> load -> view('includes/accTemplate', $data);
 		} 
+		
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
 		
 		else {
 			//If no session, redirect to login page
@@ -302,7 +311,7 @@ class sales extends CI_Controller {
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -366,7 +375,49 @@ class sales extends CI_Controller {
 		}	
 	}
 	
+	function search()
+	{
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '3')
+	    {
+				
+			$search = $this -> input -> post('search');
+			redirect('sales/search_result/'.$search);
+						
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
+		}	
 	
+	}
+
+	function search_result($search)
+	{
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
+	    {
+				
+			$data['search'] = $this -> sales_model -> search($search);
+			$data['main_content'] = 'sales_table';
+			$this -> load -> view('includes/adminTemplate', $data);
+		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
+			
+			$data['search'] = $this -> sales_model -> search($search);
+			$data['main_content'] = 'sales_table';
+			$this -> load -> view('includes/accTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in')){
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+		} else{
+	    	$this->session->set_flashdata('error','You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
+		}	
+	
+	}
 
 	
 }

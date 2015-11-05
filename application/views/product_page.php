@@ -18,15 +18,7 @@
 					</ol>
 					</div>
 					
-					<?php if ($r->category_ID == '1') {?>
-					<div class="col-lg-2 pull-right">
-						<span data-toggle="modal" href="#salesOrder" ><a alt="Sell" data-toggle="tooltip" data-placement="top" title="Sell" class="btn btn-theme"><i class="fa fa-dollar"></i></a></span>
-						<span data-toggle="modal" href="#produce" ><a alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce" class="btn btn-caution"><i class="fa fa-plus"></i></a></span>
-					<?php } else if ($r->category_ID == '2') {?>
-					<div class="col-lg-1 pull-right">
-							<a href="<?php echo base_url()?>purchases"alt="Add Order" data-toggle="tooltip" data-placement="top" title="Order" class="btn btn-caution"><i class="fa fa-plus"></i></a>
-						<?php }?>
-					</div>
+					
 				</div>
 			</div>
 	
@@ -408,11 +400,11 @@
 										</tr>
 				                              	
 				                        <?php if(isset($production) && is_array($production)): foreach($production as $row):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row['production_id']?>">
+										<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row['pb_id']?>">
 											<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row['date_produced']))?></td>
 											<td class="col-md-1"><?php echo $row['previous_count'] ?></td>
-		                               		<td class="col-md-1"><?php echo $row['total_produced'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
-		                                	<td class="col-md-1">Php <?php echo $row['net_fg_cost'] ?></td>
+		                               		<td class="col-md-1"><?php echo $row['units_produced'] ?></td>
+		                                	<td class="col-md-1">Php <?php echo $row['total_production_cost'] ?></td>
 										</tr>	
 										<?php 
 										endforeach;
@@ -436,10 +428,10 @@
 										</tr>
 				                              	
 				                        <?php if(isset($sales) && is_array($sales)): foreach($sales as $row):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row['sales_id']?>">
+										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row['siv_id']?>">
 											<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row['sales_date']))?></td>
 											<td class="col-md-1"><?php echo $row['invoice_code'] ?></td>
-		                               		<td class="col-md-1"><?php echo $row['total_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
+		                               		<td class="col-md-1"><?php echo $row['qty_sold'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 										</tr>	
 										<?php 
 										endforeach;

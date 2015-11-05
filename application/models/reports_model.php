@@ -231,6 +231,8 @@ Class reports_model extends CI_Model {
 	public function getSales($limit, $start) {
 		$this->db->join('users','users.id = sales.user_ID','left');
 		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
+		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+		$this -> db -> where('siv_id !=', '0');
 		
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('sales_date', 'desc');
@@ -282,10 +284,12 @@ Class reports_model extends CI_Model {
 	 */
 	function get_sales_rec($sid) {
 		
-		$this->db->join('users','users.id = sales.user_ID','left');
-		$this->db->join('products','products.product_id = sales.product_id','left');
-		$this -> db -> where('sales_id', $sid);
-		$q = $this -> db -> get('sales');
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
+		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
+		$this->db->join('users','users.id = sales.user_id','right');
+		
+		$this -> db -> where('siv_id', $sid);
+		$q = $this -> db -> get('sales_invoices');
 		
 		return $q -> result();
 
@@ -301,12 +305,11 @@ Class reports_model extends CI_Model {
 		if($this -> session -> userdata('is_logged_in'))
 		{
 			
-			$this->db->join('users','users.id = sales.user_id','left');
+			$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','right');
+			$this->db->join('products','products.product_id = sales_invoices.product_id','right');
 			
-			$this->db->join('products','products.product_id = sales.product_id','right');
-			
-			$this->db->from('sales');
-			$this -> db -> order_by('sales_date', 'desc');	
+			$this->db->from('sales_invoices');
+				
 			$this -> db -> where('products.product_id', $pid);
 			
 			$query = $this -> db -> get();
@@ -371,7 +374,8 @@ Class reports_model extends CI_Model {
 		$this->db->where('sales_date >=',$start);
 		$this->db->where('sales_date <=',$end);
 		$this->db->join('users','users.id = sales.user_id','left');
-		$this->db->join('products','products.product_id = sales.product_id','left');
+		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','right');
+		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
 		$this->db->order_by('sales_date','desc');
 		$query = $this->db->get('sales');
 		if ($query -> num_rows() > 0) {
@@ -436,12 +440,12 @@ Class reports_model extends CI_Model {
 		if($this -> session -> userdata('is_logged_in'))
 		{
 			
-			$this->db->join('users','users.id = production.user_id','left');
-			$this->db->join('products','products.product_id = production.product_id','left');
+			$this->db->join('production','production.batch_id = production_batch.batch_reference','left');
+			$this->db->join('products','products.product_id = production_batch.product_id','left');
 			
-			$this->db->from('production');
-			$this -> db -> order_by('date_produced', 'desc');	
-			$this -> db -> where('production.product_id', $pid);
+			$this->db->from('production_batch');
+	
+			$this -> db -> where('production_batch.product_id', $pid);
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
 			return $data;

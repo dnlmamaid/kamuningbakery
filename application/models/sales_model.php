@@ -3,42 +3,20 @@ if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
 class sales_model extends CI_Model {
+	
+	public function getSales($limit, $start) {
+		$this->db->join('users','users.id = sales.user_ID','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('sales_date', 'desc');
+		$query = $this -> db -> get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
 
-	/*****************************************************/
-	/***********          SALES            **************/
-	/***************************************************/
-	function sale($pid) {
-
-		$this->db->select('current_count');
-		$this->db->from('products');
-		$this->db->where('product_id', $pid);
-		$oldquantity = $this->db->get() -> row('current_count');
-		$newquantity = $oldquantity - $this->input->post('quantity');
-
-		$data = array('current_count' => $newquantity, );
-
-		$this->db->where('product_ID', $pid);
-		$this->db->update('products', $data);
-
-		$markup = 1.93;
-		$this->db->select('sale_Price');
-		$this->db->from('products');
-		$this->db->where('product_id', $pid);
-		$cost = ($this->db->get() -> row('sale_Price')) + $markup;
-		$total = $cost * $this->input->post('quantity');
-
-		$code = date('Y') . random_string('alnum', 1) . date('m') . random_string('alnum', 1) . date('d');
-
-		$sales = array('invoice_code' => $code, 'product_ID' => $pid, 'total_quantity' => $this->input->post('quantity'), 'total_sales' => $total, 'user_ID' => $this->session->userdata('user_id'), 'sales_date' => date('Y-m-j H:i:s'), );
-
-		$this->db->insert('sales', $sales);
-		$remark_id = $this->db->insert_id();
-
-		$audit = array('user_id' => $this->session->userdata('user_id'), 'module' => 'Sales', 'remark_id' => $remark_id, 'remarks' => 'sold a product', 'date_created' => date('Y-m-j H:i:s'), );
-
-		$this->db->insert('audit_trail', $audit);
-
-		$this->session->set_flashdata('success', 'You have successfully sold the product');
+			return $data;
+		}
+		return false;
 	}
 
 	function getPonSale() {
@@ -98,7 +76,74 @@ class sales_model extends CI_Model {
 		}
 	}
 	function add_sales($code)
-    {		
+    {
+    	$pid = $this->input->post('product_id');
+    	$this->db->select('current_count');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$oldquantity = $this->db->get() -> row('current_count');
+		$newquantity = $oldquantity - $this->input->post('quantity');
+
+		$data = array(
+			'current_count' => $newquantity, 
+		);
+
+		$this->db->where('product_id', $pid);
+		$this->db->update('products', $data);
+
+		$markup = 1.93;
+		
+		$this->db->select('sale_Price');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$cost = ($this->db->get() -> row('sale_Price')) + $markup;
+		$total = $cost * $this->input->post('quantity');
+		
+		$inv = array(
+			'invoice_id' => $code, 
+			'product_id' => $pid, 
+			'qty_sold' => $this->input->post('quantity'), 
+			'total_sale' => $total, 
+		);
+
+		$this->db->insert('sales_invoices', $inv);
+		
+		
+		$this->db->select('total_qty_sold');
+		$this->db->from('sales');
+		$this->db->where('invoice_code', $code);
+		$otqs = $this->db->get() -> row('total_qty_sold');
+		$ntqs = $otqs + $this->input->post('quantity');
+		
+		
+		$this->db->select('total_sales');
+		$this->db->from('sales');
+		$this->db->where('invoice_code', $code);
+		$ots = $this->db->get() -> row('total_sales');
+		$nts = $ots + $total;
+		
+		
+		$sales = array(
+			'total_qty_sold' => $ntqs, 
+			'total_sales' => $nts, 
+		);
+		$this->db->where('invoice_code', $code);
+		$this->db->update('sales', $sales);
+		
+		
+		$remark_id = $this->db->insert_id();
+
+		$audit = array(
+			'user_id' => $this->session->userdata('user_id'), 
+			'module' => 'Sales', 
+			'remark_id' => $remark_id, 
+			'remarks' => 'Sold a Product', 
+			'date_created' => date('Y-m-j H:i:s'), 
+		);
+
+		$this->db->insert('audit_trail', $audit);
+
+		$this->session->set_flashdata('success', 'You have successfully sold the product');		
 	}
 
 	/**
@@ -107,9 +152,8 @@ class sales_model extends CI_Model {
 	 */
 	function getInvoices($code)
 	{
-		
 		$this -> db -> where('invoice_id', $code);
-		$this -> db -> join('products', 'products.product_id = sales_invoices.product_id', 'left');
+		$this -> db -> join('products', 'products.product_id = sales_invoices.product_ID', 'left');
 		$q = $this -> db -> get('sales_invoices');
 		
 		if($q->num_rows()){
@@ -130,4 +174,26 @@ class sales_model extends CI_Model {
 		return $q->row();
 		
 	}
+	
+	
+	
+	function search($keyword) {
+
+		if ($this -> session -> userdata('is_logged_in')) {
+
+			$var = urldecode($keyword);
+			$this -> db -> join('users', 'users.id = sales.user_id', 'left');
+			$this->db->like('invoice_code', $var);
+			$this->db->or_like('firstName', $var);
+			$this->db->or_like('lastName', $var);		
+			$this->db->or_like('total_qty_sold', $var);
+			$this->db->or_like('total_sales', $var);
+			$query = $this->db->get('sales');
+			$rows = $query -> num_rows();
+			$this -> session -> set_flashdata('search', $rows . ' matching record(s) found.');
+			return $query -> result();
+		}
+
+	}
+	
 }

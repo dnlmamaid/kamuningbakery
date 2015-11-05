@@ -69,8 +69,8 @@
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
-		                                <td class="col-md-1">units</td>
-		                                <td class="col-md-1">Php</td>
+		                                <td class="col-md-1"><?php echo $row->total_qty_sold?></td>
+		                				<td class="col-md-1">Php <?php echo $row->total_sales?></td>
 		                                
 	                                </tr>	
 									<?php endforeach;	                               
@@ -78,12 +78,9 @@
 									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/daily_sales/<?php echo $row->invoice_code?>">
 										<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
-										
-		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
-		                                <td class="col-md-1">units</td>
-		                                <td class="col-md-1">Php</td>
-		                                
-		                                
+										<td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
+		                                <td class="col-md-1"><?php echo $row->total_qty_sold?></td>
+		                				<td class="col-md-1">Php <?php echo $row->total_sales?></td>
 	                                </tr>
 	                                <?php endforeach;		                               
 									else:?>

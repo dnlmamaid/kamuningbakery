@@ -100,7 +100,7 @@
 		</div>
 	</div>
               
-	<?php if($body != 'search_result'){ ?>
+	<?php if($body != ('search_result' || 'by_date')){ ?>
 	<div class="row">
 		<div class="col-lg-8 col-lg-offset-4 col-xs-10 col-xs-offset-1">
 			<div id="pagination">

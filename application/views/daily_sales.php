@@ -109,23 +109,14 @@
 						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
 										</tr>
 				                              	
-				                        <?php if(isset($invoices) && is_array($invoices)): foreach($invoices as $row): if($row->sales_status != '0'):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/ordered_product/<?php echo $row->order_id?>">
+				                        <?php if(isset($invoices) && is_array($invoices)): foreach($invoices as $row):?> 
+										<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->siv_id?>">
 											<td class="col-md-1"><?php echo $row->invoice_id ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 					                        <td class="col-md-1">Php <?php echo $row->total_sale?></b></td>
 										</tr>	
 										<?php 
-										else:?>
-										<tr class="conf clickable-row" data-href="<?php echo base_url()?>sales/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1 b"><?php echo $row->invoice_id ?></td>
-											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1 b"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b">Php <?php echo $row->total_sale?></b></td>
-										</tr>	
-										<?php
-										endif;
 										endforeach;	                               
 										endif;?> 
 										
@@ -169,8 +160,7 @@
 						<div class="col-lg-10">
 							<div class="form-group">
 							<label class="control-label">Product</label>
-								
-									<select name="class_ID" class="form-control" required>
+									<select name="product_id" class="form-control" required>
 										<option value="">Select Product</option>
 										<?php if(!empty($products)){
 											if (is_array($products)){                      
