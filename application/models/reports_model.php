@@ -1,6 +1,21 @@
 <?php
 Class reports_model extends CI_Model {
-	
+		
+	public function getRequests($limit, $start) {
+		$this->db->join('users','users.id = requests.user_id','left');
+		$this -> db -> limit($limit, $start);
+		$this -> db -> where('request_status', '0');
+		$this -> db -> order_by('request_date', 'asc');
+		$query = $this -> db -> get('requests');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
 	
 	public function getLow($limit, $start) {
 		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
