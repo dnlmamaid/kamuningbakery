@@ -230,7 +230,6 @@ Class reports_model extends CI_Model {
 	
 	public function getSales($limit, $start) {
 		$this->db->join('users','users.id = sales.user_ID','left');
-		
 		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
 		
 		$this -> db -> limit($limit, $start);
@@ -391,7 +390,6 @@ Class reports_model extends CI_Model {
 	
 	public function getProduction($limit, $start) {
 		$this->db->join('users','users.id = production.user_id','left');
-		$this->db->join('production_batch','production_batch.batch_reference = production.batch_id','left');
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('date_produced', 'desc');
 		$query = $this -> db -> get('production');
@@ -457,7 +455,7 @@ Class reports_model extends CI_Model {
 		$this->db->where('date_produced >=',$start);
 		$this->db->where('date_produced <=',$end);
 		
-		$this->db->select('sum(net_fg_cost) as total');
+		$this->db->select('sum(net_production_cost) as total');
 		
 		$q = $this->db->get('production');
 		return $q->row();
@@ -465,7 +463,7 @@ Class reports_model extends CI_Model {
 	
 	function get_total_produced(){
 		
-		$this->db->select('sum(net_fg_cost) as total');
+		$this->db->select('sum(net_production_cost) as total');
 		$q = $this->db->get('production');
 		return $q->row();
 	}

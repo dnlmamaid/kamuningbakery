@@ -294,6 +294,24 @@ class sales extends CI_Controller {
 		}
 
 	}
+	public function add_sales($code){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '3'))
+	    {
+			$this -> sales_model -> add_sales($code);
+			redirect($this->agent->referrer(), 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
 	
 	public function view_sales_invoice()
 	{

@@ -66,8 +66,8 @@
 								  	<tr class="clickable-row" data-href="<?php echo base_url()?>production/production_batch/<?php echo $row->batch_id ?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 										<td class="col-md-1"><?php echo $row->batch_id ?></td>
-		                                <td class="col-md-1"></td>
-		                                <td class="col-md-1">Php</td>
+		                                <td class="col-md-1"><?php echo $row->net_produced_qty ?> units</td>
+		                                <td class="col-md-1">Php <?php echo $row->net_production_cost ?></td>
 		                                <!--<td class="col-md-1">Php <?php echo $row->sale_Price?></td>-->
 	                                </tr>	
 									<?php endforeach;	                               
@@ -75,8 +75,8 @@
 									<tr class="clickable-row" data-href="<?php echo base_url()?>production/production_batch/<?php echo $row->batch_id ?>">
 										<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 										<td class="col-md-1"><?php echo $row->batch_id ?></td>
-		                                <td class="col-md-1"></td>
-		                                <td class="col-md-1">Php</td>
+		                                <td class="col-md-1"><?php echo $row->net_produced_qty ?> units</td>
+		                                <td class="col-md-1">Php <?php echo $row->net_production_cost ?></td>
 	                               </tr>
 	                                <?php endforeach;		                               
 									else:?>

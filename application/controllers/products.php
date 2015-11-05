@@ -249,33 +249,8 @@ class products extends CI_Controller {
 		}
 	}
 	
-	public function reproduce($pid) {
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-			$this -> production_model -> produce_FG($pid);
-			redirect($this->agent->referrer(), 'refresh');
-			
-		} else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect('profile', 'refresh');
-		}
-	}
-		
-	
-	public function replenish($id){
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-				$this -> purchases_model -> purchase_order($id);
-				redirect('products', 'refresh');
-		} 
-		else if ($this -> session -> userdata('is_logged_in') && !$this -> session -> userdata('is_admin')) {
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect($base_url(), 'refresh');
-		}
-	}
-	
-	
 
+	
 	public function add_class() {
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
 	    {

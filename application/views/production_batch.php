@@ -36,10 +36,9 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<?php if(!$r->batch_status) { ?>
+							
 							
 							<h3>Details</h3>
-							
 							<div class="row">
 								<div class="col-lg-5 col-xs-7">
 									<div class="form-group">
@@ -74,11 +73,11 @@
 									</div>
 								</div>
 							</div>
-													
+							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced))):?>						
 							<div class="row">
 								<div class="col-lg-6">
 									<h3>New Product Details</h3>
-									<form action="<?php echo base_url(); ?>products/add_to_batch" accept-charset="utf-8" method="post">
+									<form action="<?php echo base_url(); ?>production/add_to_batch/<?php echo $r->batch_id ?>" accept-charset="utf-8" method="post">
 										
 									<div class="row">
 										<div class="col-lg-10">
@@ -93,10 +92,10 @@
 									<div class="row" id="materials">							
 										<div id="rm" class="col-lg-12">
 											<div class="row">
-												<div class="col-lg-4 col-xs-4">
-													<label class="control-label">Quantity per Unit</label>
+												<div class="col-lg-2 col-xs-4" style="margin-left:20px;">
+													<label class="control-label">Quantity</label>
 												</div>
-												<div class="col-lg-8 col-xs-8">
+												<div class="col-lg-8 col-xs-8" style="margin-left:20px;">
 													<label class="control-label">Raw Material</label>
 												</div>
 											</div>		
@@ -209,13 +208,13 @@
 								
 								<div class="col-lg-6">
 									<h3>Old Product Details</h3>
-									<form action="<?php echo base_url(); ?>products/add_to_batch" accept-charset="utf-8" method="post">
+									<form action="<?php echo base_url(); ?>production/add_to_batch/<?php echo $r->batch_id ?>" accept-charset="utf-8" method="post">
 										
 									<div class="row">
 										<div class="col-lg-11">
 											<div class="form-group">
 												<label class="control-label">Name</label>
-												<select name="product_id" class="form-control" required>
+												<select name="product_id" class="form-control" id="p" required>
 													<option value="">Select Product</option>
 													<?php if(!empty($fg)){
 														if (is_array($fg)){                      
@@ -231,7 +230,34 @@
 												</select>
 											</div>
 										</div>
-										
+										<div class="form-group" id="materials" hidden>
+											<div id="rm">
+											
+											<?php foreach($ing as $r2): ?>
+												<div class="col-lg-12 col-xs-12">
+													<div class="col-lg-4 col-xs-4">						
+														<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
+													</div>
+													
+													<div class="col-lg-8 col-xs-8">
+														<select name="rm_ID[]" class="form-control" required>
+														<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
+														<?php if(!empty($rm)){
+															if (is_array($rm)){                      
+													        	foreach ($rm as $row) {
+													            	if($row['product_id'] != $r2->product_id){?>
+																		<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+																	<?php } 
+																}
+															}
+														} ?>
+														</select>
+													</div>
+												</div>
+												<?php endforeach;?>
+														
+											</div>	
+										</div>
 										
 										<div class="col-lg-3 col-xs-4">
 											<div class="form-group">
@@ -260,83 +286,8 @@
 									</form>
 								</div>
 							</div>
+							<?php endif;?>
 							
-							<?php } else if($r->batch_status){?>
-							<form action="<?php echo base_url(); ?>production/accept_purchase/<?php echo $r->production_id?>"  role="form" accept-charset="utf-8" method="post">
-							<h3>Details</h3>
-							
-							<div class="row">
-								<div class="col-lg-5 col-xs-7">
-									<div class="form-group">
-										<label>Supplier</label>
-										<div class="input-group">
-										<select name="supplier_id" class="form-control" disabled>
-											<option value="<?php echo $r->supplier_id?>"><?php echo $r->supplier_name?></option>
-											<?php if(!empty($supplier)){
-												if (is_array($supplier)){                      
-											    	foreach ($supplier as $row) {
-											    		if($row['supplier_id'] != $r->supplier_id){ ?>
-														<option value="<?php echo $row['supplier_id']?>"><?php echo $row['supplier_name']; ?></option>
-													<?php } }
-												}
-											}
-																				
-											else{	?>
-											<option value=""></option>
-											<?php }?>
-										</select>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
-									    </span>
-										</div>
-									</div>
-									
-									
-								</div>
-								
-								<div class="col-lg-3 col-xs-12 pull-right">
-									<div class="form-group">
-										<label>Date of Production</label>
-										<input type="text" name="date_produced" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_produced)) ?>" id="edate" disabled>
-									</div>	
-								</div>
-							</div>
-							
-							<div class="row">
-								<div class="col-lg-6 col-xs-6">
-									<div class="form-group">
-										<label>Reference ID</label>
-										<input type="text" name="batch_id" class="form-control" value="<?php echo $r->batch_id ?>" style="text-transform: uppercase;" disabled>
-										<input type="hidden" name="total_cost" value="<?php echo $to->total?>">
-									</div>
-								</div>
-								
-								<div class="col-lg-3 col-xs-3 pull-right">
-									<div class="form-group">
-										<label>Status</label>
-										<select name="purchase_status" class="form-control" disabled>
-											<?php if($r->production_status == '0'):?>
-											<option value="0" selected>On Process</option>
-											<?php else: ?>
-											<option value="1">Delivered</option>
-											<?php endif;?>
-										</select>
-									</div>
-								</div>
-								
-							</div>
-							
-							<?php if($r->production_status == '0'):?>
-							<div class="row">
-								<div class="col-lg-1 pull-right">
-									<div class="form-group">
-									<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Clear Order" value="&#xF00c;">									
-									</div>
-								</div>
-							</div>
-							</form>
-							<?php endif; ?>
-							<?php } ?>
 							
 						</div>
 					</div>
@@ -353,27 +304,18 @@
 										<tr>
 											<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 											<th class="col-md-1"><i class="fa flaticon-baked1"></i> Product</th>
-						                    <th class="col-md-1"><i class="fa"></i> Quantity</th>
-						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
+						                    <th class="col-md-1"><i class="fa"></i> Units Produced</th>
+						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th> 
 										</tr>
 				                              	
-				                        <?php if(isset($processed) && is_array($processed)): foreach($processed as $row): if($row->batch_status != '0'):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>Production/ordered_product/<?php echo $row->order_id?>">
+				                        <?php if(isset($processed) && is_array($processed)): foreach($processed as $row):?> 
+										<tr class="clickable-row" data-href="<?php echo base_url()?>production/ordered_product/<?php echo $row->pb_id?>">
 											<td class="col-md-1"><?php echo $row->batch_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1">Php <?php echo $row->total_sale?></b></td>
+					                        <td class="col-md-1"><?php echo $row->units_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+					                        <td class="col-md-1 b"><b>Php <?php echo $row->total_production_cost?></b></td>
 										</tr>	
 										<?php 
-										else:?>
-										<tr class="conf clickable-row" data-href="<?php echo base_url()?>Production/ordered_product/<?php echo $row->order_id?>">
-											<td class="col-md-1"><?php echo $row->batch_reference ?></td>
-											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
-					                        <td class="col-md-1 b"><?php echo $row->qty_sold ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b">Php <?php echo $row->total_sale?></b></td>
-										</tr>	
-										<?php
-										endif;
 										endforeach;	                               
 										endif;?> 
 										

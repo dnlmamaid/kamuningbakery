@@ -80,9 +80,9 @@
 	                <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
 					<tr>
 						<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
-						<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                <td class="col-md-1"><?php echo $row->total_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                <td class="col-md-1">Php <?php echo $row->net_fg_cost ?></td>
+						<td class="col-md-1"><?php echo $row->batch_id ?></td>
+		                <td class="col-md-1"><?php echo $row->net_produced_qty ?> units</td>
+		                <td class="col-md-1">Php <?php echo $row->net_production_cost ?></td>
 	                </tr>	
 					<?php endforeach;	                               
 					else:?>

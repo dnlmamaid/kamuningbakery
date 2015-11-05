@@ -45,6 +45,7 @@ class sales_model extends CI_Model {
 		$this->db->order_by('product_id', 'asc');
 		$this->db->where('product_status', '1');
 		$this->db->where('current_count !=', '0');
+		$this->db->where('category_ID ', '1');
 		$q = $this->db->get('products');
 		$data = $q -> result_array();
 		return $data;
@@ -96,7 +97,10 @@ class sales_model extends CI_Model {
 			return false;	
 		}
 	}
-	
+	function add_sales($code)
+    {		
+	}
+
 	/**
 	 * get Orders function
 	 * used for multiple orders in a single purchase

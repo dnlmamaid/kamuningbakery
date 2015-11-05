@@ -228,7 +228,7 @@ class production extends CI_Controller {
 			
 			$data['batch'] = $this -> production_model -> getBatch($code);
 			$data['processed'] = $this -> production_model -> getProcessed($code);
-			$data['to'] = $this->production_model->get_total($code);
+			$data['to'] = $this->production_model->get_total_pc($code);
 			
 			$data['main_content'] = 'production_batch';
 			$this -> load -> view('includes/productionTemplate', $data);
@@ -267,6 +267,12 @@ class production extends CI_Controller {
 		}
 	}
 	
+	function getIngredients()
+	{
+		
+		$data = $this -> products_model -> getIng($pid);
+		echo json_encode($data);
+	}
 
 
 }

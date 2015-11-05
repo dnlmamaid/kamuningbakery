@@ -64,24 +64,24 @@
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?> 
-								  	<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>sales/daily_sales/<?php echo $row->invoice_code?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+										
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
-		                                <td class="col-md-1"><?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"></td>
+		                                <td class="col-md-1">units</td>
+		                                <td class="col-md-1">Php</td>
 		                                
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
-									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/daily_sales/<?php echo $row->invoice_code?>">
 										<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+										
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
-		                                <td class="col-md-1"><?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"></td>
+		                                <td class="col-md-1">units</td>
+		                                <td class="col-md-1">Php</td>
 		                                
 		                                
 	                                </tr>

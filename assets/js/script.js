@@ -1,5 +1,38 @@
 function initializeJS() {
 	
+	$(function ingredient() {
+		$("#p").change(function() {
+			$.ajax({
+				url:'production/getIngredients',
+				type: 'post',
+				
+				data: {p: $(this).val() },
+			  	dataType: "json",
+			  	success: function(data, status) {
+				/*data: {client: $(this).val() },
+				success: function(response) {
+					
+				
+			  		
+					var Vals    =   JSON.parse(response);
+                    // These are the inputs that will populate
+                    $("input[name='qpu']").val(Vals.ingredient_qty);
+                    $("input[name='rm_ID']").val(Vals.product_id);
+					*/                    					
+					$("input[name='qpu']").val(data.ingredient_qty);
+					$("input[name='rm_ID']").val(data.product_id);
+					
+				  },
+				  
+				  error: function(xhr, desc, err) {
+					console.log(xhr);
+					console.log("Details: " + desc + "\nError:" + err);
+				  }
+	      });
+		});
+	
+	});
+	
 	//clickable row
 	 $(".clickable-row").click(function() {
 	        window.document.location = $(this).data("href");
