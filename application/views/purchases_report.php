@@ -2,6 +2,7 @@
 		$pg = $this->uri->segment('3');
 		$body = $this->uri->segment('2');
 	  	$head = $this->uri->segment('1');
+		if($this->session->userdata('user_type') != ('4' || '6')):
 ?>
 <div class="container bg-panel">
 			
@@ -116,4 +117,4 @@
 </div>
 <!-- /#page-content-wrapper -->
 </div>
- 
+ <?php endif; ?>

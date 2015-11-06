@@ -63,15 +63,7 @@
 									</div>
 								</div>
 								
-								<div class="col-lg-3 col-xs-3 pull-right">
-									<div class="form-group">
-										<label>Status</label>
-										<select name="purchase_status" class="form-control" disabled>
-											<option value="0" selected>On Process</option>
-											<option value="1">Delivered</option>
-										</select>
-									</div>
-								</div>
+								
 							</div>
 							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced))):?>						
 							<div class="row">
@@ -309,7 +301,7 @@
 										</tr>
 				                              	
 				                        <?php if(isset($processed) && is_array($processed)): foreach($processed as $row):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>production/ordered_product/<?php echo $row->pb_id?>">
+										<tr class="clickable-row" data-href="<?php echo base_url()?>production/process_info/<?php echo $row->pb_id?>">
 											<td class="col-md-1"><?php echo $row->batch_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->units_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>

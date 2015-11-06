@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2015 at 11:05 PM
+-- Generation Time: Nov 06, 2015 at 09:20 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `audit_trail` (
   `remarks` varchar(255) NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`audit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=168 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=191 ;
 
 --
 -- Dumping data for table `audit_trail`
@@ -207,7 +207,30 @@ INSERT INTO `audit_trail` (`audit_id`, `user_id`, `module`, `remark_id`, `remark
 (164, 1, 'Purchases', 5, 'received product', '2015-11-04 19:51:38'),
 (165, 1, 'Purchases', 6, 'received product', '2015-11-04 19:51:44'),
 (166, 1, 'Purchases', 7, 'received product', '2015-11-04 19:51:50'),
-(167, 1, 'Purchases', 2, 'Cleared a purchase order', '2015-11-04 19:52:00');
+(167, 1, 'Purchases', 2, 'Cleared a purchase order', '2015-11-04 19:52:00'),
+(168, 1, 'Production', 10, 'Produced a new product', '2015-11-05 06:39:10'),
+(169, 1, 'Production', 2, 'Created a Production Batch', '2015-11-05 08:09:27'),
+(170, 1, 'requests', 1, 'Placed a purchase order', '2015-11-05 09:34:11'),
+(171, 1, 'Requests', 1, 'Added a Product Request', '2015-11-05 09:34:25'),
+(172, 1, 'Production', 1, 'Created a Production Batch', '2015-11-05 09:35:27'),
+(173, 1, 'Production', 11, 'Produced a new product', '2015-11-05 09:36:15'),
+(174, 1, 'Production', 12, 'Produced a new product', '2015-11-05 09:43:28'),
+(175, 1, 'Production', 13, 'Produced a new product', '2015-11-05 09:54:53'),
+(176, 1, 'Production', 14, 'Produced a new product', '2015-11-05 10:00:38'),
+(177, 1, 'Production', 15, 'Produced a new product', '2015-11-05 10:25:31'),
+(178, 1, 'Sales', 4, 'Created a Sales', '2015-11-05 10:54:09'),
+(179, 1, 'Sales', 1, 'Sold a Product', '2015-11-05 12:52:15'),
+(180, 1, 'Sales', 2, 'Sold a Product', '2015-11-05 13:05:50'),
+(181, 1, 'Sales', 0, 'Sold a Product', '2015-11-05 13:26:52'),
+(182, 1, 'Sales', 0, 'Sold a Product', '2015-11-05 13:32:10'),
+(183, 1, 'Sales', 0, 'Sold a Product', '2015-11-05 13:32:36'),
+(184, 1, 'Users', 4, 'enabled account', '2015-11-05 14:15:47'),
+(185, 1, 'Users', 4, 'disabled account', '2015-11-05 14:15:56'),
+(186, 1, 'Users', 4, 'enabled account', '2015-11-05 14:16:33'),
+(187, 4, 'Production', 2, 'Created a Production Batch', '2015-11-05 14:43:40'),
+(188, 4, 'requests', 2, 'Placed a purchase order', '2015-11-05 15:05:06'),
+(189, 4, 'Requests', 2, 'Added a Product Request', '2015-11-05 15:07:01'),
+(190, 4, 'Production', 16, 'Produced a new product', '2015-11-05 15:54:13');
 
 -- --------------------------------------------------------
 
@@ -223,28 +246,42 @@ CREATE TABLE IF NOT EXISTS `ingredients` (
   `ingredient_qty` varchar(108) NOT NULL,
   `ingredient_cost` decimal(25,2) NOT NULL,
   PRIMARY KEY (`ingredient_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `ingredients`
 --
 
 INSERT INTO `ingredients` (`ingredient_id`, `id_for`, `ingredient_ctr`, `product_id`, `ingredient_qty`, `ingredient_cost`) VALUES
-(1, 8, 0, 4, '0.05', '0.00'),
-(2, 8, 1, 1, '0.08', '0.00'),
-(3, 8, 2, 2, '0.05', '0.00'),
-(4, 9, 0, 1, '2', '0.00'),
-(5, 9, 1, 5, '0.035', '0.00'),
-(6, 9, 2, 4, '0.02', '0.00'),
-(7, 9, 3, 6, '0.01', '0.00'),
-(8, 10, 0, 4, '0.05', '0.00'),
-(9, 10, 1, 1, '2', '0.00'),
-(10, 10, 2, 2, '0.04', '0.00'),
-(11, 11, 0, 1, '2', '0.00'),
-(12, 11, 1, 3, '1', '0.00'),
-(13, 11, 2, 2, '0.1', '0.00'),
-(14, 11, 3, 4, '0.1', '0.00'),
-(15, 11, 4, 5, '0.1', '0.00');
+(1, 12, 0, 1, '544', '0.00'),
+(2, 12, 1, 2, '100', '0.00'),
+(3, 12, 2, 4, '1', '0.00'),
+(4, 12, 3, 5, '5', '0.00'),
+(5, 12, 4, 6, '25', '0.00'),
+(6, 12, 5, 8, '10', '0.00'),
+(7, 13, 0, 1, '544', '0.00'),
+(8, 13, 1, 2, '120', '0.00'),
+(9, 13, 2, 6, '40', '0.00'),
+(10, 13, 3, 4, '1', '0.00'),
+(11, 13, 4, 5, '5', '0.00'),
+(12, 14, 0, 1, '544', '0.00'),
+(13, 14, 1, 2, '120', '0.00'),
+(14, 14, 2, 4, '1', '0.00'),
+(15, 14, 3, 5, '5', '0.00'),
+(16, 14, 4, 6, '35', '0.00'),
+(17, 14, 5, 7, '2', '0.00'),
+(18, 14, 6, 8, '5', '0.00'),
+(19, 15, 0, 1, '100', '0.00'),
+(20, 15, 1, 2, '50', '0.00'),
+(21, 15, 2, 3, '30', '0.00'),
+(22, 15, 3, 4, '1', '0.00'),
+(23, 15, 4, 5, '5', '0.00'),
+(24, 16, 0, 1, '1000', '0.00'),
+(25, 16, 1, 3, '300', '0.00'),
+(26, 16, 2, 7, '10', '0.00'),
+(27, 16, 3, 4, '2', '0.00'),
+(28, 16, 4, 8, '5', '0.00'),
+(29, 16, 5, 5, '8', '0.00');
 
 -- --------------------------------------------------------
 
@@ -256,17 +293,19 @@ CREATE TABLE IF NOT EXISTS `production` (
   `production_id` int(11) NOT NULL AUTO_INCREMENT,
   `batch_id` varchar(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `net_produced_qty` varchar(108) NOT NULL,
+  `net_production_cost` decimal(25,2) NOT NULL,
   `date_produced` datetime NOT NULL,
-  `batch_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`production_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `production`
 --
 
-INSERT INTO `production` (`production_id`, `batch_id`, `user_id`, `date_produced`, `batch_status`) VALUES
-(1, '110420151Bk', 1, '2015-11-04 18:47:21', 0);
+INSERT INTO `production` (`production_id`, `batch_id`, `user_id`, `net_produced_qty`, `net_production_cost`, `date_produced`) VALUES
+(1, '11052015ZvU', 1, '128', '22.46', '2015-11-05 09:35:27'),
+(2, '11052015p3N', 4, '50', '6.24', '2015-11-05 14:43:40');
 
 -- --------------------------------------------------------
 
@@ -281,9 +320,20 @@ CREATE TABLE IF NOT EXISTS `production_batch` (
   `previous_count` varchar(108) NOT NULL,
   `units_produced` varchar(108) NOT NULL,
   `production_cpu` decimal(25,2) NOT NULL,
-  `production_status` tinyint(1) NOT NULL,
+  `total_production_cost` decimal(25,2) NOT NULL,
   PRIMARY KEY (`pb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `production_batch`
+--
+
+INSERT INTO `production_batch` (`pb_id`, `batch_reference`, `product_id`, `previous_count`, `units_produced`, `production_cpu`, `total_production_cost`) VALUES
+(1, '11052015ZvU', 12, '0', '24', '0.22', '5.40'),
+(2, '11052015ZvU', 13, '0', '24', '0.22', '5.39'),
+(3, '11052015ZvU', 14, '0', '30', '0.21', '6.28'),
+(4, '11052015ZvU', 15, '0', '50', '0.11', '5.39'),
+(5, '11052015p3N', 16, '0', '50', '0.12', '6.24');
 
 -- --------------------------------------------------------
 
@@ -308,21 +358,26 @@ CREATE TABLE IF NOT EXISTS `products` (
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `product_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`product_id`, `product_Name`, `current_count`, `category_ID`, `class_ID`, `supplier_ID`, `description`, `um`, `price`, `sale_Price`, `holding_cost`, `eoq`, `date_created`, `date_updated`, `product_status`) VALUES
-(1, 'Bread Flour', '100000', 2, 1, 4, 'High Quality Bread Flour', 'g', '0.038', '0.00', '0.00', '', '2015-11-04 15:57:04', '2015-11-04 11:47:29', 1),
-(2, 'White Sugar', '100000', 2, 1, 4, 'High Quality White Sugar', 'g', '0.036', '0.00', '0.00', '', '2015-11-04 15:57:42', '2015-11-04 11:47:44', 1),
-(3, 'Brown Sugar', '100000', 2, 1, 4, 'High Quality Brown Sugar', 'g', '0.035', '0.00', '0.00', '', '2015-11-04 15:58:07', '2015-11-04 11:47:52', 1),
-(4, 'Eggs', '1000', 2, 1, 3, 'High quality chicken eggs', 'pc', '4.500', '0.00', '0.00', '', '2015-11-04 16:22:50', '2015-11-04 11:49:06', 1),
-(5, 'Milk', '10000', 2, 1, 3, 'high quality milk', 'ml', '0.780', '0.00', '0.00', '', '2015-11-04 16:23:29', '2015-11-04 11:51:37', 1),
-(6, 'Butter', '10000', 2, 1, 3, 'unsalted butter', 'g', '0.034', '0.00', '0.00', '', '2015-11-04 16:26:59', '2015-11-04 11:51:44', 1),
-(7, 'Vanilla', '100', 2, 1, 3, 'vanilla', 'ml', '0.880', '0.00', '0.00', '', '2015-11-04 16:30:17', '2015-11-04 11:51:50', 1),
-(8, 'Salt', '100000', 2, 1, 4, 'high quality salt', 'g', '0.010', '0.00', '0.00', '', '2015-11-04 16:39:22', '2015-11-04 11:48:42', 1);
+(1, 'Bread Flour', '70612', 2, 1, 4, 'High Quality Bread Flour', 'g', '0.038', '0.00', '0.00', '', '2015-11-04 15:57:04', '2015-11-05 07:54:09', 1),
+(2, 'White Sugar', '94710', 2, 1, 4, 'High Quality White Sugar', 'g', '0.036', '0.00', '0.00', '', '2015-11-04 15:57:42', '2015-11-05 02:25:28', 1),
+(3, 'Brown Sugar', '99670', 2, 1, 4, 'High Quality Brown Sugar', 'g', '0.035', '0.00', '0.00', '', '2015-11-04 15:58:07', '2015-11-05 07:54:10', 1),
+(4, 'Eggs', '945', 2, 1, 3, 'High quality chicken eggs', 'pc', '4.500', '0.00', '0.00', '', '2015-11-04 16:22:50', '2015-11-05 07:54:11', 1),
+(5, 'Milk', '9799', 2, 1, 3, 'high quality milk', 'ml', '0.780', '0.00', '0.00', '', '2015-11-04 16:23:29', '2015-11-05 07:54:11', 1),
+(6, 'Butter', '8675', 2, 1, 3, 'unsalted butter', 'g', '0.034', '0.00', '0.00', '', '2015-11-04 16:26:59', '2015-11-05 02:00:37', 1),
+(7, 'Vanilla', '88', 2, 1, 3, 'vanilla', 'ml', '0.880', '0.00', '0.00', '', '2015-11-04 16:30:17', '2015-11-05 07:54:10', 1),
+(8, 'Salt', '99490', 2, 1, 4, 'high quality salt', 'g', '0.010', '0.00', '0.00', '', '2015-11-04 16:39:22', '2015-11-05 07:54:11', 1),
+(12, 'Pandesal', '14', 1, 2, 1, 'wewm', 'pc', '0.225', '0.45', '0.00', '', '2015-11-05 09:43:27', '2015-11-05 05:05:50', 1),
+(13, 'Ensaymada', '14', 1, 2, 1, 'weea', 'pc', '0.225', '0.45', '0.00', '', '2015-11-05 09:54:53', '2015-11-05 05:26:52', 1),
+(14, 'Spanish Bread', '20', 1, 2, 1, 'nbm bv', 'pc', '0.209', '0.42', '0.00', '', '2015-11-05 10:00:37', '2015-11-05 05:32:09', 1),
+(15, 'Shit', '30', 1, 2, 1, 'asdmnasmf', 'g', '0.108', '0.22', '0.00', '', '2015-11-05 10:25:29', '2015-11-05 05:32:35', 1),
+(16, 'Sapatos', '50', 1, 2, 1, 'sapatos', 'pc', '0.125', '0.25', '0.00', '', '2015-11-05 15:54:11', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -440,7 +495,15 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `request_date` datetime NOT NULL,
   `request_status` tinyint(4) NOT NULL,
   PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `requests`
+--
+
+INSERT INTO `requests` (`request_id`, `user_id`, `ro_id`, `is_new`, `request_date`, `request_status`) VALUES
+(1, 1, '050cCTv6wps', 1, '2015-11-05 09:34:11', 0),
+(2, 4, '050VUCQoxjc', 1, '2015-11-05 15:05:06', 0);
 
 -- --------------------------------------------------------
 
@@ -455,7 +518,15 @@ CREATE TABLE IF NOT EXISTS `request_orders` (
   `request_qty` varchar(108) NOT NULL,
   `ro_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `request_orders`
+--
+
+INSERT INTO `request_orders` (`order_id`, `order_reference`, `product_id`, `request_qty`, `ro_status`) VALUES
+(1, '050cCTv6wps', 1, '50000', 0),
+(2, '050VUCQoxjc', 1, '50000000', 0);
 
 -- --------------------------------------------------------
 
@@ -468,18 +539,18 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `invoice_code` varchar(11) NOT NULL,
   `user_ID` tinyint(1) NOT NULL,
   `sales_date` datetime NOT NULL,
+  `total_qty_sold` varchar(108) NOT NULL,
+  `total_sales` decimal(25,2) NOT NULL,
   `sales_status` tinyint(4) NOT NULL,
   PRIMARY KEY (`sales_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`sales_id`, `invoice_code`, `user_ID`, `sales_date`, `sales_status`) VALUES
-(1, '042015N5lCO', 1, '2015-11-04 18:02:20', 0),
-(2, '042015HLYsh', 1, '2015-11-04 18:16:42', 0),
-(3, '042015f1oPm', 1, '2015-11-04 18:16:52', 0);
+INSERT INTO `sales` (`sales_id`, `invoice_code`, `user_ID`, `sales_date`, `total_qty_sold`, `total_sales`, `sales_status`) VALUES
+(4, '052015ltOP7', 1, '2015-11-05 10:54:09', '50', '114.10', 0);
 
 -- --------------------------------------------------------
 
@@ -490,11 +561,21 @@ INSERT INTO `sales` (`sales_id`, `invoice_code`, `user_ID`, `sales_date`, `sales
 CREATE TABLE IF NOT EXISTS `sales_invoices` (
   `siv_id` int(11) NOT NULL AUTO_INCREMENT,
   `invoice_id` varchar(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_ID` int(11) NOT NULL,
   `qty_sold` int(11) NOT NULL,
   `total_sale` decimal(25,2) NOT NULL,
   PRIMARY KEY (`siv_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `sales_invoices`
+--
+
+INSERT INTO `sales_invoices` (`siv_id`, `invoice_id`, `product_ID`, `qty_sold`, `total_sale`) VALUES
+(2, '052015ltOP7', 12, 10, '23.80'),
+(3, '052015ltOP7', 13, 10, '23.80'),
+(4, '052015ltOP7', 14, 10, '23.50'),
+(5, '052015ltOP7', 15, 20, '43.00');
 
 -- --------------------------------------------------------
 
@@ -551,7 +632,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `firstName`, `lastName`, `cre
 (1, 'administrator@kb', '$2y$10$/ICTGxVMHzOApzjGL/YG..X/mJsFizT8h..RENn.Rs5gqNTzgxLzK', 'Istrator', 'Admin', '2015-10-12 15:40:29', 1, 1),
 (2, 'amanager@kb', '$2y$10$Kfpi6NQPTEC5urNHcMn6O.EcJyqPwjstDHMqpYxgDZPOI2dQFDdeK', 'Manager', 'A', '2015-10-12 15:46:29', 2, 1),
 (3, 'aaccountant@kb', '$2y$10$Q5C8IScdiEGIVa62Xz4Vj.lWIab7Q1/rqBlQzOHRbIRwpXVQLtqQW', 'Accountant', 'A', '2015-10-12 15:50:32', 3, 1),
-(4, 'bakerking@kb', '$2y$10$cazG../qovM.2WTNslJDM.t3RYun/lb2JXKUwpoPJYTt4wbeXRNHm', 'King', 'Baker', '2015-10-12 15:51:00', 4, 0);
+(4, 'bakerking@kb', '$2y$10$cazG../qovM.2WTNslJDM.t3RYun/lb2JXKUwpoPJYTt4wbeXRNHm', 'King', 'Baker', '2015-10-12 15:51:00', 4, 1);
 
 -- --------------------------------------------------------
 

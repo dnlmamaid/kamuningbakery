@@ -2,19 +2,47 @@
 Class reports_model extends CI_Model {
 		
 	public function getRequests($limit, $start) {
-		$this->db->join('users','users.id = requests.user_id','left');
-		$this -> db -> limit($limit, $start);
-		$this -> db -> where('request_status', '0');
-		$this -> db -> order_by('request_date', 'asc');
-		$query = $this -> db -> get('requests');
-		if ($query -> num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
+		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+			
+			$this->db->join('users','users.id = requests.user_id','left');
+			$this -> db -> limit($limit, $start);
+			$this -> db -> where('request_status', '0');
+			$this -> db -> order_by('request_date', 'asc');
+			$query = $this -> db -> get('requests');
+			
+			if ($query -> num_rows() > 0) {
+				foreach ($query->result() as $row) {
+					$data[] = $row;
+				}
+	
+				return $data;
 			}
-
-			return $data;
+			
+			else{
+				return false;
+			}
+		
+		} else if($this->session->userdata('is_logged_in')){
+			
+			$this->db->join('users','users.id = requests.user_id','left');
+			$this -> db -> limit($limit, $start);
+			$this -> db -> where('request_status', '0');
+			$this -> db -> order_by('request_date', 'asc');
+			$query = $this -> db -> get('requests');
+			
+			if ($query -> num_rows() > 0) {
+				foreach ($query->result() as $row) {
+					$data[] = $row;
+				}
+	
+				return $data;
+			}
+			
+			else{
+				return false;
+			}
 		}
-		return false;
 	}
 	
 	public function getLow($limit, $start) {

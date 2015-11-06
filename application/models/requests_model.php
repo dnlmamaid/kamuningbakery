@@ -2,7 +2,48 @@
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class requests_model extends CI_Model{
- 	
+ 		
+	/*
+	 * Get all Requests
+	 */
+	public function getRequests($limit, $start) {
+		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+			
+			$this->db->join('users','users.id = requests.user_id','left');
+			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
+			$this -> db -> limit($limit, $start);
+			$this -> db -> order_by('request_date', 'desc');
+			$query = $this -> db -> get('requests');
+			if ($query -> num_rows() > 0) {
+				foreach ($query->result() as $row) {
+					$data[] = $row;
+				}
+	
+				return $data;
+			}
+			return false;
+			
+		} else if($this->session->userdata('is_logged_in')){
+			
+			$this->db->join('users','users.id = requests.user_id','left');
+			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
+			$this -> db -> limit($limit, $start);
+			$this -> db -> order_by('request_date', 'desc');
+			$this->db->where('user_id', $this->session->userdata('user_id'));
+			$query = $this -> db -> get('requests');
+			if ($query -> num_rows() > 0) {
+				foreach ($query->result() as $row) {
+					$data[] = $row;
+				}
+	
+				return $data;
+			}
+			return false;
+			
+		}
+	}
+	
 	/**
 	 * Get Products Function
 	 *
@@ -14,6 +55,15 @@ class requests_model extends CI_Model{
 		$q = $this->db->get('products');
 		$data = $q -> result_array();
 		return $data;
+	}
+	
+	
+	public function getRequestsCtr() {
+		$this -> db -> select('*');
+		$this -> db -> from('requests');
+		$query = $this -> db -> get();
+		$result = $query -> num_rows();
+		return $result;
 	}
 	
 	/**
@@ -293,76 +343,5 @@ class requests_model extends CI_Model{
 		$this->db->insert('audit_trail', $audit);
     }
 	
-	
-	function receive_po($id)
-    {
-    	$receive = array(
-			'po_status'	=> '1',
-			'date_received'=> date('Y-m-j H:i:s'),
-		);
-		
-	    $this->db->where('purchase_id',$id);
-		$this->db->update('requests', $receive);
-	    $this->session->set_flashdata('success','Cleared the purchase order');
-			
-		$audit = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'requests',
-			'remark_id'	=> $id,
-			'remarks'	=> 'Cleared a purchase order',
-			'request_date'=> date('Y-m-j H:i:s'),
-				
-		);
-			
-		$this->db->insert('audit_trail', $audit);
-    }
-	
-	
-	function remove_purchase($id)
-    {
-	    $this->db->where('purchase_id',$id);
-		$query = $this->db->delete('requests');
-	    $this->session->set_flashdata('success','Entry Deleted.');
-			
-		$audit = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'requests',
-			'remark_id'	=> $id,
-			'remarks'	=> 'deleted a purchase order',
-			'request_date'=> date('Y-m-j H:i:s'),
-				
-		);
-			
-		$this->db->insert('audit_trail', $audit);
-    }
-	
-	/*
-	 * Get all Requests
-	 */
-	public function getRequests($limit, $start) {
-		
-		$this->db->join('users','users.id = requests.user_id','left');
-		$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
-		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('request_date', 'desc');
-		$this->db->where('request_status <=', '1');
-		$query = $this -> db -> get('requests');
-		if ($query -> num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
-			}
-
-			return $data;
-		}
-		return false;
-	}
-
-	public function getRequestsCtr() {
-		$this -> db -> select('*');
-		$this -> db -> from('requests');
-		$query = $this -> db -> get();
-		$result = $query -> num_rows();
-		return $result;
-	}
 	
 }

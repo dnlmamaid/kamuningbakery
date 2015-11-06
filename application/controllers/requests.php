@@ -13,14 +13,11 @@ class requests extends CI_Controller {
 
 	public function index($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
-	    	
+		//Pagination
+		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+		$total_row = $this->requests_model->getrequestsCtr();
 			
-			//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->requests_model->getrequestsCtr();
-			
-			$config = array(
+		$config = array(
 			'total_rows' => $total_row,
 			'per_page' => 8, 
 			'uri_segment' => 3,
@@ -42,101 +39,80 @@ class requests extends CI_Controller {
 			'next_tag_close' => '</li>',
 			'num_tag_open' => '<li>',
 			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
-			 	if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
-				{
-      				$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
-      			}
-				else{
+		);
+		
+		$this->pagination->initialize($config);
+		$data['paginglinks'] = $this->pagination->create_links();
+		
+		if($data['paginglinks']!= ''){
+			if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row){
+      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
+      		}
+			else{
       			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-				} 			
-      			
-    		}   
+			} 			
+    	}   
     		
-    		//Dropdown
+    	//Dropdown
+		$data['requests'] = $this->requests_model->getRequests($config['per_page'], $offset);
 			
-			$data['requests'] = $this->requests_model->getRequests($config['per_page'], $offset);
-
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+			
 			$data['main_content'] = 'requests_table';
 			$this -> load -> view('includes/adminTemplate', $data);
+			
 		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
 			
-			//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->requests_model->getrequestsCtr();
-			
-			$config = array(
-			'total_rows' => $total_row,
-			'per_page' => 8, 
-			'uri_segment' => 3,
-			'num_links' => 1,
-			'first_link' => 'First',
-			'last_link'=> 'Last',
-			'base_url' => base_url().'requests/page',
-			'suffix' => '?=ref'.http_build_query($_GET, '', "&"),
-			'first_url' => base_url().'requests',
-			'cur_tag_open' => '<li><a class="current">',
-			'cur_tag_close' => '</a></li>',
-			'prev_tag_open' => '<li>',
-			'prev_tag_close' => '</li>',
-			'first_tag_open' => '<li>',
-			'first_tag_close' => '</li>',
-			'last_tag_open' => '<li>',
-			'last_tag_close' => '</li>',
-			'next_tag_open' => '<li>',
-			'next_tag_close' => '</li>',
-			'num_tag_open' => '<li>',
-			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
-			 	if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
-				{
-      				$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
-      			}
-				else{
-      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-				} 			
-      			
-    		}   
-    		
-    		//Dropdown
-			
-			$data['requests'] = $this->requests_model->getRequests($config['per_page'], $offset);
-
 			$data['main_content'] = 'requests_table';
 			$this -> load -> view('includes/bTemplate', $data);
 		
-		}
-		else
-	    {
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5'){
+			
+			$data['main_content'] = 'requests_table';
+			$this -> load -> view('includes/pTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '6'){
+			
+			$data['main_content'] = 'requests_table';
+			$this -> load -> view('includes/skTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in')){
+			
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
+			
+		} else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
 		}
 	}
 	
 	public function request_order()
 	{
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
-	    {
-	    	$data['prod'] = $this -> requests_model -> getProducts();
-			$code = $this->uri->segment(3);
+		
+		$data['prod'] = $this -> requests_model -> getProducts();
+		$code = $this->uri->segment(3);
 			
-			$data['ro'] = $this -> requests_model -> getRO($code);
-			$data['orders'] = $this -> requests_model -> getROrders($code);
-			$data['to'] = $this->requests_model->get_total($code);
+		$data['ro'] = $this -> requests_model -> getRO($code);
+		$data['orders'] = $this -> requests_model -> getROrders($code);
+		$data['to'] = $this->requests_model->get_total($code);
+			
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2')){
 			
 			$data['main_content'] = 'request_order';
 			$this -> load -> view('includes/adminTemplate', $data);
-		}
-		
-		else if($this->session->userdata('is_logged_in'))
-	    {
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
+			
+			$data['main_content'] = 'request_order';
+			$this -> load -> view('includes/bTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in')) {
+			
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
+			
 		} 
 		
 		else {
@@ -149,18 +125,24 @@ class requests extends CI_Controller {
 	
 	
 	public function product_request($id) {
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
-	    {
-			
-			$data['po'] = $this -> requests_model -> getROR($id);
+		
+		$data['po'] = $this -> requests_model -> getROR($id);
+		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+
 			$data['main_content'] = 'request_info';
 			$this -> load -> view('includes/adminTemplate', $data);
-		}
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
+
+			$data['main_content'] = 'request_info';
+			$this -> load -> view('includes/bTemplate', $data);
 		
-		else if($this->session->userdata('is_logged_in'))
-	    {
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+		} else if($this->session->userdata('is_logged_in')){
+			
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
+			
 		} 
 		
 		else {
@@ -173,14 +155,14 @@ class requests extends CI_Controller {
 	
 	
 	public function add_order($code){
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4')))
 	    {
 			$this -> requests_model -> add_order($code);
 			redirect($this->agent->referrer(), 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -192,14 +174,14 @@ class requests extends CI_Controller {
 	}
 	
 	public function update_order($id){
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4')))
 	    {
 			$this -> requests_model -> update_po($id);
 			redirect($this->agent->referrer(), 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -211,7 +193,7 @@ class requests extends CI_Controller {
 	}
 
 	public function create_request_order(){
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4')))
 	    {
 	    	$code = date('d').'0'.random_string('alnum',8);	
 			$this -> requests_model -> create_ro($code);
@@ -219,7 +201,7 @@ class requests extends CI_Controller {
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -231,7 +213,7 @@ class requests extends CI_Controller {
 	}
 	
 	
-	public function accept_purchase($id)
+	public function accept_request($id)
 	{
 		$this -> requests_model -> receive_po($id);
 		redirect($this->agent->referrer(), 'refresh');
@@ -243,17 +225,12 @@ class requests extends CI_Controller {
 		redirect($this->agent->referrer(), 'refresh');
 	}
 	
-	public function cancel_order($id)
+	public function cancel_request($id)
 	{
 		$this -> requests_model -> remove_order($id);
 		redirect('requests', 'refresh');
 	}
 	
-	public function cancel_purchase($id)
-	{
-		$this -> requests_model -> remove_purchase($id);
-		redirect('requests', 'refresh');
-	}
 		
 	public function purchase_invoice()
 	{
@@ -275,21 +252,7 @@ class requests extends CI_Controller {
 		}
 		
 	}
-	
-	function by_date(){
 		
-		$data['sdate'] = $this->input->post('sdate');
-		$data['edate'] = $this->input->post('edate');
-		
-		$data['total'] = $this->requests_model->get_total_requests_by_date();
-		$data['requests'] = $this->requests_model->get_requests_by_date();
-		
-		$data['main_content'] = 'requests_report';
-		$this -> load -> view('includes/admintemplate', $data);
-	}
-	
-	
-	
 	function search() {
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')

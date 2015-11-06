@@ -316,6 +316,27 @@ class production_model extends CI_Model{
 		}
 	}
 	
+	/**
+	 * get Purchase Order Record function
+	 * gets specific purchase order record
+	 */
+	function getProd_Rec($id)
+	{
+		
+		$this -> db -> where('pb_id', $id);
+		$this -> db -> join('products', 'products.product_id = production_batch.product_ID', 'left');
+		$this -> db -> join('production', 'production.batch_id = production_batch.batch_reference', 'left');
+		$this -> db -> join('users', 'users.id = production.user_id', 'right');
+		$q = $this -> db -> get('production_batch');
+		
+		if($q->num_rows()){
+			return $q -> result();
+		}
+		
+		else{
+			return false;	
+		}
+	}
 	
 	function get_total_pc($code){
 		

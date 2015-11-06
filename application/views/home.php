@@ -238,6 +238,9 @@
     	<!--------------- BAKER --------------------->
     	<!--------------- BAKER --------------------->
     	<div class="row">
+    		<div class="col-lg-12" align="center" style="margin-bottom:15px;">
+				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+			</div>
     		<div class="col-lg-4">
 		    	
 				<div class="col-lg-12 col-xs-6">
@@ -264,12 +267,13 @@
 				
 			</div>
 			<div class="col-lg-8">
+				
 				<?php if($this->session->flashdata('message')){ ?>
 				<div class="col-lg-12">
 					<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
 				</div>
 				<?php } ?>
-				<h3><i class="fa fa-comments-o"></i> Active Requests</h3>
+				<h2><i class="fa fa-comments-o"></i> Active Requests</h2>
 				<div class="table-responsive"> 
 					<table class="table table-advance table-hover">
 					<tbody>
@@ -299,7 +303,7 @@
 			</div>
 			
 			<div class="col-lg-8">
-				<h3><i class="fa fa-comments-o"></i> Produced Goods</h3>
+				<h2><i class="fa fa-comments-o"></i> Produced Goods</h2>
 				<div class="table-responsive"> 
 					<table class="table table-advance table-hover">
 					<tbody>
