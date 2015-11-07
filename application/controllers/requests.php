@@ -11,7 +11,7 @@ class requests extends CI_Controller {
 		$this -> load -> model('users_model');
 	}
 
-	public function index($offset = 0)
+	public function index($offset = 0)		
 	{
 		//Pagination
 		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);

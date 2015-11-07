@@ -8,11 +8,12 @@ class requests_model extends CI_Model{
 	 */
 	public function getRequests($limit, $start) {
 		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
 			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
 			$this -> db -> limit($limit, $start);
+			$this->db->where('request_status <=', '1');
 			$this -> db -> order_by('request_date', 'desc');
 			$query = $this -> db -> get('requests');
 			if ($query -> num_rows() > 0) {
@@ -24,7 +25,7 @@ class requests_model extends CI_Model{
 			}
 			return false;
 			
-		} else if($this->session->userdata('is_logged_in')){
+		} else if($this->session->userdata('is_logged_in') ){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
 			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
@@ -97,7 +98,7 @@ class requests_model extends CI_Model{
 		$this -> db -> where('request_orders.order_reference', $code);
 		
 		$this -> db -> join('products', 'products.product_id = request_orders.product_id', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'right');
+		
 		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
 		$this -> db -> join('requests', 'requests.ro_id = request_orders.order_reference', 'left');
 		
@@ -172,7 +173,6 @@ class requests_model extends CI_Model{
 		$request = array(
 			'user_id'	=> $this->session->userdata('user_id'),
 			'ro_id'	=> $code,
-			'is_new' => $this->input->post('is_new'),
 			'request_date'=> date('Y-m-j H:i:s'),
 			'request_status'=> '0',
 		);

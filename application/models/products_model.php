@@ -277,11 +277,11 @@ class products_model extends CI_Model {
 	function getProductSupplier($sid) {
 		if ($this->session->userdata('is_logged_in')) {
 			$this->db->limit(6);
-			$this->db->join('product_category', 'product_category.category_id = products.category_ID', 'left');
-			$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-			$this->db->from('products');
-			$this->db->order_by('current_count', 'asc');
-			$this->db->where('supplier_ID', $sid);
+			$this->db->join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
+			$this->db->join('products', 'products.product_id = purchase_orders.product_id', 'right');
+			$this->db->from('purchases');
+			
+			$this->db->where('supplier_id', $sid);
 			$query = $this->db->get();
 			$data = $query -> result_array();
 			return $data;

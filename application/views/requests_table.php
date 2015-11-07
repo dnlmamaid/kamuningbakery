@@ -27,9 +27,7 @@
 	    			</div>
 	    			
 	    			<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
-	    				<span data-toggle="modal" data-target="#request">
-		    				<a alt="Request" data-toggle="tooltip" data-placement="top" title="Request Raw Materials" class="btn btn-theme"><i class="fa fa-comment"></i></a>
-		    			</span>
+		    			<a action="<?php echo base_url()?>requests/create_request_order" alt="Request" data-toggle="tooltip" data-placement="top" title="Request Raw Materials" class="btn btn-theme"><i class="fa fa-comment"></i></a>		    			
 					</div>
 	    				
 				</div>
@@ -124,48 +122,7 @@
               <!-- page end-->
 	</div>
 	
-	<!-- REQUEST MODAL -->
-	<div class="modal fade" id="request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-							
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title"><i class="fa flaticon-ingredients1"></i> Product Request Form</h4>
-					</div>
-							
-					<div class="modal-body">
-					<form action="<?php echo base_url()?>requests/create_request_order" role="form" accept-charset="utf-8" method="post">
-						<div class="col-lg-8 col-xs-8">
-							<div class="form-group">
-								<label>Is the item Already Available?</label>
-								<select name="is_new" class="form-control" required>
-									<option value="1">Yes</option>
-									<option value="0">No</option>
-								</select>
-							</div>
-						</div>
-						
-					</div>
-								
-								
-					<div class="modal-footer">
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<input type="submit" class="btn btn-success" value="Submit">
-						</div>
-					</div>
-								
-				</form>
-				</div>
-							
-			</div>
-		</div>
-	</div>
-	
+
 	            
 </div>
 <!-- /#page-content-wrapper -->

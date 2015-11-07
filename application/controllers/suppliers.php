@@ -81,8 +81,11 @@ class suppliers extends CI_Controller {
 			$mid = $this -> uri -> segment(3);
 			$data['rec'] = $this -> users_model -> get_supplier_rec($mid);
 			$data['products'] = $this -> products_model -> getProductSupplier($mid);
+			
 			$data['main_content'] = 'suppliers_profile';
+			
 			$this->load->view('includes/adminTemplate', $data);
+			
 		} else if($this->session->userdata('is_logged_in')){
 	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
@@ -101,6 +104,7 @@ class suppliers extends CI_Controller {
 			$this -> users_model -> update_supplier($id);
 			
 			redirect('suppliers/profile/'.$id, 'refresh');
+			
 		} else if($this->session->userdata('is_logged_in')){
 	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
@@ -130,7 +134,7 @@ class suppliers extends CI_Controller {
 	public function remove($id)
 	{
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <='2'){
-			$this -> users_model -> remove($id);
+			$this -> users_model -> remove_s($id);
 			$this->session->set_flashdata('message','Successfully Deleted Entry');
 			redirect('suppliers', 'refresh');
 		} else if($this->session->userdata('is_logged_in')){

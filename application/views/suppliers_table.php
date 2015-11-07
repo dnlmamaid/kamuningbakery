@@ -74,7 +74,7 @@
 			                			<a class="btn btn-success" href="<?php echo base_url()?>suppliers/enable/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="left" title="enable supplier"><i class="icon_check_alt2"></i></a>
 			                		<?php } ?>
 									
-			                        <a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>suppliers/remove/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="right" title="delete supplier"><i class="icon_close_alt2"></i></a>
+			                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>suppliers/remove/<?php echo $row->supplier_id?>" data-toggle="tooltip" data-placement="right" title="delete supplier"><i class="icon_close_alt2"></i></a>-->
 			                    </div>
 	                           	</td>
 							<?php else:?>
@@ -171,76 +171,3 @@
 </div>
 <!-- /#page-content-wrapper -->
  
-<div class="modal fade" id="addSupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="vertical-alignment-helper">
-	<div class="modal-dialog vertical-align-center">
-		
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title"><i class="fa fa-briefcase"></i> Create New Supplier Form</h4>
-			</div>
-		
-			<div class="modal-body">
-			<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>suppliers/add">
-				
-				<div class="form-group">
-					<div class="col-lg-6 col-xs-6">
-						<label for="firstName">Supplier</label>
-						<input type="text" name="supplier_name" class="form-control inline" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-6 col-xs-6">
-						<label for="lastName">Contact Person</label>
-						<input type="text" name="contact_Person" class="form-control inline" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-8 col-xs-8">
-						<label for="lastName">Address</label>
-						<input type="text" name="st_Address" class="form-control inline" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-4 col-xs-4">
-						<label for="lastName">City</label>
-						<input type="text" name="city" class="form-control inline" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-8 col-xs-8">
-						<label for="lastName">Contact</label>
-						<input type="text" name="contact" class="form-control inline" required>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-lg-8 col-xs-8">
-						<label for="lastName">Terms</label>
-						<textarea name="terms" class="form-control inline" required></textarea>
-					</div>
-				</div>
-				
-			</div>
-			
-			
-			<div class="modal-footer">
-				<div class="form-group">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<input type="submit" class="btn btn-success" value="Add">
-				</div>
-			</div>
-			
-		</form>
-		</div>
-		
-	</div>
-	</div>
-</div>

@@ -231,7 +231,7 @@
 			</div>
 			
 		</div>
-    	<?php endif; ?>
+    	<?php elseif($this->session->userdata('user_type') == '4'): ?>
     	
     	<!--------------- BAKER --------------------->
     	<!--------------- BAKER --------------------->
@@ -333,7 +333,7 @@
 				
 			</div>	
 		</div>
-		
+		<?php endif; ?>
 		
 		
 		

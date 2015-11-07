@@ -503,18 +503,18 @@ Class users_model extends CI_Model
 			
 			$data = array(
 				'supplier_name'	=> $this->input->post('supplier_name'),
+				
 				'contact_Person'=> $this->input->post('contact_Person'),
 				'st_Address'	=> $this->input->post('st_Address'),
 				'city'			=> $this->input->post('city'),
 				'terms'			=> $this->input->post('terms'),
 				'contact'		=> $this->input->post('contact'),
 				'created_at'	=> date('Y-m-j H:i:s'),
-				'is_active'		=> '1',
-				
-				
+				'is_active'		=> '1',	
 			);
 			
 			$this->db->insert('suppliers', $data);
+			
 			$this->session->set_flashdata('success','Successfully Created Supplier');
 			
 			$remark_id = $this->db->insert_id();
@@ -543,13 +543,14 @@ Class users_model extends CI_Model
 	{
 		
 		$data = array(
-		'supplier_name'	=> $this->input->post('supplier_name'),
-		'contact_Person'=> $this->input->post('contact_Person'),
-		'st_Address'	=> $this->input->post('st_Address'),
-		'city'			=> $this->input->post('city'),
-		'terms'			=> $this->input->post('terms'),
-		'contact'		=> $this->input->post('contact'),
-		'is_active'		=> $this->input->post('is_active'),
+			'supplier_name'	=> $this->input->post('supplier_name'),
+			'contact_Person'=> $this->input->post('contact_Person'),
+			'st_Address'	=> $this->input->post('st_Address'),
+			
+			'city'			=> $this->input->post('city'),
+			'terms'			=> $this->input->post('terms'),
+			'contact'		=> $this->input->post('contact'),
+			'is_active'		=> $this->input->post('is_active'),
 		);
 		
 		$this->db->where('supplier_id', $id);
@@ -578,7 +579,7 @@ Class users_model extends CI_Model
 	 */
 	function get_supplier_rec($mid) {
 		
-		$this -> db -> where('suppliers.supplier_id', $mid);
+		$this -> db -> where('supplier_id', $mid);
 		$q = $this -> db -> get('suppliers');
 		
 		return $q -> result();

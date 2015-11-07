@@ -13,7 +13,7 @@ class home extends CI_Controller {
 
 
 	/**
-	* login view.
+	* 
 	* 
 	*/	
 	function index() {

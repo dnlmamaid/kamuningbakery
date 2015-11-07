@@ -59,8 +59,6 @@ class login extends CI_Controller {
 					'username' => $user -> username,
 					'user_type' => $user -> user_type,
 					'is_logged_in' => true,
-					
-					
 				);
 				
 				$this -> session -> set_userdata($data);

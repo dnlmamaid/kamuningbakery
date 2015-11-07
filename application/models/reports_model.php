@@ -6,7 +6,7 @@ Class reports_model extends CI_Model {
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
-			$this -> db -> limit($limit, $start);
+			$this-> db -> limit($limit, $start);
 			$this -> db -> where('request_status', '0');
 			$this -> db -> order_by('request_date', 'asc');
 			$query = $this -> db -> get('requests');
@@ -46,7 +46,7 @@ Class reports_model extends CI_Model {
 	}
 	
 	public function getLow($limit, $start) {
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		
 		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
 		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 		$this -> db -> limit($limit, $start);
@@ -136,7 +136,7 @@ Class reports_model extends CI_Model {
 	public function getPurchases($limit, $start) {
 			
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->join('users','users.id = purchases.user_id','left');
+		
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('date_received', 'desc');
 		$query = $this -> db -> get('purchases');

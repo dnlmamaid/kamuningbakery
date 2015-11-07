@@ -49,7 +49,7 @@
 						</div>
 					</div>
 					
-					
+				
 					<div class="form-group">
 						<div class="col-lg-8 col-xs-12">
 							<label>Address</label>
@@ -91,22 +91,23 @@
 				<div class="col-lg-6 col-xs-12">
 					<h3>Supplied Products</h3>
 					<div class="table-responsive"> 
-						<table class="table table-advance">
+						<table class="table table-advance table-hover">
 							<tbody>
 								<tr>
-									<th class="col-md-1"><i class="fa icon_cart"></i> Product Name</th>
-				                    <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
-				                    <th class="col-md-1"><i class="fa fa-tag"></i> Category</th>
-				                    <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
+									<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
+									<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product</th>
+						            <th class="col-md-1"><i class="fa fa-truck"></i> Quantity</th>
+						            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
 				                    <!--<th class="col-md-1"><i class="icon_cogs"></i> Action</th>-->
 		                       	</tr>
 		                              	
 		                        <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
-								<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>">
+								<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>">
+									<td class="col-md-1"><?php echo $row['order_reference'] ?></td>
 									<td class="col-md-1"><?php echo $row['product_Name'] ?></td>
-									<td class="col-md-1"><?php echo $row['class_Name']?></td>
-			                       	<td class="col-md-1"><?php echo $row['category_name'] ?></td>
-			                        <td class="col-md-1"><?php echo $row['current_count']?></td>
+			                       	<td class="col-md-1"><?php echo $row['order_quantity'] ?></td>
+			                        <td class="col-md-1"><?php echo $row['ordering_cost'] ?></td>
+			                        
 			                        <!--<td class="col-md-1">
 				                        	<div class="btn-group">
 				                                  <a class="btn btn-success" href="<?php echo base_url()?>products/view_product/<?php echo $row['product_id']?>"><i class="icon_check_alt2"></i></a>
