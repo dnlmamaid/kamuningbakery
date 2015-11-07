@@ -158,9 +158,8 @@
 									<div class="col-lg-4 pull-right">
 										<div class="form-group">
 											<?php if($r->order_status != '1'){?>
-											<a class="btn btn-danger" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="icon_close_alt2"></i></a>
-											<input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="right" title="Receive Order">
-											<input type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
+											<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>											
+											<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
 
 											<?php }?>
 										</div>

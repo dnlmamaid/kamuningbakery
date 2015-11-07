@@ -101,7 +101,7 @@ html, form {
 	background: #0B6738;
 	color: #FFF;
 	position: relative;
-	margin-top: 50px; /* negative value of footer height */
+	margin-top: 144px; /* negative value of footer height */
 	height: 50px;
 	padding: 8px 0;
 	clear:both;

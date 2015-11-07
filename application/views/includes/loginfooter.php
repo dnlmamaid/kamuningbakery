@@ -32,6 +32,9 @@
 <script src="<?php echo base_url();?>assets/js/vegasIn.js"></script>
 
 
+<script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
+<script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
+
 
 
 </body>
