@@ -36,7 +36,7 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							
+							<form action="<?php echo base_url(); ?>sales/update_sales/<?php echo $r->sales_id?>"  role="form" accept-charset="utf-8" method="post">
 							
 							<h3>Details</h3>
 							
@@ -48,14 +48,43 @@
 									</div>	
 								</div>
 
-								<div class="col-lg-3 col-xs-3 pull-right">
+								<div class="col-lg-3 col-xs-4 pull-right">
 									<div class="form-group">
-										<label>Date Ordered</label>
+										<label>Sales Date</label>
 										<input type="text" name="sales_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->sales_date)) ?>" id="edate" disabled>
 									</div>	
 								</div>
 							</div>
+							<?php if(date('Ymd') <= date('Ymd', strtotime($r->sales_date))):?>
+							<div class="row">
+								<div class="col-lg-6 col-xs-6">
+									<div class="form-group">
+										<label>Reference ID</label>
+										<input type="text" name="invoice_code" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;">
+									</div>
+								</div>
+								
+								<div class="col-lg-3 col-xs-5 pull-right" style="margin-top:25px;">
+									<div class="form-group">
+										<span data-toggle="modal" data-target="#addSalesInvoice">
+											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
+										</span>
+										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Sales Information">
+										
+										<!--<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>sales/cancel_purchase/<?php echo $r->sales_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>--></a>
+										</form>
+									</div>
+								</div>
+								
+								
+								
+								
+								
+							</div>
 							
+								
+							
+							<?php else: ?>
 							<div class="row">
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
@@ -63,31 +92,10 @@
 										<input type="text" name="invoice_id" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;" disabled>
 									</div>
 								</div>
-								
-								<div class="col-lg-3 col-xs-3 pull-right">
-									<div class="form-group">
-										<label>Status</label>
-										<select name="purchase_status" class="form-control" disabled>
-											<option value="0" selected>On Process</option>
-											<option value="1">Delivered</option>
-										</select>
-									</div>
-								</div>
-								
-								
-							</div>
-							<div class="row">
-								<div class="col-lg-1 pull-right">
-									<div class="form-group">
-										<span data-toggle="modal" data-target="#addSalesInvoice">
-											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
-										</span>
-										
-										<!--<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>sales/cancel_purchase/<?php echo $r->sales_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>--></a>
-									</div>
-								</div>
 							</div>
 							
+							
+							<?php endif;?>
 						
 							
 						</div>
@@ -183,13 +191,6 @@
 								<label class="control-label">Quantity</label>
 								<input id="quantity" type="number" name="quantity" class="form-control inline" required>
 							</div>
-							
-							<div class="col-lg-3">
-								<label class="control-label">Total Amount</label>
-								<input id="total_sale" type="number" name="total_sale" class="form-control inline" disabled>
-								<input id="holding_cost" type="hidden" name="holding_cost" class="form-control inline">
-							</div>
-							
 							
 						</div>
 						

@@ -101,14 +101,13 @@
 					<!-- details -->
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3 bg-panel2">
-						<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
+						<form action="<?php echo base_url()?>purchases/update_order_info/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
 							<h3 align="center"><?php echo $r->product_Name?></h3>
-							<p align="center"><b>Php</b> <?php echo $r->ppu?> per <?php echo $r->um?></p>
-							<input type="hidden" name="product_id" class="form-control inline" value="<?php echo $r->product_id?>">
-							<input type="hidden" name="order_reference" class="form-control inline" value="<?php echo $r->order_reference?>">
+							<p align="center"><b>&#8369;</b> <?php echo round($r->ppu, 2)?> per <?php echo $r->um?></p>
+							
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
-									
+									<?php if($r->order_status != '1'): ?>
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
@@ -117,7 +116,7 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->ppu?></label>
+												<input type="number" step="any" name="price" class="form-control inline" value="<?php echo $r->ppu?>" required>
 											</div>
 										</div>
 									</div>
@@ -130,8 +129,7 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->order_quantity?> <?php echo $r->um?></label>
-												<input type="hidden" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>">
+												<input type="number" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>" required>
 											</div>
 										</div>
 									</div>
@@ -144,29 +142,87 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->ordering_cost?></label>
-												<input type="hidden" name="ordering_cost" class="form-control inline" value="<?php echo $r->ordering_cost?>">
+												<label>&#8369; <?php echo $r->ordering_cost?></label>
+											</div>
+										</div>
+									</div>
+									<?php else: ?>
+									
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Price per unit </label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<label>&#8369; <?php echo $r->ppu?></label>
 											</div>
 										</div>
 									</div>
 									
-								</div>
-							</div>
-							<br>
-							<div class="row">
-								<div class="col-lg-12">
-									<div class="col-lg-4 pull-right">
-										<div class="form-group">
-											<?php if($r->order_status != '1'){?>
-											<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>											
-											<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
-
-											<?php }?>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Quantity </label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<label><?php echo $r->order_quantity?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?></label>
+											</div>
 										</div>
 									</div>
+									
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Total Amount </label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<label>&#8369; <?php echo $r->ordering_cost?></label>
+											</div>
+										</div>
+									</div>
+									<?php endif; ?>
+									<div class="row" style="margin-top:50px;">
+										
+										<div class="col-lg-4 pull-left">
+											<div class="form-group">
+												<?php if($r->order_status != '1'): ?>
+												<input type="submit" class="btn btn-caution" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
+												<?php endif; ?>
+											</div>
+										</div>
+										</form>
+										
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<?php if($r->order_status != '1'){?>
+												<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
+													<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
+													<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">
+													<input type="hidden" name="ppu" value="<?php echo $r->ppu?>">
+													<input type="hidden" name="order_quantity" value="<?php echo $r->order_quantity?>">
+													<input type="hidden" name="ordering_cost" value="<?php echo $r->ordering_cost?>">
+												
+													<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>
+													<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
+												</form>
+												<?php } ?>
+											</div>
+										</div>
+								
+									</div>
+									
+									
+									
 								</div>
-							</div>	
-						</form>		
+							</div>
+						
+								
 						</div>
 					</div>
 					<!-- /details -->

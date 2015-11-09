@@ -38,7 +38,7 @@
 				<div class="col-lg-2 col-xs-4">
 					<a href="<?php echo base_url()?>sales/report" data-toggle="tooltip" data-placement="top" title="Sales">
 					<div class="info-box greenLight-bg">
-						<i class="fa fa-dollar"></i>
+						<i class="fa fa">&#8369;</i>
 						<div class="count">
 							
 						</div>
@@ -101,7 +101,23 @@
 			</div>
 			<?php } ?>
 			
+			
+			
+			
 			<div class="col-lg-6 col-xs-6">
+				<h3>Highest Selling Products</h3>
+				
+					<div id="donut-example"></div>
+                
+			</div>
+			
+			<div class="col-lg-6">
+				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			</div>	
+			
+		</div>
+		
+		<div class="col-lg-6 col-xs-6">
 				<h3><i class="fa fa-comments-o"></i> Active Requests</h3>
 				<div class="table-responsive"> 
 					<table class="table table-advance table-hover">
@@ -134,13 +150,13 @@
 			
 			
 			<div class="col-lg-6 col-xs-6">
-			<h3><i class="fa fa-exclamation-triangle" style="color:red;"></i> Low Inventory Products</h3>
+			<h3><i class="fa fa-exclamation-triangle" style="color:yellow;"></i> Low Inventory Products</h3>
 				<div class="table-responsive"> 
 					<table class="table table-advance table-hover">
 					<tbody>
 						<tr>
 							<th class="col-md-2"><i class="fa icon_cart"></i> Product Name</th>
-                            <th class="col-md-2"><i class="fa fa-dollar"></i> Cost</th>
+                            <th class="col-md-2"><i class="fa fa-dollar"></i> Cost per unit</th>
 							<th class="col-md-2"><i class="fa fa-exclamation-triangle"></i> Quantity</th>
 						</tr>
                         
@@ -148,7 +164,7 @@
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name?></a></td>
                             <td class="col-md-2-b"> <?php echo $row->price ?></a></td>
-                            <td class="col-md-2-b"> <?php echo $row->current_count ?></a></td>                                                           
+                            <td class="col-md-2-b"> <?php echo round($row->current_count) ?></a></td>                                                           
                         <?php endforeach;	                               
 						else:?>
 						<tr>											
@@ -163,74 +179,6 @@
                 </div>
                 
 			</div>
-			
-			<div class="col-lg-6">
-				<h3><i class="fa fa-history"></i> Recent Activities</h3>
-				<div class="table-responsive"> 
-					<table class="table table-advance table-hover">
-						<tbody>
-							<tr>
-								<th class="col-md-1"><i class="fa fa-barcode"></i> Module</th>
-								<th class="col-md-2"><i class="fa fa-cog"></i> Action</th>
-								<th class="col-md-1"><i class="fa fa-user"></i> Modified By</th>
-			                    <th class="col-md-2"><i class="fa fa-calendar"></i> Date</th>
-	                        </tr>
-	                              	
-	                        <?php if(isset($audit) && is_array($audit)) : foreach($audit as $row): ?> 
-							<tr class="clickable-row" data-href="<?php echo base_url()?>audit_trail/view_action/<?php echo $row->audit_id?>">
-								<td class="col-md-1"><?php echo $row->module ?></td>
-								<td class="col-md-2"><?php echo $row->remarks ?></td>
-								<td class="col-md-1"><?php echo $row->firstName ?> <?php echo $row->lastName ?></td>
-		                        <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->date_created))?></td>
-	                       	</tr>	
-							<?php endforeach;	                               
-						   			                               
-							else:?>
-							<tr>											
-								<th>No records</th>
-								<th>No records</th>
-								<th>No records</th>
-								<th>No records</th>
-								<th>No records</th>
-							</tr>
-							<?php endif; ?>      
-	                               	
-						</tbody>
-					</table>
-				</div>
-			</div>
-			
-			<div class="col-lg-6 col-xs-6">
-				<h3><i class="fa fa-dollar"></i> Highest Selling Products</h3>
-				<div class="table-responsive"> 
-					<table class="table table-advance table-hover">
-					<tbody>
-						<tr>
-							<th class="col-md-2"><i class="fa icon_cart"></i> Product Name</th>
-                            <th class="col-md-2"><i class="fa fa-dollar"></i> Price</th>
-							<th class="col-md-2"><i class="fa fa-dollar"></i> Total Sold</th>
-						</tr>
-                        <?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
-                        <tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->sales_id?>">
-							<td class="col-md-2-b"> <?php echo $row->product_Name ?></a></td>
-                            <td class="col-md-2-b"> <?php echo $row->sale_Price ?></a></td>
-                            <td class="col-md-2-b"> <?php echo $row->current_count ?></a></td>                                                           
-                        </tr>
-                        <?php endforeach;	                               
-						else:?>
-						<tr>											
-							<th>No records</th>
-							<th>No records</th>
-							<th>No records</th>
-						</tr>
-						<?php endif; ?> 
-					</tbody>
-                    </table>
-                </div>
-                
-			</div>
-			
-		</div>
     	<?php elseif($this->session->userdata('user_type') == '4'): ?>
     	
     	<!--------------- BAKER --------------------->

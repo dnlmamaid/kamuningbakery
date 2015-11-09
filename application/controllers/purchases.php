@@ -155,10 +155,48 @@ class purchases extends CI_Controller {
 		}
 	}
 	
+	public function add_order_o($code){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> purchases_model -> add_order_o($code);
+			redirect($this->agent->referrer(), 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
 	public function update_order($id){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
 			$this -> purchases_model -> update_po($id);
+			redirect($this->agent->referrer(), 'refresh');
+		}
+		 
+		else if($this->session->userdata('is_logged_in')){
+			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			redirect($base_url(), 'refresh');
+		}
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
+	}
+	
+	public function update_order_info($id){
+		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+	    {
+			$this -> purchases_model -> update_o($id);
 			redirect($this->agent->referrer(), 'refresh');
 		}
 		 

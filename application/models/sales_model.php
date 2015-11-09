@@ -75,75 +75,108 @@ class sales_model extends CI_Model {
 			return false;	
 		}
 	}
+	
 	function add_sales($code)
     {
+    	
+		
     	$pid = $this->input->post('product_id');
+		
     	$this->db->select('current_count');
 		$this->db->from('products');
 		$this->db->where('product_id', $pid);
 		$oldquantity = $this->db->get() -> row('current_count');
 		$newquantity = $oldquantity - $this->input->post('quantity');
-
-		$data = array(
-			'current_count' => $newquantity, 
+		
+		if($newquantity < 0){
+			$this->session->set_flashdata('error','Transaction Failed. Available product for sale is insufficient.');			
+			
+		}
+		
+		else{
+			$data = array(
+				'current_count' => $newquantity, 
+			);
+	
+			$this->db->where('product_id', $pid);
+			$this->db->update('products', $data);
+			
+			$this->db->select('sale_Price');
+			$this->db->from('products');
+			$this->db->where('product_id', $pid);
+			$cost = $this->db->get() -> row('sale_Price');
+			$total = $cost * $this->input->post('quantity');
+			
+			$inv = array(
+				'invoice_id' => $code, 
+				'product_id' => $pid, 
+				'qty_sold' => $this->input->post('quantity'), 
+				'total_sale' => $total, 
+			);
+	
+			$this->db->insert('sales_invoices', $inv);
+			
+			
+			$this->db->select('total_qty_sold');
+			$this->db->from('sales');
+			$this->db->where('invoice_code', $code);
+			$otqs = $this->db->get() -> row('total_qty_sold');
+			$ntqs = $otqs + $this->input->post('quantity');
+			
+			
+			$this->db->select('total_sales');
+			$this->db->from('sales');
+			$this->db->where('invoice_code', $code);
+			$ots = $this->db->get() -> row('total_sales');
+			$nts = $ots + $total;
+			
+			
+			$sales = array(
+				'total_qty_sold' => $ntqs, 
+				'total_sales' => $nts, 
+			);
+			$this->db->where('invoice_code', $code);
+			$this->db->update('sales', $sales);
+			
+			
+			$remark_id = $this->db->insert_id();
+	
+			$audit = array(
+				'user_id' => $this->session->userdata('user_id'), 
+				'module' => 'Sales', 
+				'remark_id' => $remark_id, 
+				'remarks' => 'Sold a Product', 
+				'date_created' => date('Y-m-j H:i:s'), 
+			);
+	
+			$this->db->insert('audit_trail', $audit);
+	
+			$this->session->set_flashdata('success', 'You have successfully sold the product');
+		}		
+	}
+	
+	
+	function update_sales($id)
+    {
+	    
+		$sinfo = array(
+			'invoice_code'=> $this->input->post('invoice_code'),
 		);
-
-		$this->db->where('product_id', $pid);
-		$this->db->update('products', $data);
-
-		$markup = 1.93;
+			  
+		$this->db->where('invoice_code', $id);  
+		$this->db->update('sales', $sinfo);
 		
-		$this->db->select('sale_Price');
-		$this->db->from('products');
-		$this->db->where('product_id', $pid);
-		$cost = ($this->db->get() -> row('sale_Price')) + $markup;
-		$total = $cost * $this->input->post('quantity');
-		
-		$inv = array(
-			'invoice_id' => $code, 
-			'product_id' => $pid, 
-			'qty_sold' => $this->input->post('quantity'), 
-			'total_sale' => $total, 
-		);
-
-		$this->db->insert('sales_invoices', $inv);
-		
-		
-		$this->db->select('total_qty_sold');
-		$this->db->from('sales');
-		$this->db->where('invoice_code', $code);
-		$otqs = $this->db->get() -> row('total_qty_sold');
-		$ntqs = $otqs + $this->input->post('quantity');
-		
-		
-		$this->db->select('total_sales');
-		$this->db->from('sales');
-		$this->db->where('invoice_code', $code);
-		$ots = $this->db->get() -> row('total_sales');
-		$nts = $ots + $total;
-		
-		
-		$sales = array(
-			'total_qty_sold' => $ntqs, 
-			'total_sales' => $nts, 
-		);
-		$this->db->where('invoice_code', $code);
-		$this->db->update('sales', $sales);
-		
-		
-		$remark_id = $this->db->insert_id();
-
+		$this->session->set_flashdata('success','You have successfully updated the sales info');
+			
 		$audit = array(
-			'user_id' => $this->session->userdata('user_id'), 
-			'module' => 'Sales', 
-			'remark_id' => $remark_id, 
-			'remarks' => 'Sold a Product', 
-			'date_created' => date('Y-m-j H:i:s'), 
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Sales',
+				'remark_id'	=> $id,
+				'remarks'	=> 'Updated a Sales Info',
+				'date_created'=> date('Y-m-j H:i:s'),
 		);
-
+				
 		$this->db->insert('audit_trail', $audit);
-
-		$this->session->set_flashdata('success', 'You have successfully sold the product');		
 	}
 
 	/**

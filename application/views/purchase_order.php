@@ -22,7 +22,7 @@
 					<div class="form-group">
 						<div class="alert alert-success" role="	alert">
 							<?php echo $this -> session -> flashdata('success'); ?>
-						</div>
+							</div>
 					</div>
 					<?php } ?>
 							
@@ -105,26 +105,29 @@
 								
 							</div>
 							<div class="row">
+								
 								<div class="col-lg-3 pull-left">
 									<div class="form-group">
-										<span data-toggle="modal" data-target="#addOld">
-											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add Old Product"><i class="fa fa-plus"></i><a>
-										</span>
 										<span data-toggle="modal" data-target="#addNew">
-											<a type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Add New Product"><i class="fa fa-plus"></i><a>
+											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add New Product"><i class="fa fa-plus"></i></a>
 										</span>
+										
+										<span data-toggle="modal" data-target="#addOld">
+											<a type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Add Old Product"><i class="fa fa-plus"></i></a>
+										</span>
+										
 										<span>
-											<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>
+											<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>
 										</span>
-										
-										
 									</div>
 								</div>
+								
 								<div class="col-lg-2 pull-right">
 									<div class="form-group">
 										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
 									</div>
 								</div>
+								
 							</div>
 							<?php } else if($r->order_status){?>
 							<form action="<?php echo base_url(); ?>purchases/accept_purchase/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
@@ -276,7 +279,7 @@
 			<div class="modal-dialog vertical-align-center">
 							
 				<div class="modal-content">
-				<form action="<?php echo base_url(); ?>purchases/add_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post" novalidate>	
+				<form action="<?php echo base_url(); ?>purchases/add_order_o/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post" novalidate>	
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -286,32 +289,6 @@
 							
 					<div class="modal-body">
 
-								
-						<div class="col-lg-10">
-							<div class="form-group">
-								<label class="control-label">Class</label>
-								<div class="input-group">
-									<select name="class_ID" class="form-control" required>
-										<option value="">Select Class</option>
-										<?php if(!empty($cls)){
-											if (is_array($cls)){                      
-												foreach ($cls as $row) {?>
-													<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
-												<?php }
-											}							
-										}
-																		
-										else{	?>
-										<option value=""></option>
-										<?php }?>
-									</select>
-									<span class="input-group-btn">
-										<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addClass"><i class="fa fa-plus"></i></button>
-							    	</span>
-								</div>
-							</div>
-						</div>
-							
 						<div class="col-lg-10">
 							<div class="form-group">
 								<label class="control-label">Product</label>
@@ -407,21 +384,8 @@
 							
 						<div class="col-lg-10">
 							<div class="form-group">
-								<label class="control-label">Product</label>
-								<select name="product_id" class="form-control" required>
-									<option value="">Select Product</option>
-									<?php if(!empty($prod)){
-										if (is_array($prod)){                      
-											foreach ($prod as $row) {?>
-												<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
-												<?php }
-											}							
-										}
-																			
-										else{	?>
-											<option value=""></option>
-										<?php }?>
-								</select>
+								<label class="control-label">Name</label>
+								<input type="text" name="product_Name" class="form-control inline" required>
 							</div>
 						</div>
 	
@@ -430,15 +394,33 @@
 								<label class="control-label">Quantity</label>
 								<input type="number" name="quantity" class="form-control inline" required>
 							</div>
-	
+							
+							
+							<div class="col-lg-2">
+								<label class="control-label">Unit</label>
+								<input type="text" name="um" class="form-control inline" value="" required>
+							</div>
+
 							<div class="col-lg-3">
 								<label class="control-label">Price per unit</label>
 								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
 							
 							<div class="col-lg-3">
-								<label class="control-label">Re-Ordering Level</label>
-								<input type="number" ste="any" name="ro_lvl" class="form-control inline" required>
+								<label class="control-label">Re-Order Level</label>
+								<input type="number" step="any" name="ro_lvl" class="form-control inline" required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-8">
+								<label class="control-label">Description</label>
+								<textarea name="description" class="form-control inline" required></textarea>
+							</div>
+							
+							<div class="col-lg-3">
+								<label class="control-label">Holding Cost</label>
+								<input type="number" step="any" name="holding_cost" class="form-control inline" required>
 							</div>
 						</div>
 					</div>

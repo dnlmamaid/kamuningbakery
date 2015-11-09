@@ -46,12 +46,11 @@ Class reports_model extends CI_Model {
 	}
 	
 	public function getLow($limit, $start) {
-		
-		$this -> db -> join('product_category', 'product_category.category_id = products.category_ID', 'left');
-		$this -> db -> join('product_Class', 'product_class.class_id = products.class_ID', 'left');
+			
 		$this -> db -> limit($limit, $start);
-		$this -> db -> order_by('current_count', 'asc');
+		$this -> db -> where('current_count <= ro_lvl');
 		$query = $this -> db -> get('products');
+		
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
@@ -184,15 +183,16 @@ Class reports_model extends CI_Model {
 	{
 		if($this -> session -> userdata('is_logged_in'))
 		{
-			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-			$this->db->join('users','users.id = purchases.user_id','left');
-			$this->db->join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
-			$this->db->join('products','products.product_id = purchase_orders.product_id','right');
+			$this->db->join('products','products.product_id = purchase_orders.product_id','left');
+			$this->db->join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+			$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'right');
+			$this->db->join('users','users.id = purchases.user_id','right');
 			
-			$this->db->from('purchases');
-			$this -> db -> order_by('date_received', 'desc');	
-			$this -> db -> where('products.product_id', $pid);
-			$this -> db -> where('po_status', '1');
+			
+			$this->db->from('purchase_orders');
+			$this -> db -> order_by('order_id', 'desc');	
+			$this -> db -> where('purchase_orders.product_id', $pid);
+			$this -> db -> where('order_status', '1');
 			$query = $this -> db -> get();
 			$data = $query -> result_array();
 			return $data;

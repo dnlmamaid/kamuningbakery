@@ -132,12 +132,70 @@
 <!-- date picker -->
 <script src="<?php echo base_url()?>assets/datepicker/js/jquery.datetimepicker.js"></script>
 
+<!--  Morris Charts -->
+<script src="<?php echo base_url()?>assets/morris/raphael.min.js"></script> 
+<script src="<?php echo base_url()?>assets/morris/morris.min.js"></script>
+	
+<!-- High Charts -->
+<script src="<?php echo base_url()?>assets/highcharts/js/highcharts.js"></script>
+<script src="<?php echo base_url()?>assets/highcharts/js/modules/exporting.js"></script>
+
 <!-- Custom -->
 <script src="<?php echo base_url();?>assets/js/script.js"></script>
 
 
 <script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
+<script>
+	Morris.Donut({
+  element: 'donut-example',
+  data: [
+    {label: "Download Sales", value: 12},
+    {label: "In-Store Sales", value: 30},
+    {label: "Mail-Order Sales", value: 20}
+  ]
+});
 
+
+$(function () {
+    $('#container').highcharts({
+        title: {
+            text: 'Monthly Sales',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Pieces (pcs)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: 'pc'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Pandesal',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }]
+    });
+});	
+</script>
 </body>
 </html>

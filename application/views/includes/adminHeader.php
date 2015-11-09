@@ -13,7 +13,7 @@
     
 <!--Bootstrap-->
 	<link href="<?php echo base_url();?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+	
 
 <!-- font icon -->
     <link href="<?php echo base_url(); ?>assets/fonts/stylesheet.css" rel="stylesheet">
@@ -27,6 +27,8 @@
 <!--datepicker-->
 	<link href="<?php echo base_url()?>assets/datepicker/css/jquery.datetimepicker.css" rel="stylesheet">
 
+<!-- Morris Charts -->
+	<link rel="stylesheet" href="<?php echo base_url()?>assets/morris/morris.css">
     
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

@@ -211,7 +211,7 @@ class products_model extends CI_Model {
 			$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->where('products.category_ID', '2');
 			$this->db->order_by('product_status', 'asc');
-			$this->db->order_by('date_created', 'desc');
+			$this->db->order_by('product_id', 'desc');
 			$query = $this->db->get('products');
 			if ($query -> num_rows() > 0) {
 				foreach ($query->result() as $row) {

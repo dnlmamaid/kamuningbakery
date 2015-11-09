@@ -57,7 +57,14 @@
 		</div>
 	</div>
 	
-    <!-- page start-->
+	<div class="row">
+		<div class="col-lg-12">
+			<div id="donut-example"></div>
+			
+		</div>
+	</div>
+	
+    <!-- page start
     <div class="row">
 	    <div class="col-lg-12">
     		<section class="col-lg-12 panel">

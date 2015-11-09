@@ -130,8 +130,15 @@
 						
 						<div class="form-group">
 							<div class="col-lg-3 col-xs-3">
-								<label class="control-label">Holding Cost Per Unit</label>
+								<label class="control-label">Holding Cost</label>
 								<input type="number" step="any" name="holding_cost" class="form-control inline" value="<?php echo $r->holding_cost?>">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-5 col-xs-3">
+								<label class="control-label">EOQ</label>
+								<input type="text" name="eoq" class="form-control inline" value="<?php if($r->eoq != '0'){ echo $r->eoq; } else{ ?> Needs Further Data<?php }?>" disabled>
 							</div>
 						</div>
 				
@@ -169,25 +176,29 @@
 					
 					
 					<div class="col-lg-12">
-						<h3>Purchases</h3>
+						<h3>Purchase History</h3>
 						<div class="table-responsive"> 
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference Code</th>
+										<th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
 					                    <th class="col-md-1"><i class="fa fa-tags"></i> Inventory</th>
 				                        <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-				                        <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
+				                        <th class="col-md-1"><i class="fa">&#8369;</i> Cost</th>
+				                        <th class="col-md-1"><i class="fa">&#8369;</i> Total</th>
 				                        <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
 			                       	</tr>
 			                              	
 			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
 									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
 										<td class="col-md-1"><?php echo $row['purchase_reference'] ?></td>
+										<td class="col-md-1"><?php echo $row['supplier_name'] ?></td>
 										<td class="col-md-1"><?php echo $row['qty_before_order'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1"><?php echo $row['order_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
-		                                <td class="col-md-1">Php <?php echo $row['ordering_cost']?></td>
-		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row['date_received']))?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row['ppu']?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row['ordering_cost']?></td>
+		                                <td class="col-md-2"><?php echo date('F d,Y (D) h:i:A', strtotime($row['date_received']))?></td>
 									</tr>	
 									<?php endforeach;	                               
 									else:?>

@@ -54,33 +54,33 @@
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa fa-clock-o"></i> Date</th>
+										<th class="col-md-2"><i class="fa fa-calendar"></i> Date</th>
 										<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice ID</th>
 			                            <th class="col-md-1"><i class="fa fa-user"></i> Employee</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity Sold</th>
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Total Sales</th>
+			                            <th class="col-md-1"><i class="fa">&#8369;</i> Total Sales</th>
 			                            
 			                            
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?> 
 								  	<tr class="clickable-row" data-href="<?php echo base_url()?>sales/daily_sales/<?php echo $row->invoice_code?>">
-								  		<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
+								  		<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										
 		                                <td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_qty_sold?></td>
-		                				<td class="col-md-1">Php <?php echo $row->total_sales?></td>
+		                				<td class="col-md-1">&#8369; <?php echo $row->total_sales?></td>
 		                                
 	                                </tr>	
 									<?php endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row):?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>sales/daily_sales/<?php echo $row->invoice_code?>">
-										<td class="col-md-1"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
+										<td class="col-md-2"><?php echo date('F d,Y (D) h:i A', strtotime($row->sales_date))?></td>
 								  		<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 										<td class="col-md-1"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></td>
 		                                <td class="col-md-1"><?php echo $row->total_qty_sold?></td>
-		                				<td class="col-md-1">Php <?php echo $row->total_sales?></td>
+		                				<td class="col-md-1">&#8369; <?php echo $row->total_sales?></td>
 	                                </tr>
 	                                <?php endforeach;		                               
 									else:?>

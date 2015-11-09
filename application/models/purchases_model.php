@@ -75,90 +75,84 @@ class purchases_model extends CI_Model{
 	
 	function add_order($code)
     {		
-		$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('category_ID',$this->input->post('category_ID'));
-		
-		$val = $this->db->get('products');
-		if($val->num_rows() == 1){
-			
-			$this->db->select('product_id');
-			$this->db->from('products');
-
-			$this->db->where('product_Name', $this->input->post('product_Name'));
-			$this->db->where('category_ID',$this->input->post('category_ID'));
-			$pid = $this->db->get()->row('product_id');
-
-			$total = ($this->input->post('price') * $this->input->post('quantity'));
-
-			$order = array(
-				'product_id'=> $pid,
-				'order_reference'	=> $code,
-				'order_quantity'	=> $this->input->post('quantity'),
-				'ppu'	=> $this->input->post('price'),
-				'ordering_cost'	=> $total,				
-			);
-			
-			$this->db->insert('purchase_orders', $order);
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Purchases',
-				'remark_id'	=> $pid,
-				'remarks'	=> 'Added a product on a purchase order',
-				'date_created'=> date('Y-m-j H:i:s'),
-			);					
-			$this->db->insert('audit_trail', $audit);
-		
-		}
-
-		else{
-			
-			$data = array(
-				'product_Name' => $this->input->post('product_Name'),
-				'current_count' => '0',
-				'price' => $this->input->post('price'),
-				'sale_Price' => '0',
-				'holding_cost' => '0',
-				'ro_lvl' => $this->input->post('ro_lvl'),
-				'category_ID' => '2',
-				'eoq' => '0',
-				'class_ID' => $this->input->post('class_ID'),
-				'description' => $this->input->post('description'),
-				'um' => $this->input->post('um'),
-				'date_created'=> date('Y-m-j H:i:s'),
-				'product_status' => '0',
-	        );
+	
+		$data = array(
+			'product_Name' => $this->input->post('product_Name'),
+			'current_count' => '0',
+			'price' => $this->input->post('price'),
+			'sale_Price' => '0',
+			'holding_cost' => '0',
+			'ro_lvl' => $this->input->post('ro_lvl'),
+			'category_ID' => '2',
+			'eoq' => '0',
+			'class_ID' => $this->input->post('class_ID'),
+			'description' => $this->input->post('description'),
+			'um' => $this->input->post('um'),
+			'date_created'=> date('Y-m-j H:i:s'),
+			'product_status' => '0',
+		);
 			  
-			$this->db->insert('products', $data);
-			$this->session->set_flashdata('success','You have successfully added an order');
+		$this->db->insert('products', $data);
+		$this->session->set_flashdata('success','You have successfully added an order');
 			
-			$remark_id = $this->db->insert_id();
+		$remark_id = $this->db->insert_id();
+		
+		$total = ($this->input->post('price') * $this->input->post('quantity'));
+		
+		$order = array(
+			'product_id'=> $remark_id,
+			'order_reference'	=> $code,
+			'qty_before_order'	=> '0',
+			'order_quantity'	=> $this->input->post('quantity'),
+			'ppu'	=> $this->input->post('price'),
+			'ordering_cost'	=> $total,				
+		);
+		
+		$this->db->insert('purchase_orders', $order);
 			
-			$total = ($this->input->post('price') * $this->input->post('quantity'));
-			
-			$order = array(
-				'product_id'=> $remark_id,
-				'order_reference'	=> $code,
-				'order_quantity'	=> $this->input->post('quantity'),
-				'ppu'	=> $this->input->post('price'),
-				'ordering_cost'	=> $total,				
-			);
-			
-			$this->db->insert('purchase_orders', $order);
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Purchases',
-				'remark_id'	=> $remark_id,
-				'remarks'	=> 'Added a product on a purchase order',
-				'date_created'=> date('Y-m-j H:i:s'),
-			);
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $remark_id,
+			'remarks'	=> 'Added a product on a purchase order',
+			'date_created'=> date('Y-m-j H:i:s'),
+		);
 
-				
-			$this->db->insert('audit_trail', $audit);
+		$this->db->insert('audit_trail', $audit);
 
-		        
-		}
+	}
+
+	function add_order_o($code)
+	{
+		$pid = $this->input->post('product_id');
+		
+		$this->db->select('current_count');
+		$this->db->from('products');
+		$this->db->where('product_id', $pid);
+		$cc = $this->db->get()->row('current_count');
+    	
+		
+		$total = ($this->input->post('price') * $this->input->post('quantity'));
+
+		$order = array(
+			'product_id'		=> $pid,
+			'order_reference'	=> $code,
+			'qty_before_order'	=> $cc,
+			'order_quantity'	=> $this->input->post('quantity'),
+			'ppu'	=> $this->input->post('price'),
+			'ordering_cost'	=> $total,				
+		);
+			
+		$this->db->insert('purchase_orders', $order);
+					
+		$audit = array(
+			'user_id'	=> $this->session->userdata('user_id'),
+			'module'	=> 'Purchases',
+			'remark_id'	=> $pid,
+			'remarks'	=> 'Added a product on a purchase order',
+			'date_created'=> date('Y-m-j H:i:s'),
+		);					
+		$this->db->insert('audit_trail', $audit);		
 	}
 	
 	function get_total($code){
@@ -222,6 +216,33 @@ class purchases_model extends CI_Model{
 				'module'	=> 'Purchases',
 				'remark_id'	=> $id,
 				'remarks'	=> 'Updated a purchase order',
+				'date_created'=> date('Y-m-j H:i:s'),
+		);
+				
+		$this->db->insert('audit_trail', $audit);
+	}
+	
+	
+	function update_o($id)
+    {
+	    $oc = $this->input->post('order_quantity') * $this->input->post('price');
+		$order = array(
+			'order_quantity' => $this->input->post('order_quantity'),
+			'ppu' => $this->input->post('price'),
+			'ordering_cost'=> $oc,
+			
+		);
+			  
+		$this->db->where('order_id', $id);  
+		$this->db->update('purchase_orders', $order);
+		
+		$this->session->set_flashdata('success','You have successfully updated the order');
+			
+		$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Purchases',
+				'remark_id'	=> $id,
+				'remarks'	=> 'Updated a order info',
 				'date_created'=> date('Y-m-j H:i:s'),
 		);
 				
@@ -295,8 +316,16 @@ class purchases_model extends CI_Model{
 		$this->db->where('product_id', $this->input->post('product_id'));
 		$oldquantity = $this->db->get()->row('current_count');
     	$newquantity = $oldquantity + $this->input->post('order_quantity');
-
+		
+		$this->db->select('price');
+		$this->db->from('products');
+		$this->db->where('product_id', $this->input->post('product_id'));
+		$prce = $this->db->get()->row('price');
+			
+		$np = ($prce + $this->input->post('ppu'))/2;
+		 
 		$receive = array(
+			'price' => $np,
 			'current_count'	=> $newquantity,
 			'product_status'=> '1',
 		);

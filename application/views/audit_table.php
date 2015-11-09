@@ -81,7 +81,7 @@
 	                                <?php endforeach;		                               
 									else:?>
 									<tr>											
-										<th>No records</th>
+										
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>

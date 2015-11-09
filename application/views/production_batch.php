@@ -54,18 +54,18 @@
 									</div>	
 								</div>
 							</div>
-							
+							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced))):?>
 							<div class="row">
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="batch_id" class="form-control" value="<?php echo $r->batch_id ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="batch_id" class="form-control" value="<?php echo $r->batch_id ?>" style="text-transform: uppercase;">
 									</div>
 								</div>
 								
 								
 							</div>
-							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced))):?>						
+													
 							<div class="row">
 								<div class="col-lg-6">
 									<h3>New Product Details</h3>
@@ -166,12 +166,7 @@
 											</div>
 										</div>
 										
-										<div class="col-lg-3 col-xs-4">
-											<div class="form-group">
-												<label class="control-label">Holding Cost</label>
-												<input type="number" name="holding_cost" class="form-control inline" value="0" required>
-											</div>
-										</div>
+										
 									</div>
 									
 						
@@ -206,12 +201,12 @@
 										<div class="col-lg-11">
 											<div class="form-group">
 												<label class="control-label">Name</label>
-												<select name="product_id" class="form-control" id="p" required>
+												<select name="product_name" class="form-control" id="p" required>
 													<option value="">Select Product</option>
 													<?php if(!empty($fg)){
 														if (is_array($fg)){                      
 													 		foreach ($fg as $row) {?>
-																<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+																<option value="<?php echo $row['product_Name']?>"><?php echo $row['product_Name']; ?></option>
 															<?php }
 														}							
 													}
@@ -258,12 +253,7 @@
 											</div>
 										</div>
 										
-										<div class="col-lg-3 col-xs-4">
-											<div class="form-group">
-												<label class="control-label">Holding Cost</label>
-												<input type="number" name="holding_cost" class="form-control inline" value="0" required>
-											</div>
-										</div>
+										
 									</div>	
 						
 									<div class="row">
@@ -297,7 +287,7 @@
 											<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 											<th class="col-md-1"><i class="fa flaticon-baked1"></i> Product</th>
 						                    <th class="col-md-1"><i class="fa"></i> Units Produced</th>
-						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th> 
+						                    <th class="col-md-1"><i class="fa">&#8369;</i> Total Cost</th> 
 										</tr>
 				                              	
 				                        <?php if(isset($processed) && is_array($processed)): foreach($processed as $row):?> 
@@ -305,7 +295,7 @@
 											<td class="col-md-1"><?php echo $row->batch_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->units_produced ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b"><b>Php <?php echo $row->total_production_cost?></b></td>
+					                        <td class="col-md-1 b"><b>&#8369; <?php echo $row->total_production_cost?></b></td>
 										</tr>	
 										<?php 
 										endforeach;	                               
@@ -315,7 +305,7 @@
 											<td class="col-md-1"><b>Total Amount</b></td>
 										   	<td class="col-md-1"></td>
 										   	<td class="col-md-1"></td>
-										   	<td class="col-md-1"><b>Php <?php echo $to->total?></b></td>	
+										   	<td class="col-md-1"><b>&#8369; <?php echo $to->total?></b></td>	
 										</tr> 
 										 
 									</tbody>

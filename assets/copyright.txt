@@ -3,14 +3,20 @@ NogNogintheCity for the images
 
 
 Mock Defense Notes
+
 a) Color Redesign for side bar:
    header: Dark green
    sub-header: yellow or yellow green
+   
+b) Remove delete button instead put edit button for suppliers --- OK
 
+c) Purchase Order - Editable Quantity Receive --- OK
 
-c) Purchase Order - Editable Quantity Receive
-d) Dropdown for list of goods in purchases
-e) No negative values for metric
-f) Sales Report - Wrong date set in code
+d) Dropdown for list of goods in purchases --- OK
+
+e) No negative values for metric / h) Validation prompt if raw materials are sufficient  --- OK
+
+f) Sales Report - Wrong date set in code --- OK
+
 g) Graphical Charts for Report * Most important
-h) Validation prompt if raw materials are sufficient a
+

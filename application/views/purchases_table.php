@@ -71,7 +71,7 @@
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1">Php <?php echo $row->total_cost?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->total_cost?></td>
 		                                
 	                                </tr>
 									<?php else: ?>
@@ -88,7 +88,7 @@
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_ordered))?></td>
 								  		<td class="col-md-1"><?php echo $row->purchase_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1">Php <?php echo $row->total_cost?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->total_cost?></td>
 	                                </tr>
 									<?php else: ?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>purchases/purchase_order/<?php echo $row->purchase_reference?>">

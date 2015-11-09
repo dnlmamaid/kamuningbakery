@@ -59,79 +59,43 @@
 										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			                            <th class="col-md-1"><i class="icon_cogs"></i> Re-Order Level</th>
+			                            <th class="col-md-1"><i class="fa icon_cogs"></i> Re-Order Level</th>
+			                            <th class="col-md-1"><i class="fa icon_cogs"></i> EOQ</th>
 	                              	</tr>
 	                              	
-	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->current_count || $row->product_status) == '0'):?> 
+	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->current_count <= $row->ro_lvl) || ($row->product_status == '0')):?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1 b"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
-						                    </div>
-	                                	</td>
+		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->eoq != '0'){ echo $row->eoq; } else{ ?> Needs Further Data<?php }?></td>
 	                                </tr>	
 									<?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->eoq != '0'){ echo $row->eoq; } else{ ?> Needs Further Data<?php }?></td>
 		                                
-		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
-						                    </div>
-	                                	</td>
 	                                </tr>
 									<?php endif;endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if(($row->current_count || $row->product_status) == '0'):?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1"><?php echo $row->category_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                
-		                                <td class="col-md-1">
-			                                 <div class="">
-						                		<?php if($row->is_active == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->is_active != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
-						                    </div>
-	                                	</td>
+										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
+		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->eoq != '0'){ echo $row->eoq; } else{ ?> Needs Further Data<?php }?></td>
 	                               </tr>
 	                               <?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
-										<td class="col-md-1"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->category_name ?></td>
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1"><?php echo $row->supplier_name ?></td>
-		                                <td class="col-md-1"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">
-			                                <div class="">
-						                		<?php if($row->product_status == '1'){?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>products/disable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="disable item"><i class="icon_close_alt2"></i></a>
-						                		<?php } else if ($row->product_status != '1'){?>
-						                			<a class="btn btn-success" href="<?php echo base_url()?>products/enable/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="left" title="enable item"><i class="icon_check_alt2"></i></a>
-						                		<?php } ?>
-						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
-						                    </div>
-	                                	</td>
+		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->eoq != '0'){ echo $row->eoq; } else{ ?> Needs Further Data<?php }?></td>
 	                                </tr>
 	                                <?php endif;endforeach;		                               
 									else:?>
@@ -213,7 +177,7 @@
 	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->current_count || $row->product_status) == '0'):?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1 b"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1 b">Php <?php echo $row->price?></td>
 		                                <td class="col-md-1 b">Php <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1 b">Php <?php echo ($row->price*$row->current_count)?></td>
@@ -231,7 +195,7 @@
 									<?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1">Php <?php echo $row->price?></td>
 		                                <td class="col-md-1">Php <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1">Php <?php echo ($row->price*$row->current_count)?></td>
@@ -250,7 +214,7 @@
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if(($row->current_count || $row->product_status) == '0'):?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1 b"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1 b">Php <?php echo $row->price?></td>
 		                                <td class="col-md-1 b">Php <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1 b">Php <?php echo ($row->price*$row->current_count)?></td>
@@ -268,7 +232,7 @@
 	                               <?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1">Php <?php echo $row->price?></td>
 		                                <td class="col-md-1">Php <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1">Php <?php echo ($row->price*$row->current_count)?></td>
