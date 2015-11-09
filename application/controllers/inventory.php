@@ -120,12 +120,9 @@ class inventory extends CI_Controller {
 				} 			
       			
     		}   
-   
+   			
 			$data['products'] = $this->products_model->get_product_by_rm($config['per_page'], $offset);
 			
-						
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
 		
 			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);

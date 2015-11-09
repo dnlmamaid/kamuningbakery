@@ -1,2 +1,16 @@
 <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 NogNogintheCity for the images
+
+
+Mock Defense Notes
+a) Color Redesign for side bar:
+   header: Dark green
+   sub-header: yellow or yellow green
+
+
+c) Purchase Order - Editable Quantity Receive
+d) Dropdown for list of goods in purchases
+e) No negative values for metric
+f) Sales Report - Wrong date set in code
+g) Graphical Charts for Report * Most important
+h) Validation prompt if raw materials are sufficient a

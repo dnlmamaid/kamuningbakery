@@ -5,7 +5,7 @@
 			
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"><i class="fa fa-lemon-o"></i> Product Information</h1>
+					<h1 class="page-header"><i class="fa flaticon-ingredients1"></i> Product Information</h1>
 					<div class="col-lg-6 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="<?php echo base_url()?>"> Home</a></li>
@@ -14,7 +14,7 @@
 						<?php } else if ($r->category_ID == '2') {?>
 						<li><i class="fa icon_cart"></i><a href="<?php echo base_url()?>inventory/raw_materials"> Inventory</a></li>
 						<?php }?>
-						<li><i class="fa fa-lemon-o"></i> Product Information</li>
+						<li><i class="fa flaticon-ingredients1"></i> Product Information</li>
 					</ol>
 					</div>
 					
@@ -47,29 +47,6 @@
 <?php if ($r->category_ID == '2') {?>
 					<h3>Details</h3>
 					<div class="col-lg-6">
-						<div class="form-group">
-							<label class="col-lg-3 control-label">Supplier</label>
-							<div class="col-lg-8 input-group">
-								<select name="supplier_ID" class="form-control" required>
-								<option value="<?php echo $r->supplier_id?>"><?php echo $r->supplier_name?></option>
-								<?php if(!empty($supplier)){
-									if (is_array($supplier)){                      
-						            	foreach ($supplier as $row) {
-						            		if($row['supplier_id'] != $r->supplier_ID){?>
-												<option value="<?php echo $row['supplier_id']?>"><?php echo $row['supplier_name']; ?></option>
-										<?php } }
-									}
-								}
-															
-								else{	?>
-								<option value=""></option>
-								<?php }?>
-								</select>
-								<span class="input-group-btn">
-									<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></button>
-				     			</span>
-							</div>
-						</div>
 						
 						<div class="form-group" style="margin-top:10px;">
 							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>

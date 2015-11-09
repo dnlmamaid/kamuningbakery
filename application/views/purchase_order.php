@@ -88,7 +88,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->purchase_reference ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->purchase_reference ?>" style="text-transform: uppercase;">
 									</div>
 								</div>
 								
@@ -105,15 +105,24 @@
 								
 							</div>
 							<div class="row">
-								<div class="col-lg-3 pull-right">
+								<div class="col-lg-3 pull-left">
 									<div class="form-group">
-										<span data-toggle="modal" data-target="#addOrder">
-											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Product"><i class="fa fa-plus"></i><a>
+										<span data-toggle="modal" data-target="#addOld">
+											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add Old Product"><i class="fa fa-plus"></i><a>
 										</span>
-										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
+										<span data-toggle="modal" data-target="#addNew">
+											<a type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Add New Product"><i class="fa fa-plus"></i><a>
+										</span>
 										<span>
 											<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i><a>
 										</span>
+										
+										
+									</div>
+								</div>
+								<div class="col-lg-2 pull-right">
+									<div class="form-group">
+										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
 									</div>
 								</div>
 							</div>
@@ -217,7 +226,7 @@
 											<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 											<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product</th>
 						                    <th class="col-md-1"><i class="fa fa-truck"></i> Quantity</th>
-						                    <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
+						                    <th class="col-md-1"><i class="fa">&#8369;</i> Total</th> 
 										</tr>
 				                              	
 				                        <?php if(isset($orders) && is_array($orders)): foreach($orders as $row): if($row->order_status != '0'):?> 
@@ -225,7 +234,7 @@
 											<td class="col-md-1"><?php echo $row->order_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1">Php <?php echo $row->ordering_cost?></b></td>
+					                        <td class="col-md-1">&#8369; <?php echo $row->ordering_cost?></b></td>
 										</tr>	
 										<?php 
 										else:?>
@@ -233,7 +242,7 @@
 											<td class="col-md-1 b"><?php echo $row->order_reference ?></td>
 											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1 b"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-					                        <td class="col-md-1 b">Php <?php echo $row->ordering_cost?></b></td>
+					                        <td class="col-md-1 b">&#8369; <?php echo $row->ordering_cost?></b></td>
 										</tr>	
 										<?php
 										endif;
@@ -244,7 +253,7 @@
 											<td class="col-md-1"><b>Total Amount</b></td>
 										   	<td class="col-md-1"></td>
 										   	<td class="col-md-1"></td>
-										   	<td class="col-md-1"><b>Php <?php echo $to->total?></b></td>	
+										   	<td class="col-md-1"><b>&#8369; <?php echo $to->total?></b></td>	
 										</tr> 
 										 
 									</tbody>
@@ -261,36 +270,37 @@
 	</div>
 	
 	
-	<!-- ADD ORDER MODAL -->
-	<div class="modal fade" id="addOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- ADD OLD PRODUCT ORDER MODAL -->
+	<div class="modal fade" id="addOld" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="vertical-alignment-helper">
 			<div class="modal-dialog vertical-align-center">
 							
 				<div class="modal-content">
+				<form action="<?php echo base_url(); ?>purchases/add_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post" novalidate>	
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title"><i class="fa flaticon-ingredients1"></i> Product Order Form</h4>
+						<h4 class="modal-title"><i class="fa flaticon-ingredients1"></i> Old Product Order Form</h4>
 					</div>
 							
 					<div class="modal-body">
-					<form action="<?php echo base_url(); ?>purchases/add_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post">
-					
+
+								
 						<div class="col-lg-10">
 							<div class="form-group">
-							<label class="control-label">Class</label>
+								<label class="control-label">Class</label>
 								<div class="input-group">
 									<select name="class_ID" class="form-control" required>
 										<option value="">Select Class</option>
 										<?php if(!empty($cls)){
 											if (is_array($cls)){                      
-										 		foreach ($cls as $row) {?>
+												foreach ($cls as $row) {?>
 													<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
 												<?php }
 											}							
 										}
-																	
+																		
 										else{	?>
 										<option value=""></option>
 										<?php }?>
@@ -301,55 +311,43 @@
 								</div>
 							</div>
 						</div>
-						
+							
 						<div class="col-lg-10">
 							<div class="form-group">
-								<label class="control-label">Name</label>
-								<input type="text" name="product_Name" class="form-control inline" value="" required>
-								<input type="hidden" name="supplier_ID" class="form-control inline" value="<?php echo $r->supplier_id?>" required>
-								<input type="hidden" name="category_ID" class="form-control inline" value="2" required>
+								<label class="control-label">Product</label>
+								<select name="product_id" class="form-control" required>
+									<option value="">Select Product</option>
+									<?php if(!empty($prod)){
+										if (is_array($prod)){                      
+											foreach ($prod as $row) {?>
+												<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+											<?php }
+										}							
+									}
+																			
+									else{	?>
+										<option value=""></option>
+									<?php }?>
+								</select>
 							</div>
 						</div>
-					
-			
-					
-						
+
 						<div class="form-group">
 							<div class="col-lg-3">
 								<label class="control-label">Quantity</label>
-								<input id="quantity" type="number" name="quantity" class="form-control inline" required>
+								<input type="number" name="quantity" class="form-control inline" required>
 							</div>
-							
-							<div class="col-lg-3">
-								<label class="control-label">Unit</label>
-								<input type="text" name="um" class="form-control inline" required>
-							</div>
-		  
+
 							<div class="col-lg-3">
 								<label class="control-label">Price per unit</label>
-								<input id="price" type="number" step="any" name="price" class="form-control inline" required>
+								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
-							
-							<div class="col-lg-3">
-								<label class="control-label">Total Amount</label>
-								<input id="ordering_cost" type="number" name="ordering_cost" class="form-control inline" disabled>
-								<input id="holding_cost" type="hidden" name="holding_cost" class="form-control inline">
-							</div>
-							
-							
-						</div>
-						
-	
-						<div class="col-lg-8">
-							<div class="form-group">
-								<label class="control-label">Product Description</label>
-								<textarea name="description" class="form-control inline" value="" required></textarea>
-							</div>
-						</div>
 								
-									
+
+						</div>
 					</div>
-								
+
+							
 								
 					<div class="modal-footer">
 						<div class="form-group">
@@ -365,4 +363,100 @@
 		</div>
 	</div>
 	
+	
+	<!-- ADD NEW PRODUCT ORDER MODAL -->
+	<div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="vertical-alignment-helper">
+			<div class="modal-dialog vertical-align-center">
+							
+				<div class="modal-content">
+				<form action="<?php echo base_url(); ?>purchases/add_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post" novalidate>	
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title"><i class="fa flaticon-ingredients1"></i> New Product Order Form</h4>
+					</div>
+							
+					<div class="modal-body">
+						
+						<div class="col-lg-10">
+							<div class="form-group">
+								<label class="control-label">Class</label>
+								<div class="input-group">
+									<select name="class_ID" class="form-control" required>
+										<option value="">Select Class</option>
+										<?php if(!empty($cls)){
+											if (is_array($cls)){                      
+												foreach ($cls as $row) {?>
+													<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
+												<?php }
+											}							
+										}
+																		
+										else{	?>
+											<option value=""></option>
+										<?php }?>
+									</select>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addClass"><i class="fa fa-plus"></i></button>
+								    </span>
+								</div>
+							</div>
+						</div>
+							
+						<div class="col-lg-10">
+							<div class="form-group">
+								<label class="control-label">Product</label>
+								<select name="product_id" class="form-control" required>
+									<option value="">Select Product</option>
+									<?php if(!empty($prod)){
+										if (is_array($prod)){                      
+											foreach ($prod as $row) {?>
+												<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+												<?php }
+											}							
+										}
+																			
+										else{	?>
+											<option value=""></option>
+										<?php }?>
+								</select>
+							</div>
+						</div>
+	
+						<div class="form-group">
+							<div class="col-lg-3">
+								<label class="control-label">Quantity</label>
+								<input type="number" name="quantity" class="form-control inline" required>
+							</div>
+	
+							<div class="col-lg-3">
+								<label class="control-label">Price per unit</label>
+								<input type="number" step="any" name="price" class="form-control inline" required>
+							</div>
+							
+							<div class="col-lg-3">
+								<label class="control-label">Re-Ordering Level</label>
+								<input type="number" ste="any" name="ro_lvl" class="form-control inline" required>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<input type="submit" class="btn btn-success" value="Add">
+						</div>
+					</div>
+								
+				</form>
+				</div>
+							
+			</div>
+		</div>
+	</div>
+	
+
+
 </div>

@@ -34,7 +34,6 @@ class purchases_model extends CI_Model{
 		$this -> db -> where('purchase_orders.order_reference', $code);
 		
 		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'right');
 		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
 		$this -> db -> join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
 		
@@ -59,9 +58,9 @@ class purchases_model extends CI_Model{
 		$this -> db -> where('order_id', $id);
 		
 		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'right');
 		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
 		$this -> db -> join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+		$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_ID', 'right');
 		
 		$q = $this -> db -> get('purchase_orders');
 		
@@ -77,7 +76,6 @@ class purchases_model extends CI_Model{
 	function add_order($code)
     {		
 		$this->db->where('product_Name',$this->input->post('product_Name'));
-		$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
 		$this->db->where('category_ID',$this->input->post('category_ID'));
 		
 		$val = $this->db->get('products');
@@ -87,7 +85,6 @@ class purchases_model extends CI_Model{
 			$this->db->from('products');
 
 			$this->db->where('product_Name', $this->input->post('product_Name'));
-			$this->db->where('supplier_ID',$this->input->post('supplier_ID'));
 			$this->db->where('category_ID',$this->input->post('category_ID'));
 			$pid = $this->db->get()->row('product_id');
 
@@ -121,9 +118,10 @@ class purchases_model extends CI_Model{
 				'current_count' => '0',
 				'price' => $this->input->post('price'),
 				'sale_Price' => '0',
-				'holding_cost' => $this->input->post('holding_cost'),
-				'supplier_ID' => $this->input->post('supplier_ID'),
+				'holding_cost' => '0',
+				'ro_lvl' => $this->input->post('ro_lvl'),
 				'category_ID' => '2',
+				'eoq' => '0',
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),

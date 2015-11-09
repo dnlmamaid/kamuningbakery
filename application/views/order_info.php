@@ -44,7 +44,7 @@
 										<label>Supplier</label>
 										
 											<select name="supplier_ID" class="form-control" disabled>
-												<option value="<?php echo $r->supplier_ID?>"><?php echo $r->supplier_name?></option>
+												<option value="<?php echo $r->supplier_id?>"><?php echo $r->supplier_name?></option>
 												<?php if(!empty($supplier)){
 													if (is_array($supplier)){                      
 														foreach ($supplier as $row) {

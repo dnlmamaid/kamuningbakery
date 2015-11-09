@@ -7,6 +7,7 @@ class products_model extends CI_Model {
 	/***************************************************/
 	/**********          PRODUCTS            **********/
 	/*************************************************/
+	
 	/**
 	 * Products Counter Function
 	 */
@@ -41,7 +42,7 @@ class products_model extends CI_Model {
 	 */
 	function getProducts($limit, $start) {
 		if ($this->session->userdata('is_logged_in')) {
-			$this->db->join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+			
 			$this->db->join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->limit($limit, $start);
@@ -83,7 +84,7 @@ class products_model extends CI_Model {
 
 		$this->db->join('product_category', 'product_category.category_id = products.category_ID', 'left');
 		$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
-		$this->db->join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+		
 		$this->db->where('product_ID', $pid);
 		$q = $this->db->get('products');
 
@@ -99,13 +100,13 @@ class products_model extends CI_Model {
 		
 		$this->db->where('product_id !=', $id);
 		$this->db->where('product_Name', $this->input->post('product_Name'));
-		$this->db->where('supplier_ID', $this->input->post('supplier_ID'));
+		
 
 		$val = $this->db->get('products');
 		if (($val -> num_rows() == 1)) {
 			$this->session->set_flashdata('error', 'Product already exist.');
 		} else {
-			if(($this->input->post('category_ID') == '1') && ($this->input->post('supplier_ID') == '1')){
+			if(($this->input->post('category_ID') == '1')){
 				
 				$total = 0;
 						
@@ -133,7 +134,6 @@ class products_model extends CI_Model {
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
 					'price' => $total, 
-					'supplier_ID' => $this->input->post('supplier_ID'), 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 
@@ -166,7 +166,7 @@ class products_model extends CI_Model {
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
 					'price' => $this->input->post('price'), 
-					'supplier_ID' => $this->input->post('supplier_ID'), 
+					 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 
@@ -208,8 +208,6 @@ class products_model extends CI_Model {
 		if ($this->session->userdata('is_logged_in')) {
 
 			$this->db->limit($limit, $start);
-			$this->db->join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
-			$this->db->join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->where('products.category_ID', '2');
 			$this->db->order_by('product_status', 'asc');
@@ -236,7 +234,7 @@ class products_model extends CI_Model {
 		if ($this->session->userdata('is_logged_in')) {
 
 			$this->db->limit($limit, $start);
-			$this->db->join('suppliers', 'suppliers.supplier_id = products.supplier_ID', 'left');
+			
 			$this->db->join('product_category', 'product_category.category_id = products.category_ID', 'left');
 			$this->db->join('product_Class', 'product_class.class_id = products.class_ID', 'left');
 			$this->db->where('products.category_ID', '1');

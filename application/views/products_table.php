@@ -58,7 +58,6 @@
 									<tr>
 										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
-			                            <th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 			                            <th class="col-md-1"><i class="icon_cogs"></i> Re-Order Level</th>
 	                              	</tr>
@@ -67,7 +66,6 @@
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
-		                                <td class="col-md-1 b"><?php echo $row->supplier_name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->current_count ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 		                                <td class="col-md-1">
 			                                <div class="">
@@ -143,7 +141,7 @@
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
-										<th>No records</th>
+										
 									</tr>
 									<?php endif; ?>      
 	                               	
@@ -177,8 +175,9 @@
 	    			
 	    			<div class="col-lg-2 col-xs-5 pull-right" style="margin-bottom:15px;">
 		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
-		    			<a type="button" alt="Production" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-success"><i class="fa flaticon-stone2"></i></a>
 		    			<a type="button" alt="Raw Materials" data-toggle="tooltip" data-placement="top" title="Raw Materials" href="<?php echo base_url()?>inventory/raw_materials" class="btn btn-theme"><i class="fa flaticon-ingredients1"></i></a>
+		    			<a type="button" alt="Production" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-success"><i class="fa flaticon-stone2"></i></a>
+		    			
 					</div>
 	    				
 				</div>

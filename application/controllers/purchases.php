@@ -82,6 +82,8 @@ class purchases extends CI_Controller {
 			//Dropdowns 
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['supplier'] = $this -> products_model -> getSupplier();
+			$data['prod'] = $this -> products_model -> getRawMats();
+			
 			
 			$data['po'] = $this -> purchases_model -> getPO($code);
 			$data['orders'] = $this -> purchases_model -> getOrders($code);
