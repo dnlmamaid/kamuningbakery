@@ -18,5 +18,5 @@ e) No negative values for metric / h) Validation prompt if raw materials are suf
 
 f) Sales Report - Wrong date set in code --- OK
 
-g) Graphical Charts for Report * Most important
+g) Graphical Charts for Report * Most important --- OK
 

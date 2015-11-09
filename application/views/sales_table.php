@@ -7,12 +7,12 @@
 			
 		  <div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header"><i class="fa fa-dollar"></i> Sales</h1>
+					<h1 class="page-header"><i class="fa">&#8369;</i> Sales</h1>
 					
 					<div class="col-lg-3 col-xs-12 pull-left">
 					<ol class="breadcrumb">
 						<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
-						<li><i class="fa fa-dollar"></i> Sales</li>
+						<li><i class="fa">&#8369;</i> Sales</li>
 					</ol>
 					</div>
 					

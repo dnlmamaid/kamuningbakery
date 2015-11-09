@@ -290,16 +290,35 @@ Class reports_model extends CI_Model {
 		return false;
 	}
 	
-	public function getHSales($limit, $start) {
-		$this->db->join('users','users.id = sales.user_ID','left');
+	public function getMSales(){
+		$now = date('Ymd');
 		
-		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
-		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+		$this -> db -> where('sales_date >=', $now);
+		
+		$this -> db -> order_by('sales_date', 'desc');
+		$query = $this -> db -> get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
+	public function getHSales($limit, $start) {
+		
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
+		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
+		$this->db->join('users','users.id = sales.user_ID','right');
+		
 		
 		$this -> db -> where('products.category_ID', '1');
+		$this -> db -> order_by('qty_sold', 'desc');
 		$this -> db -> limit($limit, $start);
 	
-		$query = $this -> db -> get('sales');
+		$query = $this -> db -> get('sales_invoices');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;

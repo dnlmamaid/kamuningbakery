@@ -150,15 +150,22 @@
 	Morris.Donut({
   element: 'donut-example',
   data: [
-    {label: "Download Sales", value: 12},
-    {label: "In-Store Sales", value: 30},
-    {label: "Mail-Order Sales", value: 20}
-  ]
+  	<?php foreach($sales as $r):?>
+    {label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
+   	<?php endforeach; ?>   	
+   	]
+      	
 });
 
 
 $(function () {
-    $('#container').highcharts({
+    $('#sales-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#00FF00', '#FF0000'],
+        
         title: {
             text: 'Monthly Sales',
             x: -20 //center
@@ -168,12 +175,14 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: [<?php if(isset($salesm) && is_array($salesm)) : foreach($salesm as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->sales_date))?>',
+            			<?php endforeach; endif; ?>]
         },
         yAxis: {
+        	min: 0,
             title: {
-                text: 'Pieces (pcs)'
+                text: 'Philippine Peso (₱)'
             },
             plotLines: [{
                 value: 0,
@@ -182,7 +191,7 @@ $(function () {
             }]
         },
         tooltip: {
-            valueSuffix: 'pc'
+            valuePrefix: '₱ '
         },
         legend: {
             layout: 'vertical',
@@ -191,9 +200,13 @@ $(function () {
             borderWidth: 0
         },
         series: [{
-            name: 'Pandesal',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }]
+            name: 'Total Sales',
+            data: [<?php if(isset($salesm) && is_array($salesm)) : foreach($salesm as $row): ?>
+            			<?php echo $row->total_sales?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
     });
 });	
 </script>

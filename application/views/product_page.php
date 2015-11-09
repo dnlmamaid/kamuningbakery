@@ -330,9 +330,13 @@
 						<div class="col-lg-12">
 						<h3>Ingredients: </h3>
 						</div>
-						<div class="col-lg-12" style="margin-bottom:15px;">
+						<div class="col-lg-8" style="margin-bottom:15px;">
 							<button type="button" id="addButton" class="btn btn-theme" data-toggle="tooltip" data-placement="top" title="Add More" ><i class="fa fa-plus"></i></button>
 							<button type="button"  id="removeButton" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Remove One" ><i class="fa fa-minus"></i></button>
+							
+						</div>
+						<div class="col-lg-4 col-xs-4">						
+							<input type="number" step="any" name="qty_can_produce" class="form-control inline" value="<?php echo $r->qty_can_produce?>" required>
 						</div>
 							
 						<div class="form-group" id="materials">

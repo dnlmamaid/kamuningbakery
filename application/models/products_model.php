@@ -100,8 +100,7 @@ class products_model extends CI_Model {
 		
 		$this->db->where('product_id !=', $id);
 		$this->db->where('product_Name', $this->input->post('product_Name'));
-		
-
+	
 		$val = $this->db->get('products');
 		if (($val -> num_rows() == 1)) {
 			$this->session->set_flashdata('error', 'Product already exist.');
@@ -125,15 +124,17 @@ class products_model extends CI_Model {
 					$this->db->select('price');
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
-					$price = $this->db->get()->row('price')*$_POST['qpu'][$val];
+					$price = $this->db->get()->row('price');
 					$total = ($price + $total);
 					
 	
 				}
-
+				
+				$p = $total / $this->input->post('qty_can_produce');
+				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'price' => $total, 
+					'price' => $p, 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 

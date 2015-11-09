@@ -112,7 +112,7 @@
 			</div>
 			
 			<div class="col-lg-6">
-				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="sales-line" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</div>	
 			
 		</div>
