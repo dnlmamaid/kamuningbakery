@@ -337,7 +337,8 @@ Class reports_model extends CI_Model {
 		
 		$this -> db -> where('products.category_ID', '1');
 		$this -> db -> order_by('qty_sold', 'desc');
-		$this -> db -> limit($limit, $start);
+		$this -> db -> group_by('products.product_id');
+		$this -> db -> limit($limit);
 	
 		$query = $this -> db -> get('sales_invoices');
 		if ($query -> num_rows() > 0) {
