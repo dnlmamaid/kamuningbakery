@@ -290,12 +290,33 @@ Class reports_model extends CI_Model {
 		return false;
 	}
 	
+	public function getSalesByP($limit, $start, $sid) {
+		
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
+		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
+		$this->db->join('users','users.id = sales.user_ID','right');
+		
+		$this -> db -> where('sales_invoices.product_ID', $sid);
+		
+		$this -> db -> limit($limit, $start);
+		$this -> db -> order_by('sales.sales_date', 'desc');
+		$query = $this -> db -> get('sales_invoices');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+
 	public function getMSales(){
 		$now = date('Ymd');
 		
 		$this -> db -> where('sales_date >=', $now);
+		$this -> db -> group_by('sales.sales_date');
 		
-		$this -> db -> order_by('sales_date', 'desc');
 		$query = $this -> db -> get('sales');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -307,7 +328,7 @@ Class reports_model extends CI_Model {
 		return false;
 	}
 	
-	public function getHSales($limit, $start) {
+	public function getHSales($limit) {
 		
 		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
 		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
@@ -331,12 +352,54 @@ Class reports_model extends CI_Model {
 		
 	}
 	
+	public function getHSP() {
+		
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
+		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
+		$this->db->join('users','users.id = sales.user_ID','right');
+		
+		
+		$this -> db -> where('products.category_ID', '1');
+		$this -> db -> group_by('sales_invoices.product_ID');
+		
+		
+		
+	
+		$query = $this -> db -> get('sales_invoices');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+		
+		
+	}
+	
+	function getPSold() {
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
+		$this->db->order_by('sales_invoices.product_ID', 'asc');
+		$this->db->group_by('sales_invoices.product_ID');
+		$this->db->where('products.product_status', '1');
+		$q = $this->db->get('sales_invoices');
+		$data = $q -> result_array();
+		return $data;
+	} 
+	
+	
 	public function getSalesCtr() {
 		$this -> db -> select('*');
 		$this -> db -> from('sales');
 		$query = $this -> db -> get();
 		$result = $query -> num_rows();
 		return $result;
+	}
+
+	public function getSalesCtrByP($sid) {
+		$this -> db -> where('product_id', $sid);
+		return $this->db->count_all_results('sales_invoices');
 	}
 	
 	/**
@@ -421,6 +484,17 @@ Class reports_model extends CI_Model {
 		return $q->row();
 	}
 	
+	function get_total_sales_by_product($sid){
+		
+		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
+		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+				
+		$this->db->where('sales_invoices.product_id',$sid);
+		$this->db->select('sum(total_sale) as total');
+		$q = $this->db->get('sales_invoices');
+		return $q->row();
+	}
+	
 	function get_total_sales(){
 		
 		$this->db->select('sum(total_sales) as total');
@@ -436,7 +510,7 @@ Class reports_model extends CI_Model {
 		$this->db->where('sales_date >=',$start);
 		$this->db->where('sales_date <=',$end);
 		$this->db->join('users','users.id = sales.user_id','left');
-		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','right');
+		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
 		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
 		$this->db->order_by('sales_date','desc');
 		$query = $this->db->get('sales');

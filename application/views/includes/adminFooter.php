@@ -147,16 +147,19 @@
 <script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
 <script>
-	Morris.Donut({
-  element: 'donut-example',
-  data: [
-  	<?php foreach($sales as $r):?>
-    {label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
-   	<?php endforeach; ?>   	
-   	]
-      	
-});
+		
+	var colors_array= ["#009000", "#006600", "#339933"];
 
+    Morris.Donut({
+
+		element: 'donut-example',
+        colors: colors_array,
+        data: [
+			<?php foreach($hsp as $r):?>
+			{label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
+			<?php endforeach; ?>   	
+	   	]
+	});
 
 $(function () {
     $('#sales-line').highcharts({
@@ -168,7 +171,7 @@ $(function () {
         
         title: {
             text: 'Monthly Sales',
-            x: -20 //center
+            x: -20 //centerS
         },
         subtitle: {
             text: 'Kamuning Bakery',
@@ -208,7 +211,60 @@ $(function () {
         	
         ]
     });
-});	
+});
+
+
+$(function () {
+    $('#sales-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#00FF00', '#FF0000'],
+        
+        title: {
+            text: 'Monthly Sales',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->sales_date))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Philippine Peso (₱)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valuePrefix: '₱ '
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Total Sales',
+            data: [<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
+            			<?php echo $row->total_sales?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});		
 </script>
 </body>
 </html>

@@ -21,7 +21,7 @@ class home extends CI_Controller {
 	    {
 	    	$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 	    	$data['audit'] = $this->reports_model->getAudit('5', $offset);
-			$data['sales'] = $this->reports_model->getHSales('5', $offset);
+			$data['hsp'] = $this->reports_model->getHSales('5');
 			$data['salesm'] = $this->reports_model->getMSales();
 			$data['products'] = $this->reports_model->getLow('5', $offset);
 			$data['requests'] = $this->reports_model->getRequests('5', $offset);		
