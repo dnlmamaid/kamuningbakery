@@ -90,12 +90,19 @@ class production_model extends CI_Model{
 			$total = 0;
 	    	foreach($q as $val => $rm)
 			{
-				//Gets Raw Material 			
+				//Gets Raw Material's quantity and subtract it 			
 				$this->db->select('current_count');
 				$this->db->from('products');
 				$this->db->where('product_id', $rm);
 				$oldqty = $this->db->get()->row('current_count');
-				$nqty = ($oldqty - $_POST['qpu'][$val]);
+				$nqty = ($oldqty - $val->ingredient_qty);
+				
+				
+						
+						
+						'ingredient_qty' => $_POST['qpu'][$val],
+						'qty_can_produce' => $this->input->post('quantity'),
+					);
 					
 				//Gets Total Cost Per Unit
 				$this->db->select('price');

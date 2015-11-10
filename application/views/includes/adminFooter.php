@@ -148,7 +148,7 @@
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
 <script>
 		
-	var colors_array= ["#009000", "#006600", "#339933"];
+	var colors_array= ["#009000", "#006600", "#339933", "#48C248", "#3BB03B"];
 
     Morris.Donut({
 

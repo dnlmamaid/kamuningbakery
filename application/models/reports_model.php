@@ -268,7 +268,7 @@ Class reports_model extends CI_Model {
 	}
 	
 	/*****************************************************************/
-	/*********************  SALES	*****************************/
+	/**************************  SALES	*****************************/
 	/***************************************************************/
 	
 	public function getSales($limit, $start) {
@@ -334,10 +334,9 @@ Class reports_model extends CI_Model {
 		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
 		$this->db->join('users','users.id = sales.user_ID','right');
 		
-		
-		$this -> db -> where('products.category_ID', '1');
 		$this -> db -> order_by('qty_sold', 'desc');
 		$this -> db -> group_by('products.product_id');
+		$this -> db -> distinct('products.product_id');
 		$this -> db -> limit($limit);
 	
 		$query = $this -> db -> get('sales_invoices');

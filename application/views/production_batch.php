@@ -217,34 +217,6 @@
 												</select>
 											</div>
 										</div>
-										<div class="form-group" id="materials" hidden>
-											<div id="rm">
-											
-											<?php foreach($ing as $r2): ?>
-												<div class="col-lg-12 col-xs-12">
-													<div class="col-lg-4 col-xs-4">						
-														<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
-													</div>
-													
-													<div class="col-lg-8 col-xs-8">
-														<select name="rm_ID[]" class="form-control" required>
-														<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
-														<?php if(!empty($rm)){
-															if (is_array($rm)){                      
-													        	foreach ($rm as $row) {
-													            	if($row['product_id'] != $r2->product_id){?>
-																		<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
-																	<?php } 
-																}
-															}
-														} ?>
-														</select>
-													</div>
-												</div>
-												<?php endforeach;?>
-														
-											</div>	
-										</div>
 										
 										<div class="col-lg-3 col-xs-4">
 											<div class="form-group">
