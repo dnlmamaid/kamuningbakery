@@ -90,12 +90,14 @@ class production_model extends CI_Model{
 			$total = 0;
 	    	foreach($q as $val => $rm)
 			{
+				
+				$qcp = $val->qty_can_produce;	
 				//Gets Raw Material 			
 				$this->db->select('current_count');
 				$this->db->from('products');
 				$this->db->where('product_id', $rm);
 				$oldqty = $this->db->get()->row('current_count');
-				$nqty = ($oldqty - $_POST['qpu'][$val]);
+				$nqty = ($oldqty - $val->ingredient_qty);
 					
 				//Gets Total Cost Per Unit
 				$this->db->select('price');
@@ -229,7 +231,7 @@ class production_model extends CI_Model{
 		        );
 				  
 				$this->db->insert('products', $data);
-				$this->session->set_flashdata('success','You have successfully added a new product');
+				$this->session->set_flashdata('success','You have successfully produced a new product');
 				
 				$net_cost = $p * $this->input->post('quantity');
 				$remark_id = $this->db->insert_id();
@@ -394,7 +396,7 @@ class production_model extends CI_Model{
 	{
 		
 		$this -> db -> where('pb_id', $id);
-		$this -> db -> join('products', 'products.product_id = production_batch.product_ID', 'left');
+		$this -> db -> join('products', 'products.product_id = production_batch.product_id', 'left');
 		$this -> db -> join('production', 'production.batch_id = production_batch.batch_reference', 'left');
 		$this -> db -> join('users', 'users.id = production.user_id', 'right');
 		$q = $this -> db -> get('production_batch');
@@ -428,6 +430,17 @@ class production_model extends CI_Model{
 		return $data;
 	}
 	
+	//gets product id from production batch id
+	public function get_pid_from_production($id){
+		
+		$this->db->select('product_id');
+		$this->db->from('production_batch');
+		$this->db->where('pb_id', $id);
+
+		return $this->db->get()->row('product_id');
+		
+	}
+
 	
 }
 

@@ -130,11 +130,11 @@ class products_model extends CI_Model {
 	
 				}
 				
-				$p = $total / $this->input->post('qty_can_produce');
+				
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'price' => $p, 
+					'price' => $this->input->post('price'), 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 
@@ -319,8 +319,15 @@ class products_model extends CI_Model {
 	function getIng($pid) {
 		$this->db->join('products', 'products.product_id = ingredients.product_id', 'left');
 		$this->db->where('id_for', $pid);
-		$q = $this->db->get('ingredients');
-		return $q -> result();
+		$query = $this->db->get('ingredients');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		return false;
+
 	}
 
 	/**

@@ -74,25 +74,28 @@
 			
 		</div>
 	</div>
-	<?php if($body == 'report'):?>
+	
 	<!-- page start -->
 	<div class="row">
 		<div class="col-lg-12">
-	
-		<div class="col-lg-4">
-			<h3>Top Selling Products</h3>		
-			<div id="donut-example"></div>
-		</div>
-		
-		
-		<div class="col-lg-8">
-			<div id="sales-line"></div>
-		</div>
-
+			<?php if($head == 'sales' && $body =='report'): ?>
+			<div class="col-lg-4">
+				<h3>Top Selling Products</h3>		
+				<div id="donut-example"></div>
+			</div>
+			
+			<div class="col-lg-8">
+				<div id="sales-report-line"></div>
+			</div>
+			<?php elseif($head == 'sales' && $body =='by_date'): ?>
+			<div class="col-lg-12">
+				<div id="sales-report-line"></div>
+			</div>
+			<?php endif;?>		
 		</div>		
 	</div>
 	
-    <?php else: ?>
+    
     <div class="row">
 	    <div class="col-lg-12">
     		<section class="col-lg-12 panel">
@@ -108,18 +111,18 @@
 			</div>
 			<?php } ?> 
 			<div class="table-responsive"> 
-				<table class="table table-advance">
+				<table class="table table-advance table-hover">
 					<tbody>
 					<tr>
 						<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice ID</th>
 			            <th class="col-md-1"><i class="fa icon_cart_alt"></i> Product</th>
 			            <th class="col-md-1"><i class="fa fa-user"></i> Employee</th>
 			            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th>
+			            <th class="col-md-1"><i class="fa">&#8369;</i> Total</th>
 			            <th class="col-md-2"><i class="fa fa-clock-o"></i> Date</th>
 					</tr>
 	                              	
-	                <?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?> 
+	                <?php if(isset($sales_t) && is_array($sales_t)) : foreach($sales_t as $row): ?> 
 						<tr class="clickable-row" data-href="<?php echo base_url()?>sales/sales_invoice/<?php echo $row->siv_id?>">
 						<td class="col-md-1"><?php echo $row->invoice_code ?></td>
 						<td class="col-md-1"><?php echo $row->product_Name ?></td>
@@ -151,7 +154,7 @@
 		<div class="col-lg-8 col-lg-offset-4">
 			<div id="pagination">
 				<ul class="tsc_pagination">
-				<?php if(is_array($sales) && sizeof($sales)>0){?> 
+				<?php if(is_array($sales_t) && sizeof($sales_t)>0){?> 
 					<div class="pagination pull-left" style="margin:10px 0px 5px 0px;"><?php echo (!empty($pagermessage) ? $pagermessage : ''); ?></div>
 						<?php echo $paginglinks; }?>
 				</ul>
@@ -160,7 +163,7 @@
 	</div>
 	<?php } ?>
 	<!-- page end-->
-	<?php endif;?>
+	
 	            
 </div>
 <!-- /#page-content-wrapper -->

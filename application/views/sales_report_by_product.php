@@ -93,7 +93,7 @@
 			</div>
 			<?php } ?> 
 			<div class="table-responsive"> 
-				<table class="table table-advance">
+				<table class="table table-advance table-hover">
 					<tbody>
 					<tr>
 						<th class="col-md-1"><i class="fa fa-barcode"></i> Invoice ID</th>

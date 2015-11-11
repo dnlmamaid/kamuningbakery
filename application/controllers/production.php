@@ -341,10 +341,13 @@ class production extends CI_Controller {
 	
 	public function process_info($id) {
 		//Dropdowns 
+		
 		$data['cls'] = $this -> products_model -> getClass();
 		$data['supplier'] = $this -> products_model -> getSupplier();
-
 		$data['details'] = $this -> production_model -> getProd_Rec($id);
+		$pid = $this->production_model->get_pid_from_production($id);
+		
+		$data['ing'] = $this -> products_model -> getIng($pid);
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
 		

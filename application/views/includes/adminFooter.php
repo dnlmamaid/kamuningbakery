@@ -1,3 +1,6 @@
+<?php $body = $this->uri->segment('2');
+	  $head = $this->uri->segment('1');?>
+	
 <!-- ADD SUPPLIER MODAL -->
 <div class="modal fade" id="addSupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="vertical-alignment-helper">
@@ -147,12 +150,12 @@
 <script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
 <script>
-		
+<?php if($head == '' || $head =='home'):?>
 	var colors_array= ["#009000", "#006600", "#339933"];
 
     Morris.Donut({
 
-		element: 'donut-example',
+		element: 'hsp',
         colors: colors_array,
         data: [
 			<?php foreach($hsp as $r):?>
@@ -162,24 +165,24 @@
 	});
 
 $(function () {
-    $('#sales-line').highcharts({
+    $('#activity').highcharts({
     	 credits: {
             enabled: false
         },
         
-        colors: ['#00FF00', '#FF0000'],
+        colors: ['#00FF00', '#CC0000'],
         
         title: {
-            text: 'Monthly Sales',
-            x: -20 //centerS
+            text: 'Monthly Activity',
+            x: -20 //center
         },
         subtitle: {
             text: 'Kamuning Bakery',
             x: -20
         },
         xAxis: {
-            categories: [<?php if(isset($salesm) && is_array($salesm)) : foreach($salesm as $row): ?>
-            			'<?php echo date('F Y',strtotime($row->sales_date))?>',
+            categories: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->date))?>',
             			<?php endforeach; endif; ?>]
         },
         yAxis: {
@@ -204,23 +207,30 @@ $(function () {
         },
         series: [{
             name: 'Total Sales',
-            data: [<?php if(isset($salesm) && is_array($salesm)) : foreach($salesm as $row): ?>
-            			<?php echo $row->total_sales?>,
+            data: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            			<?php echo $row->total?>,
             			<?php endforeach; endif; ?>]
-        },	
+        },	{
+            name: 'Total Purchases',
+            data: [<?php foreach($purchases_c as $r){?>
+            			<?php echo $r->total?>,
+            			<?php }?>]
+        }
         	
+        
         ]
     });
 });
+ 			
 
-
+<?php elseif($head == 'sales' && $body =='report'): ?>
 $(function () {
     $('#sales-report-line').highcharts({
     	 credits: {
             enabled: false
         },
         
-        colors: ['#00FF00', '#FF0000'],
+        colors: ['#00FF00'],
         
         title: {
             text: 'Monthly Sales',
@@ -231,8 +241,8 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: [<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
-            			'<?php echo date('F Y',strtotime($row->sales_date))?>',
+            categories: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->date))?>',
             			<?php endforeach; endif; ?>]
         },
         yAxis: {
@@ -257,7 +267,59 @@ $(function () {
         },
         series: [{
             name: 'Total Sales',
-            data: [<?php if(isset($sales) && is_array($sales)) : foreach($sales as $row): ?>
+            data: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            			<?php echo $row->total?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});
+<?php elseif($head == 'sales' && $body =='by_date'):?>
+$(function () {
+    $('#sales-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#00FF00'],
+        
+        title: {
+            text: 'Sales',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'From <strong><?php echo date('F d, Y', strtotime($sdate)); ?></strong> to <strong><?php echo date('F d,Y', strtotime($edate)); ?></strong><br>Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            			'<?php echo date('F d Y',strtotime($row->sales_date))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Philippine Peso (₱)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valuePrefix: '₱ '
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Purchases',
+            data: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
             			<?php echo $row->total_sales?>,
             			<?php endforeach; endif; ?>]
         },	
@@ -265,6 +327,111 @@ $(function () {
         ]
     });
 });		
+<?php elseif($head == 'purchases' && $body =='report'):?>
+$(function () {
+    $('#purchases-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#CC0000'],
+        
+        title: {
+            text: 'Monthly Purchases',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->date))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Philippine Peso (₱)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valuePrefix: '₱ '
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Total Purchases',
+            data: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
+            			<?php echo $row->total?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});
+<?php elseif($head == 'purchases' && $body =='by_date'):?>
+$(function () {
+    $('#purchases-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#CC0000'],
+        
+        title: {
+            text: 'Purchases',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'From <strong><?php echo date('F d, Y', strtotime($sdate)); ?></strong> to <strong><?php echo date('F d,Y', strtotime($edate)); ?></strong><br>Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
+            			'<?php echo date('F d Y',strtotime($row->date_received))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Philippine Peso (₱)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valuePrefix: '₱ '
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Purchases',
+            data: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
+            			<?php echo $row->total_cost?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});
+<?php endif; ?>
 </script>
 </body>
 </html>

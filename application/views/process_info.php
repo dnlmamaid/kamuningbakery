@@ -3,13 +3,13 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Processed Product Info</h1>
+				<h1 class="page-header"><i class="fa flaticon-baked1" style=""></i> Processed Product Info</h1>
 				<div class="col-lg-6 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa icon_datareport"></i><a href="<?php echo base_url()?>production"> Production</a></li>
-					<li><i class="fa flaticon-bill9"></i><a href="<?php echo base_url()?>production/production_batch/<?php echo $r->batch_reference?>"> Purchase Order</a></li>
-					<li><i class="fa flaticon-ingredients1"></i> Order Info</li>
+					<li><i class="fa flaticon-stone2"></i><a href="<?php echo base_url()?>production"> Production</a></li>
+					<li><i class="fa flaticon-baker7"></i><a href="<?php echo base_url()?>production/production_batch/<?php echo $r->batch_reference?>"> Production Batch</a></li>
+					<li><i class="fa flaticon-baked1"></i> Order Info</li>
 				</ol>
 				</div>
 			</div>
@@ -71,14 +71,13 @@
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3 bg-panel2">
 						
-							<h3 align="center"><?php echo $r->product_Name?></h3>
-							<p align="center"><b>Php</b> <?php echo $r->ppu?> per <?php echo $r->um?></p>
+							<h2 align="center"><?php echo $r->product_Name?></h2>
 							<input type="hidden" name="product_id" class="form-control inline" value="<?php echo $r->product_id?>">
 							<input type="hidden" name="batch_reference" class="form-control inline" value="<?php echo $r->batch_reference?>">
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
 									
-									<div class="row">
+									<div class="row page-header">
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label>Price per unit </label>
@@ -86,12 +85,9 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->ppu?></label>
+												<label>&#8369; <?php echo $r->production_cpu?></label>
 											</div>
 										</div>
-									</div>
-									
-									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label>Quantity </label>
@@ -99,8 +95,8 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->qty_produced?> <?php echo $r->um?></label>
-												<input type="hidden" name="qty_produced" class="form-control inline" value="<?php echo $r->qty_produced?>">
+												<label><?php echo $r->units_produced?> <?php if($r->um == 'pc'){echo $r->um; ?>s<?php } else{ echo $r->um; }?></label>
+												<input type="hidden" name="units_produced" class="form-control inline" value="<?php echo $r->units_produced?>">
 											</div>
 										</div>
 									</div>
@@ -113,15 +109,51 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->ordering_cost?></label>
-												<input type="hidden" name="ordering_cost" class="form-control inline" value="<?php echo $r->ordering_cost?>">
+												<label>&#8369; <?php echo $r->total_production_cost?></label>
+												<input type="hidden" name="total_production_cost" class="form-control inline" value="<?php echo $r->total_production_cost?>">
 											</div>
 										</div>
 									</div>
+								
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-10 col-lg-offset-1">
+									<h4>Ingredients</h4>
+									<p class="page-header"> for <?php echo $r->units_produced?> <?php if($r->um == 'pc'){echo $r->um; ?>s<?php } else{ echo $r->um; }?> of <?php echo $r->product_Name ?></p>
+									<?php if(isset($ing) && is_array($ing)) : foreach($ing as $row): ?>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label><?php echo $row->product_Name?></label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<label><?php echo $row->ingredient_qty?> <?php echo $row->um?></label>
+											</div>
+										</div>
+									</div>
+									<?php endforeach; endif;?>
+								
+								
 									
+								
 								</div>
 							</div>
 							<br>
+							 <div class="row">
+								<div class="col-lg-12">
+									<div class="col-lg-4 pull-right">
+											<a href="javascript:window.history.go(-1);" class="btn btn-default hidden-print" style="align">Back</a>
+									</div>
+								</div>
+							</div>
+							
+								
+								
+								
+							
 							
 								
 						</div>

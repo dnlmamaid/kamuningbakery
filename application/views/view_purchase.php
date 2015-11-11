@@ -77,7 +77,7 @@
 				
 					<div class="form-group">
 						<div class="col-lg-12">
-							<a href="<?php echo base_url()?>purchases" class="btn btn-default pull-right">Back</a>
+							<a href="javascript:window.history.go(-1);" class="btn btn-default" style="align">Back</a>
 						</div>
 					</div>
 	</div>
