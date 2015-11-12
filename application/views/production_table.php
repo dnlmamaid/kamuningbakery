@@ -58,7 +58,7 @@
 										<th class="col-md-1"><i class="fa fa-calendar"></i> Date Produced</th>
 										<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Number of Goods Produced</th>
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Net Cost</th>
+			                            <th class="col-md-1"><i class="fa">&#8369;</i> Net Cost</th>
 			                            
 	                              	</tr>
 	                              	
@@ -67,7 +67,7 @@
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 										<td class="col-md-1"><?php echo $row->batch_id ?></td>
 		                                <td class="col-md-1"><?php echo $row->net_produced_qty ?> units</td>
-		                                <td class="col-md-1">Php <?php echo $row->net_production_cost ?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->net_production_cost ?></td>
 		                                <!--<td class="col-md-1">Php <?php echo $row->sale_Price?></td>-->
 	                                </tr>	
 									<?php endforeach;	                               

@@ -11,20 +11,17 @@
 
 			<center><img src="<?php echo base_url()?>assets/images/kb_logo(edited).png" class="img-responsive" align="center"></center>
 			<b><p class="page-header" align="center">43 Judge Jimenez St. Corner K-1st, Kamuning Quezon City</p></b>
-								
+			<?php if($body == 'report'){?>			
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
 					<h2 align="center">Sales Report</h2>
-					<?php if($body == 'report'){?>
-						<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
-					<?php }
-					else{ ?> 
-					<p align="center">From <strong><?php echo date('F d, Y', strtotime($sdate)); ?></strong> to <strong><?php echo date('F d,Y', strtotime($edate)); ?></strong></p>
-					<?php }?>
+					
+					<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
+
 					<p align="center">Prepared By: <?php echo $this->session->userdata('username')?></p>
 				</div>
 			</div>
-			
+			<?php } ?>
 			<div class="row">
 				<div class="col-md-3">
 					<h4>Total Sales: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>

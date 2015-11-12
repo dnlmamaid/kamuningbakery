@@ -76,96 +76,140 @@ class production_model extends CI_Model{
 		//IF PRODUCT IS NOT NEW
 		if($val->num_rows() == 1){
 			
+			$ctr = 0;	
+			$total = 0;
 			//Gets Product ID 			
 			$this->db->select('product_id');
 			$this->db->from('products');
 			$this->db->where('product_Name', $this->input->post('product_Name'));
 			$pid = $this->db->get()->row('product_id');
 			
-			
 			//Stores Ingredients in an array			
 			$this->db->where('id_for', $pid);
 			$q = $this->db->get('ingredients');
 			
-			$total = 0;
-	    	foreach($q as $val => $rm)
-			{
-				
-				$qcp = $val->qty_can_produce;	
-				//Gets Raw Material 			
+			foreach($q->result() as $row){
+					
+				$rm = $row->product_id;
+				$unit = $row->ingredient_qty/$row->qty_can_produce;
+				$qty = $unit * $this->input->post('quantity');
+					
+				//Gets Raw Material & Subtracts the amount used for production 			
 				$this->db->select('current_count');
 				$this->db->from('products');
 				$this->db->where('product_id', $rm);
 				$oldqty = $this->db->get()->row('current_count');
-				$nqty = ($oldqty - $val->ingredient_qty);
+				$nqty = ($oldqty - $qty);
 					
-				//Gets Total Cost Per Unit
-				$this->db->select('price');
-				$this->db->from('products');
-				$this->db->where('product_id', $rm);
-				$price = $this->db->get()->row('price');
-				$total = ($price + $total);
-					
-				//Updates Quantity	
-				$process = array(
-					'current_count' => $nqty,
-				);
-						
-				$this->db->where('product_id', $rm);
-				$this->db->update('products', $process);
-								
+				if($nqty < 0){
+					$ctr ++;
+				}
 			}
 			
-			
-			 			
-			$this->db->select('current_count');
-			$this->db->from('products');
-			$this->db->where('product_id', $pid);
-			$oldc = $this->db->get()->row('current_count');
-			$nc = ($oldc) + ($this->input->post('quantity'));
-			
-			$p = $total / $this->input->post('quantity');
+			if($ctr == '0'){
 				
-			$data = array(
-				'price' => $p,				
-				'current_count' => $nc,
-		    );
+				$this->db->where('id_for', $pid);
+				$q = $this->db->get('ingredients');
 			
-			$this->db->where('product_id', $pid);
-			$this->db->update('products', $data);
+		    	foreach($q->result() as $row)
+				{
+					$rm = $row->product_id;
+					$unit = $row->ingredient_qty/$row->qty_can_produce;
+					$qty = $unit * $this->input->post('quantity');
+						
+					//Gets Raw Material & Subtracts the amount used for production 			
+					$this->db->select('current_count');
+					$this->db->from('products');
+					$this->db->where('product_id', $rm);
+					$oldqty = $this->db->get()->row('current_count');
+					$nqty = ($oldqty - $qty);
+						
+					//Gets Total Cost Per Unit of Raw Materials
+					$this->db->select('price');
+					$this->db->from('products');
+					$this->db->where('product_id', $rm);
+					$price = $this->db->get()->row('price');
+					$total = ($total + $price );
+						
+					//Updates Quantity of Raw Materials Used
+					$process = array(
+						'current_count' => $nqty,
+					);
+							
+					$this->db->where('product_id', $rm);
+					$this->db->update('products', $process);
+									
+				}
 				
-			$net_cost = $price * $this->input->post('quantity');
+				//Get the Current Count of The Product to be produced and adds the number of units produced
+				$this->db->select('current_count');
+				$this->db->from('products');
+				$this->db->where('product_id', $pid);
+				$oldc = $this->db->get()->row('current_count');
+				$nc = ($oldc) + ($this->input->post('quantity'));
 				
-			$batch = array(
-				'product_id'			=> $remark_id,
-				'batch_reference'		=> $code,
-				'previous_count'		=> $oldc,
-				'units_produced'		=> $this->input->post('quantity'),
-				'production_cpu'		=> $total,
+				//total = 4.932/24(inputpost)
+				//per unit = 0.224
+				//Gets the price per unit of product produced
+				$p = $total / $this->input->post('quantity');
+					
+				$data = array(
+					'current_count' => $nc,
+			    );
 				
-			);
+				$this->db->where('product_id', $pid);
+				$this->db->update('products', $data);
+								
+				$net_cost = $p * $this->input->post('quantity');
 				
-			$this->db->insert('production_batch', $batch);
-			
-			$prod = array(
-				'net_produced_qty'		=> $this->input->post('quantity'),
-				'net_production_cost'		=> $total,
-			);
-			
-			$this->db->where('batch_id', $code);
-			$this->db->update('production', $prod);
-			
-			$audit = array(
-				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'Production',
-				'remark_id'	=> $pid,
-				'remarks'	=> 'Produced a product',
-				'date_created'=> date('Y-m-j H:i:s'),
-			);
+				$batch = array(
+					'product_id'			=> $pid,
+					'batch_reference'		=> $code,
+					'previous_count'		=> $oldc,
+					'units_produced'		=> $this->input->post('quantity'),
+					'production_cpu'		=> $p,
+					'total_production_cost'	=> $net_cost,
+					
+				);
+					
+				$this->db->insert('production_batch', $batch);
 				
-			$this->db->insert('audit_trail', $audit);
-	
-			$this->session->set_flashdata('success','Successfully Produced Product.');
+				$this->db->select('net_produced_qty');
+				$this->db->from('production');
+				$this->db->where('batch_id', $code);
+				$onpq = $this->db->get()->row('net_produced_qty');
+				$nnpq = (($onpq) + $this->input->post('quantity'));
+				
+				$this->db->select('net_production_cost');
+				$this->db->from('production');
+				$this->db->where('batch_id', $code);
+				$onpc = $this->db->get()->row('net_production_cost');
+				$nnpc = (($onpc) + $net_cost);
+				
+				$prod = array(
+					'net_produced_qty'		=> $nnpq,
+					'net_production_cost'	=> $nnpc,
+				);
+				
+				$this->db->where('batch_id', $code);
+				$this->db->update('production', $prod);
+				
+				$audit = array(
+					'user_id'	=> $this->session->userdata('user_id'),
+					'module'	=> 'Production',
+					'remark_id'	=> $pid,
+					'remarks'	=> 'Produced a product',
+					'date_created'=> date('Y-m-j H:i:s'),
+				);
+					
+				$this->db->insert('audit_trail', $audit);
+		
+				$this->session->set_flashdata('success','Successfully Produced Product.');
+			}
+
+				else{
+				$this->session->set_flashdata('error','Production Failed. 1 or more Raw Materials required for production is insufficient.');
+			}
 			
 			
 		}
@@ -196,13 +240,25 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$oldqty = $this->db->get()->row('current_count');
 					$nqty = (($oldqty) - $_POST['qpu'][$val]);
+					
+					
 						
 					//Gets Total Cost Per Unit
 					$this->db->select('price');
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
 					$price = $this->db->get()->row('price');
-					$total = ($price + $total);
+					
+					//multiplies the price per unit with the quantity used on production divided by the number of units produced
+					$val = ($price * $_POST['qpu'][$val])/$this->input->post('quantity');
+					//0.042 * 544 / 24
+					//0.078php/ml * 120ml = 9.36 php / 24 pcs = 0.39 php per 24 pcs of milk
+					//0.952 flour
+					//0.1875 egg
+					//0.529 white sugar
+					//0,4754 butter
+					  
+					$total = ($total + ($price * $_POST['qpu'][$val])/$this->input->post('quantity'));
 					
 					//Updates Quantity	
 					$process = array(

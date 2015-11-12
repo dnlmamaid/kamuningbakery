@@ -260,9 +260,11 @@ Class reports_model extends CI_Model {
 		$end = $this->input->post('edate');
 		$this->db->where('date_received >=',$start);
 		$this->db->where('date_received <=',$end);
-		$this->db->join('users','users.id = purchases.user_id','left');
-		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$this->db->order_by('date_received','asc');
+		
+		
+		$this->db->select('date_received as date, sum(total_cost) as total');
+		$this->db->group_by('day(date_received)');
+		
 		$query = $this->db->get('purchases');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -535,11 +537,12 @@ Class reports_model extends CI_Model {
 	function get_sales_by_dateuo(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
+		
 		$this->db->where('sales_date >=',$start);
 		$this->db->where('sales_date <=',$end);
-		$this->db->join('users','users.id = sales.user_id','left');
-		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
-		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+		
+		$this->db->select('sales_date as date, sum(total_sales) as total');
+		$this->db->group_by('DAY(sales_date)');
 		
 		$query = $this->db->get('sales');
 		if ($query -> num_rows() > 0) {

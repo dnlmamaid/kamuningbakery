@@ -294,7 +294,7 @@ $(function () {
         },
         xAxis: {
             categories: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
-            			'<?php echo date('F d Y',strtotime($row->sales_date))?>',
+            			'<?php echo date('F d Y',strtotime($row->date))?>',
             			<?php endforeach; endif; ?>]
         },
         yAxis: {
@@ -320,7 +320,7 @@ $(function () {
         series: [{
             name: 'Purchases',
             data: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
-            			<?php echo $row->total_sales?>,
+            			<?php echo $row->total?>,
             			<?php endforeach; endif; ?>]
         },	
         	
@@ -398,7 +398,7 @@ $(function () {
         },
         xAxis: {
             categories: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
-            			'<?php echo date('F d Y',strtotime($row->date_received))?>',
+            			'<?php echo date('F d Y',strtotime($row->date))?>',
             			<?php endforeach; endif; ?>]
         },
         yAxis: {
@@ -424,7 +424,7 @@ $(function () {
         series: [{
             name: 'Purchases',
             data: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
-            			<?php echo $row->total_cost?>,
+            			<?php echo $row->total?>,
             			<?php endforeach; endif; ?>]
         },	
         	
