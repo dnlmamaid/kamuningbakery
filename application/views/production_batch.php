@@ -201,7 +201,7 @@
 										<div class="col-lg-11">
 											<div class="form-group">
 												<label class="control-label">Name</label>
-												<select name="product_name" class="form-control" id="p" required>
+												<select name="product_Name" class="form-control" id="p" required>
 													<option value="">Select Product</option>
 													<?php if(!empty($fg)){
 														if (is_array($fg)){                      
@@ -217,6 +217,10 @@
 												</select>
 											</div>
 										</div>
+<<<<<<< HEAD
+=======
+										
+>>>>>>> 15ad98ab8cd7a0f14064be7b4aa01c649762f9bc
 										
 										<div class="col-lg-3 col-xs-4">
 											<div class="form-group">

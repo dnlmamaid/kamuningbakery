@@ -56,7 +56,7 @@
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label>Price per unit: </label>
-							Php <?php echo $r->sale_Price?> per <?php echo $r->um; ?>
+							&#8369; <?php echo $r->sale_Price?> per <?php echo $r->um; ?>
 						</div>
 					</div>
 					
@@ -70,7 +70,7 @@
 				
 					<div class="form-group">
 						<div class="col-lg-12">
-							<a href="<?php echo base_url()?>Sales" class="btn btn-default pull-right">Back</a>
+							<a href="javascript:window.history.go(-1);" class="btn btn-danger hidden-print" style="align">Back</a>
 						</div>
 					</div>
 	</div>

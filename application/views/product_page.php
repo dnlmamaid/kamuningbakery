@@ -335,9 +335,7 @@
 							<button type="button"  id="removeButton" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Remove One" ><i class="fa fa-minus"></i></button>
 							
 						</div>
-						<div class="col-lg-4 col-xs-4">						
-							<input type="number" step="any" name="qty_can_produce" class="form-control inline" value="<?php echo $r->qty_can_produce?>" required>
-						</div>
+						
 							
 						<div class="form-group" id="materials">
 							<div id="rm">
@@ -363,7 +361,7 @@
 										</select>
 									</div>
 								</div>
-								<?php endforeach;?>
+							<?php endforeach;?>
 										
 							</div>	
 						</div>

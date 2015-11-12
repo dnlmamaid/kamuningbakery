@@ -266,14 +266,8 @@ class purchases extends CI_Controller {
 	
 	public function report($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
-	    {
-	    	
-			//UserData
-	    	$uid = $this->session->userdata('user_id');
-	    	$data['log'] = $this -> users_model -> get_log($uid);
-				
-			//Pagination
+		
+		//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 			$total_row = $this->reports_model->getPurchasesCtr();
 			
@@ -313,9 +307,12 @@ class purchases extends CI_Controller {
       			
     		}   
     		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {
+	    	
     		$data['total'] = $this->reports_model->get_total_purchases();
-			$data['purchases'] = $this->reports_model->getPurchases($config['per_page'], $offset);
-
+			$data['purchases_c'] = $this->reports_model->getMPurchases();
+			$data['purchases_t'] = $this->reports_model->getPurchases($config['per_page'], $offset);
 			$data['main_content'] = 'purchases_report';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
@@ -355,7 +352,8 @@ class purchases extends CI_Controller {
 			$data['edate'] = $this->input->post('edate');
 			
 			$data['total'] = $this->reports_model->get_total_purchases_by_date();
-			$data['purchases'] = $this->reports_model->get_purchases_by_date();
+			$data['purchases_c'] = $this->reports_model->get_purchases_by_dateuo();
+			$data['purchases_t'] = $this->reports_model->get_purchases_by_date();
 			
 			$data['main_content'] = 'purchases_report';
 			$this -> load -> view('includes/admintemplate', $data);

@@ -105,14 +105,14 @@
 			
 			
 			<div class="col-lg-6 col-xs-6">
-				<h3>Highest Selling Products</h3>
+				<h3>Highest Selling Product</h3>
 				
-					<div id="donut-example"></div>
+					<div id="hsp"></div>
                 
 			</div>
 			
 			<div class="col-lg-6">
-				<div id="sales-line" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="activity" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</div>	
 			
 		</div>

@@ -132,6 +132,14 @@ Class reports_model extends CI_Model {
 	/*********************  PURCHASES	*****************************/
 	/***************************************************************/
 	
+	//Monthly purhases for charts
+	function getMPurchases(){
+		$this->db->select('date_received as date, count(*) as count, sum(total_cost) as total');
+		$this->db->group_by('month(date_received)');
+		$q = $this->db->get('purchases');
+		return $q->result();
+	}
+	
 	public function getPurchases($limit, $start) {
 			
 		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
@@ -247,6 +255,27 @@ Class reports_model extends CI_Model {
 	}
 	
 	
+	function get_purchases_by_dateuo(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		$this->db->where('date_received >=',$start);
+		$this->db->where('date_received <=',$end);
+		
+		
+		$this->db->select('date_received as date, sum(total_cost) as total');
+		$this->db->group_by('day(date_received)');
+		
+		$query = $this->db->get('purchases');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
+	
 	function get_purchases_by_date(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
@@ -274,7 +303,7 @@ Class reports_model extends CI_Model {
 	public function getSales($limit, $start) {
 		$this->db->join('users','users.id = sales.user_ID','left');
 		$this->db->join('sales_invoices','sales_invoices.invoice_id = sales.invoice_code','left');
-		$this->db->join('products','products.product_id = sales_invoices.product_id','right');
+		$this->db->join('products','products.product_id = sales_invoices.product_ID','right');
 		$this -> db -> where('siv_id !=', '0');
 		
 		$this -> db -> limit($limit, $start);
@@ -312,22 +341,22 @@ Class reports_model extends CI_Model {
 	}
 
 	public function getMSales(){
-		$now = date('Ymd');
-		
-		$this -> db -> where('sales_date >=', $now);
-		$this -> db -> group_by('sales.sales_date');
-		
-		$query = $this -> db -> get('sales');
-		if ($query -> num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
-			}
-
-			return $data;
-		}
-		return false;
+		$this->db->select('sales_date as date, sum(total_qty_sold) as total_sold, sum(total_sales) as total');
+		$this->db->group_by('month(sales_date)');
+		$q = $this->db->get('sales');
+		return $q->result();
 	}
 	
+	function get_proc(){
+		$this->db->select('p.proc_name as proc_name,count(*) as count');
+		$this->db->join('procedures p', 'p.procedureid = t.procedureid','right');
+		$this->db->group_by('t.procedureid');
+		$q = $this->db->get('treatments t');
+		return $q->result();
+		
+		
+	}
+
 	public function getHSales($limit) {
 		
 		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
@@ -391,7 +420,7 @@ Class reports_model extends CI_Model {
 	
 	public function getSalesCtr() {
 		$this -> db -> select('*');
-		$this -> db -> from('sales');
+		$this -> db -> from('sales_invoices');
 		$query = $this -> db -> get();
 		$result = $query -> num_rows();
 		return $result;
@@ -503,6 +532,27 @@ Class reports_model extends CI_Model {
 		return $q->row();
 	}
 	
+	
+	function get_sales_by_dateuo(){
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		
+		$this->db->where('sales_date >=',$start);
+		$this->db->where('sales_date <=',$end);
+		
+		$this->db->select('sales_date as date, sum(total_sales) as total');
+		$this->db->group_by('DAY(sales_date)');
+		
+		$query = $this->db->get('sales');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
 	
 	function get_sales_by_date(){
 		$start = $this->input->post('sdate');

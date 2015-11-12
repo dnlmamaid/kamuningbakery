@@ -4,7 +4,7 @@ NogNogintheCity for the images
 
 Mock Defense Notes
 
-a) Color Redesign for side bar:
+a) Color Redesign for side bar:    --- OK
    header: Dark green
    sub-header: yellow or yellow green
    
@@ -20,3 +20,4 @@ f) Sales Report - Wrong date set in code --- OK
 
 g) Graphical Charts for Report * Most important --- OK
 
+Update Product Price Per Unit

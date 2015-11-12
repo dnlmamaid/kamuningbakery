@@ -10,10 +10,10 @@ class purchases_model extends CI_Model{
 	function getPO($code)
 	{
 		
-		$this -> db -> where('purchases.purchase_reference', $code);
-		$this -> db -> join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
-		$q = $this -> db -> get('purchases');
+		$this->db->where('purchases.purchase_reference', $code);
+		$this->db->join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$q = $this->db->get('purchases');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -31,13 +31,13 @@ class purchases_model extends CI_Model{
 	function getOrders($code)
 	{
 		
-		$this -> db -> where('purchase_orders.order_reference', $code);
+		$this->db->where('purchase_orders.order_reference', $code);
 		
-		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
-		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
-		$this -> db -> join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+		$this->db->join('products', 'products.product_id = purchase_orders.product_id', 'left');
+		$this->db->join('product_class', 'product_class.class_id = products.class_ID', 'right');
+		$this->db->join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
 		
-		$q = $this -> db -> get('purchase_orders');
+		$q = $this->db->get('purchase_orders');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -55,14 +55,14 @@ class purchases_model extends CI_Model{
 	function getPOR($id)
 	{
 		
-		$this -> db -> where('order_id', $id);
+		$this->db->where('order_id', $id);
 		
-		$this -> db -> join('products', 'products.product_id = purchase_orders.product_id', 'left');
-		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
-		$this -> db -> join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
-		$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_ID', 'right');
+		$this->db->join('products', 'products.product_id = purchase_orders.product_id', 'left');
+		$this->db->join('product_class', 'product_class.class_id = products.class_ID', 'right');
+		$this->db->join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_ID', 'right');
 		
-		$q = $this -> db -> get('purchase_orders');
+		$q = $this->db->get('purchase_orders');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -74,52 +74,58 @@ class purchases_model extends CI_Model{
 	}
 	
 	function add_order($code)
-    {		
+    {
+    	$this->db->where('product_Name',$this->input->post('product_Name'));
+		$val = $this->db->get('products');
+		//IF PRODUCT IS NOT NEW
+		if($val->num_rows() == 1){
+			$this->session->set_flashdata('Error','Product Alread Exists Use The Add Old Product Form for ordering old products');
+		}else{
+			
+			$data = array(
+				'product_Name' => $this->input->post('product_Name'),
+				'current_count' => '0',
+				'price' => $this->input->post('price'),
+				'sale_Price' => '0',
+				'holding_cost' => $this->input->post('holding_cost'),
+				'ro_lvl' => $this->input->post('ro_lvl'),
+				'category_ID' => '2',
+				'eoq' => '0',
+				'class_ID' => $this->input->post('class_ID'),
+				'description' => $this->input->post('description'),
+				'um' => $this->input->post('um'),
+				'date_created'=> date('Y-m-j H:i:s'),
+				'product_status' => '0',
+			);
+				  
+			$this->db->insert('products', $data);
+			$this->session->set_flashdata('success','You have successfully added an order');
+				
+			$remark_id = $this->db->insert_id();
+			
+			$total = ($this->input->post('price') * $this->input->post('quantity'));
+			
+			$order = array(
+				'product_id'=> $remark_id,
+				'order_reference'	=> $code,
+				'qty_before_order'	=> '0',
+				'order_quantity'	=> $this->input->post('quantity'),
+				'ppu'	=> $this->input->post('price'),
+				'ordering_cost'	=> $total,				
+			);
+			
+			$this->db->insert('purchase_orders', $order);
+				
+			$audit = array(
+				'user_id'	=> $this->session->userdata('user_id'),
+				'module'	=> 'Purchases',
+				'remark_id'	=> $remark_id,
+				'remarks'	=> 'Added a product on a purchase order',
+				'date_created'=> date('Y-m-j H:i:s'),
+			);
 	
-		$data = array(
-			'product_Name' => $this->input->post('product_Name'),
-			'current_count' => '0',
-			'price' => $this->input->post('price'),
-			'sale_Price' => '0',
-			'holding_cost' => '0',
-			'ro_lvl' => $this->input->post('ro_lvl'),
-			'category_ID' => '2',
-			'eoq' => '0',
-			'class_ID' => $this->input->post('class_ID'),
-			'description' => $this->input->post('description'),
-			'um' => $this->input->post('um'),
-			'date_created'=> date('Y-m-j H:i:s'),
-			'product_status' => '0',
-		);
-			  
-		$this->db->insert('products', $data);
-		$this->session->set_flashdata('success','You have successfully added an order');
-			
-		$remark_id = $this->db->insert_id();
-		
-		$total = ($this->input->post('price') * $this->input->post('quantity'));
-		
-		$order = array(
-			'product_id'=> $remark_id,
-			'order_reference'	=> $code,
-			'qty_before_order'	=> '0',
-			'order_quantity'	=> $this->input->post('quantity'),
-			'ppu'	=> $this->input->post('price'),
-			'ordering_cost'	=> $total,				
-		);
-		
-		$this->db->insert('purchase_orders', $order);
-			
-		$audit = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'Purchases',
-			'remark_id'	=> $remark_id,
-			'remarks'	=> 'Added a product on a purchase order',
-			'date_created'=> date('Y-m-j H:i:s'),
-		);
-
-		$this->db->insert('audit_trail', $audit);
-
+			$this->db->insert('audit_trail', $audit);
+		}
 	}
 
 	function add_order_o($code)

@@ -212,6 +212,9 @@
 													<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
 												</form>
 												<?php } ?>
+						
+												<a href="javascript:window.history.go(-1);" class="btn btn-default" style="align">Back</a>
+						
 											</div>
 										</div>
 								
