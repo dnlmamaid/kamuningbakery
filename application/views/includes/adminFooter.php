@@ -158,9 +158,9 @@
 		element: 'hsp',
         colors: colors_array,
         data: [
-			<?php foreach($hsp as $r):?>
+			<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $r):?>
 			{label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
-			<?php endforeach; ?>   	
+			<?php endforeach; endif;?>   	
 	   	]
 	});
 

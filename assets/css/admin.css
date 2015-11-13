@@ -296,7 +296,7 @@ a:hover {
 
 .sidebar-nav {
     position: absolute;
-    top: 175px;
+    top: 120px;
     width: 220px;
     margin: 0;
     padding: 0;
@@ -383,7 +383,7 @@ a:hover {
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
+    height: 60px;
     font-size: 20px;
     line-height: 44px;
 }
@@ -401,7 +401,7 @@ a:hover {
 .sidebar-header {
     background: none;
     position: relative;
-    top: 50px;
+    top: 30px;
     margin-left: -40px;
 }
 

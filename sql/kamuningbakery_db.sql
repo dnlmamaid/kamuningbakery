@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2015 at 02:35 AM
--- Server version: 5.6.21
--- PHP Version: 5.6.3
+-- Generation Time: Nov 13, 2015 at 10:54 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,13 +27,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `audit_trail` (
-`audit_id` int(11) NOT NULL,
+  `audit_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `module` varchar(16) NOT NULL,
   `remark_id` int(11) NOT NULL,
   `remarks` varchar(255) NOT NULL,
-  `date_created` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`audit_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `audit_trail`
@@ -77,7 +78,9 @@ INSERT INTO `audit_trail` (`audit_id`, `user_id`, `module`, `remark_id`, `remark
 (35, 1, 'Purchases', 2, 'Updated a purchase order', '2015-11-11 09:28:55'),
 (36, 1, 'Purchases', 5, 'Added a product on a purchase order', '2015-11-11 09:30:42'),
 (37, 1, 'Purchases', 6, 'Added a product on a purchase order', '2015-11-11 09:32:11'),
-(38, 1, 'Purchases', 7, 'Added a product on a purchase order', '2015-11-11 09:33:32');
+(38, 1, 'Purchases', 7, 'Added a product on a purchase order', '2015-11-11 09:33:32'),
+(39, 1, 'requests', 1, 'Placed a purchase order', '2015-11-13 14:09:03'),
+(40, 1, 'Requests', 1, 'Added a Product Request', '2015-11-13 14:11:07');
 
 -- --------------------------------------------------------
 
@@ -86,13 +89,14 @@ INSERT INTO `audit_trail` (`audit_id`, `user_id`, `module`, `remark_id`, `remark
 --
 
 CREATE TABLE IF NOT EXISTS `ingredients` (
-`ingredient_id` int(11) NOT NULL,
+  `ingredient_id` int(11) NOT NULL AUTO_INCREMENT,
   `id_for` int(11) NOT NULL,
   `ingredient_ctr` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `ingredient_qty` varchar(108) NOT NULL,
-  `qty_can_produce` decimal(25,3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `qty_can_produce` decimal(25,3) NOT NULL,
+  PRIMARY KEY (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -101,13 +105,14 @@ CREATE TABLE IF NOT EXISTS `ingredients` (
 --
 
 CREATE TABLE IF NOT EXISTS `production` (
-`production_id` int(11) NOT NULL,
+  `production_id` int(11) NOT NULL AUTO_INCREMENT,
   `batch_id` varchar(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `net_produced_qty` varchar(108) NOT NULL,
   `net_production_cost` decimal(25,2) NOT NULL,
-  `date_produced` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `date_produced` datetime NOT NULL,
+  PRIMARY KEY (`production_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `production`
@@ -123,14 +128,15 @@ INSERT INTO `production` (`production_id`, `batch_id`, `user_id`, `net_produced_
 --
 
 CREATE TABLE IF NOT EXISTS `production_batch` (
-`pb_id` int(11) NOT NULL,
+  `pb_id` int(11) NOT NULL AUTO_INCREMENT,
   `batch_reference` varchar(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `previous_count` varchar(108) NOT NULL,
   `units_produced` varchar(108) NOT NULL,
   `production_cpu` decimal(25,2) NOT NULL,
-  `total_production_cost` decimal(25,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `total_production_cost` decimal(25,2) NOT NULL,
+  PRIMARY KEY (`pb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -139,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `production_batch` (
 --
 
 CREATE TABLE IF NOT EXISTS `products` (
-`product_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_Name` varchar(64) NOT NULL,
   `current_count` decimal(25,3) NOT NULL,
   `category_ID` tinyint(1) NOT NULL,
@@ -153,8 +159,9 @@ CREATE TABLE IF NOT EXISTS `products` (
   `eoq` decimal(25,3) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `product_status` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `product_status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `products`
@@ -176,10 +183,11 @@ INSERT INTO `products` (`product_id`, `product_Name`, `current_count`, `category
 --
 
 CREATE TABLE IF NOT EXISTS `product_category` (
-`category_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(32) NOT NULL,
-  `is_active` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `is_active` tinyint(1) NOT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `product_category`
@@ -196,10 +204,11 @@ INSERT INTO `product_category` (`category_id`, `category_name`, `is_active`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `product_class` (
-`class_id` int(11) NOT NULL,
+  `class_id` int(11) NOT NULL AUTO_INCREMENT,
   `class_Name` varchar(64) NOT NULL,
-  `is_active` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `is_active` tinyint(1) NOT NULL,
+  PRIMARY KEY (`class_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `product_class`
@@ -217,7 +226,7 @@ INSERT INTO `product_class` (`class_id`, `class_Name`, `is_active`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `purchases` (
-`purchase_id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `supplier_id` int(11) NOT NULL,
   `purchase_reference` varchar(11) NOT NULL,
@@ -225,8 +234,9 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `discount` int(11) NOT NULL,
   `date_ordered` datetime NOT NULL,
   `date_received` datetime NOT NULL,
-  `po_status` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `po_status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`purchase_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `purchases`
@@ -243,15 +253,16 @@ INSERT INTO `purchases` (`purchase_id`, `user_id`, `supplier_id`, `purchase_refe
 --
 
 CREATE TABLE IF NOT EXISTS `purchase_orders` (
-`order_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `order_reference` varchar(11) NOT NULL,
   `qty_before_order` decimal(25,3) NOT NULL,
   `order_quantity` int(11) NOT NULL,
   `ppu` decimal(25,3) NOT NULL,
   `ordering_cost` decimal(25,2) NOT NULL,
-  `order_status` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `order_status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `purchase_orders`
@@ -273,12 +284,13 @@ INSERT INTO `purchase_orders` (`order_id`, `product_id`, `order_reference`, `qty
 --
 
 CREATE TABLE IF NOT EXISTS `requests` (
-`request_id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `ro_id` varchar(11) NOT NULL,
+  `request_reference` varchar(11) NOT NULL,
   `request_date` datetime NOT NULL,
-  `request_status` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `request_status` tinyint(4) NOT NULL,
+  PRIMARY KEY (`request_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -287,12 +299,13 @@ CREATE TABLE IF NOT EXISTS `requests` (
 --
 
 CREATE TABLE IF NOT EXISTS `request_orders` (
-`order_id` int(11) NOT NULL,
-  `order_reference` varchar(11) NOT NULL,
+  `ro_id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_reference` varchar(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `request_qty` varchar(108) NOT NULL,
-  `ro_status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ro_status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`ro_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -301,14 +314,15 @@ CREATE TABLE IF NOT EXISTS `request_orders` (
 --
 
 CREATE TABLE IF NOT EXISTS `sales` (
-`sales_id` int(11) NOT NULL,
+  `sales_id` int(11) NOT NULL AUTO_INCREMENT,
   `invoice_code` varchar(11) NOT NULL,
   `user_ID` tinyint(1) NOT NULL,
   `sales_date` datetime NOT NULL,
   `total_qty_sold` varchar(108) NOT NULL,
   `total_sales` decimal(25,2) NOT NULL,
-  `sales_status` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `sales_status` tinyint(4) NOT NULL,
+  PRIMARY KEY (`sales_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -317,12 +331,13 @@ CREATE TABLE IF NOT EXISTS `sales` (
 --
 
 CREATE TABLE IF NOT EXISTS `sales_invoices` (
-`siv_id` int(11) NOT NULL,
+  `siv_id` int(11) NOT NULL AUTO_INCREMENT,
   `invoice_id` varchar(11) NOT NULL,
   `product_ID` int(11) NOT NULL,
   `qty_sold` int(11) NOT NULL,
-  `total_sale` decimal(25,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `total_sale` decimal(25,2) NOT NULL,
+  PRIMARY KEY (`siv_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -331,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `sales_invoices` (
 --
 
 CREATE TABLE IF NOT EXISTS `suppliers` (
-`supplier_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
   `supplier_name` varchar(64) NOT NULL,
   `contact_Person` varchar(64) NOT NULL,
   `st_Address` varchar(108) NOT NULL,
@@ -339,8 +354,9 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
   `terms` varchar(255) NOT NULL,
   `contact` varchar(64) NOT NULL,
   `created_at` datetime NOT NULL,
-  `is_active` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `is_active` tinyint(1) NOT NULL,
+  PRIMARY KEY (`supplier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `suppliers`
@@ -359,15 +375,16 @@ INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_Person`, `st_A
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-`id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `firstName` varchar(64) NOT NULL,
   `lastName` varchar(64) NOT NULL,
   `created_at` datetime NOT NULL,
   `user_type` int(1) unsigned NOT NULL DEFAULT '0',
-  `is_active` tinyint(1) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  `is_active` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `users`
@@ -388,9 +405,10 @@ INSERT INTO `users` (`id`, `username`, `password`, `firstName`, `lastName`, `cre
 --
 
 CREATE TABLE IF NOT EXISTS `user_type` (
-`type_id` int(11) NOT NULL,
-  `type_name` varchar(16) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+  `type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(16) NOT NULL,
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `user_type`
@@ -404,190 +422,6 @@ INSERT INTO `user_type` (`type_id`, `type_name`) VALUES
 (5, 'Purchaser'),
 (6, 'Stock Keeper');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `audit_trail`
---
-ALTER TABLE `audit_trail`
- ADD PRIMARY KEY (`audit_id`);
-
---
--- Indexes for table `ingredients`
---
-ALTER TABLE `ingredients`
- ADD PRIMARY KEY (`ingredient_id`);
-
---
--- Indexes for table `production`
---
-ALTER TABLE `production`
- ADD PRIMARY KEY (`production_id`);
-
---
--- Indexes for table `production_batch`
---
-ALTER TABLE `production_batch`
- ADD PRIMARY KEY (`pb_id`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
- ADD PRIMARY KEY (`product_id`);
-
---
--- Indexes for table `product_category`
---
-ALTER TABLE `product_category`
- ADD PRIMARY KEY (`category_id`);
-
---
--- Indexes for table `product_class`
---
-ALTER TABLE `product_class`
- ADD PRIMARY KEY (`class_id`);
-
---
--- Indexes for table `purchases`
---
-ALTER TABLE `purchases`
- ADD PRIMARY KEY (`purchase_id`);
-
---
--- Indexes for table `purchase_orders`
---
-ALTER TABLE `purchase_orders`
- ADD PRIMARY KEY (`order_id`);
-
---
--- Indexes for table `requests`
---
-ALTER TABLE `requests`
- ADD PRIMARY KEY (`request_id`);
-
---
--- Indexes for table `request_orders`
---
-ALTER TABLE `request_orders`
- ADD PRIMARY KEY (`order_id`);
-
---
--- Indexes for table `sales`
---
-ALTER TABLE `sales`
- ADD PRIMARY KEY (`sales_id`);
-
---
--- Indexes for table `sales_invoices`
---
-ALTER TABLE `sales_invoices`
- ADD PRIMARY KEY (`siv_id`);
-
---
--- Indexes for table `suppliers`
---
-ALTER TABLE `suppliers`
- ADD PRIMARY KEY (`supplier_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user_type`
---
-ALTER TABLE `user_type`
- ADD PRIMARY KEY (`type_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `audit_trail`
---
-ALTER TABLE `audit_trail`
-MODIFY `audit_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
---
--- AUTO_INCREMENT for table `ingredients`
---
-ALTER TABLE `ingredients`
-MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `production`
---
-ALTER TABLE `production`
-MODIFY `production_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `production_batch`
---
-ALTER TABLE `production_batch`
-MODIFY `pb_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `product_category`
---
-ALTER TABLE `product_category`
-MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `product_class`
---
-ALTER TABLE `product_class`
-MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `purchases`
---
-ALTER TABLE `purchases`
-MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `purchase_orders`
---
-ALTER TABLE `purchase_orders`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `requests`
---
-ALTER TABLE `requests`
-MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `request_orders`
---
-ALTER TABLE `request_orders`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `sales`
---
-ALTER TABLE `sales`
-MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `sales_invoices`
---
-ALTER TABLE `sales_invoices`
-MODIFY `siv_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `suppliers`
---
-ALTER TABLE `suppliers`
-MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `user_type`
---
-ALTER TABLE `user_type`
-MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
