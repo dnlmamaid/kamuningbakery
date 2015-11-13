@@ -3,12 +3,12 @@
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Order Info</h1>
+				<h1 class="page-header"><i class="fa flaticon-ingredients1" style=""></i> Request Info</h1>
 				<div class="col-lg-6 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
 					<li><i class="fa fa-comments-o"></i><a href="<?php echo base_url()?>requests"> Requests</a></li>
-					<li><i class="fa fa-comment-o"></i><a href="<?php echo base_url()?>requests/request_order/<?php echo $r->order_reference?>"> Request Order</a></li>
+					<li><i class="fa fa-comment-o"></i><a href="<?php echo base_url()?>requests/request_order/<?php echo $r->request_reference?>"> Request Order</a></li>
 					<li><i class="fa flaticon-ingredients1"></i> Request Info</li>
 				</ol>
 				</div>
@@ -60,7 +60,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="order_reference" class="form-control" value="<?php echo $r->order_reference ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="request_reference" class="form-control" value="<?php echo $r->request_reference ?>" style="text-transform: uppercase;" disabled>
 									</div>
 								</div>
 								
@@ -68,7 +68,7 @@
 									<div class="form-group">
 										<label>Status</label>
 										<select name="purchase_status" class="form-control" disabled>
-											<?php if($r->po_status == '1'):?>
+											<?php if($r->ro_status == '1'):?>
 											<option value="1"selected>Delivered</option>
 											<?php else:?>
 											<option value="0" selected>On Process</option>
@@ -85,11 +85,11 @@
 					<!-- details -->
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3 bg-panel2">
-						<form action="<?php echo base_url()?>requests/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
+						<form action="<?php echo base_url()?>requests/receive/<?php echo $r->ro_id?>" role="form" accept-charset="utf-8" method="post">
 							<h3 align="center"><?php echo $r->product_Name?></h3>
 							<p align="center"><b>Php</b> <?php echo $r->price?> per <?php echo $r->um?></p>
 							<input type="hidden" name="product_id" class="form-control inline" value="<?php echo $r->product_id?>">
-							<input type="hidden" name="order_reference" class="form-control inline" value="<?php echo $r->order_reference?>">
+							<input type="hidden" name="request_reference" class="form-control inline" value="<?php echo $r->request_reference?>">
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
 									
@@ -137,7 +137,7 @@
 									<div class="col-lg-4 pull-right">
 										<div class="form-group">
 											<?php if($r->ro_status != '1'){?>
-											<a class="btn btn-danger fa" href="<?php echo base_url()?>requests/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>
+											<a class="btn btn-danger fa" href="<?php echo base_url()?>requests/cancel_order/<?php echo $r->ro_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>
 											<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xF00c;">
 											<?php }?>
 										</div>

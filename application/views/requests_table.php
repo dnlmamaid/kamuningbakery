@@ -27,7 +27,7 @@
 	    			</div>
 	    			
 	    			<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
-		    			<a action="<?php echo base_url()?>requests/create_request_order" alt="Request" data-toggle="tooltip" data-placement="top" title="Request Raw Materials" class="btn btn-theme"><i class="fa fa-comment"></i></a>		    			
+		    			<a href="<?php echo base_url()?>requests/create_request_order" alt="Request" data-toggle="tooltip" data-placement="top" title="Request Raw Materials" class="btn btn-theme"><i class="fa fa-comment"></i></a>		    			
 					</div>
 	    				
 				</div>
@@ -52,7 +52,7 @@
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa fa-clock-o"></i> Date Requested</th>
+										<th class="col-md-1"><i class="fa fa-calendar"></i> Date Requested</th>
 										<th class="col-md-1"><i class="fa fa-truck"></i> Request ID</th>
 										<th class="col-md-1"><i class="fa fa-user"></i> User</th>
 	                              	</tr>

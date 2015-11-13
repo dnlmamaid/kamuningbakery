@@ -150,22 +150,17 @@
 <script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
 <script>
-<<<<<<< HEAD
-		
-	var colors_array= ["#009000", "#006600", "#339933", "#48C248", "#3BB03B"];
-=======
 <?php if($head == '' || $head =='home'):?>
 	var colors_array= ["#009000", "#006600", "#339933"];
->>>>>>> 15ad98ab8cd7a0f14064be7b4aa01c649762f9bc
 
     Morris.Donut({
 
 		element: 'hsp',
         colors: colors_array,
         data: [
-			<?php foreach($hsp as $r):?>
+			<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $r):?>
 			{label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
-			<?php endforeach; ?>   	
+			<?php endforeach; endif;?>   	
 	   	]
 	});
 
