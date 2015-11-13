@@ -268,7 +268,7 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $process);
 				}
-				
+				 
 				//price per unit
 				$p = $total / $this->input->post('quantity');
 				
