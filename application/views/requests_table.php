@@ -53,38 +53,38 @@
 								<tbody>
 									<tr>
 										<th class="col-md-1"><i class="fa fa-calendar"></i> Date Requested</th>
-										<th class="col-md-1"><i class="fa fa-truck"></i> Request ID</th>
+										<th class="col-md-1"><i class="fa flaticon-barcode12"></i> Request ID</th>
 										<th class="col-md-1"><i class="fa fa-user"></i> User</th>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): if($row->request_status != '0'):?> 
-								  	<tr class="clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id?>">
+								  	<tr class="clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->request_date))?></td>
-								  		<td class="col-md-1"><?php echo $row->ro_id ?></td>
+								  		<td class="col-md-1"><?php echo $row->ro_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->type_name ?> <?php echo $row->firstName ?></td>
 		                                
 	                                </tr>
 	                                
 									<?php else: ?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id?>">
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->request_date))?></td>
-								  		<td class="col-md-1"><?php echo $row->ro_id ?></td>
+								  		<td class="col-md-1"><?php echo $row->ro_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->type_name ?> <?php echo $row->firstName ?></td>
 		                                
 	                                </tr>
 									<?php endif;
 									endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if($row->request_status != '0'):?>
-									<tr class="clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id?>">
+									<tr class="clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->request_date))?></td>
-								  		<td class="col-md-1"><?php echo $row->ro_id ?></td>
+								  		<td class="col-md-1"><?php echo $row->ro_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->type_name ?> <?php echo $row->firstName ?></td>
 		                                
 	                                </tr>
 									<?php else: ?>
-									<tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id?>">
+									<tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference?>">
 								  		<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->request_date))?></td>
-								  		<td class="col-md-1"><?php echo $row->ro_id ?></td>
+								  		<td class="col-md-1"><?php echo $row->ro_reference ?></td>
 		                                <td class="col-md-1"><?php echo $row->type_name ?> <?php echo $row->firstName ?></td>
 		                                
 	                                </tr>

@@ -128,10 +128,10 @@
                             <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
 						</tr>
                         <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
-                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id ?>">
+                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference ?>">
                         	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
 							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
-                            <td class="col-md-1 b"><?php echo $row->ro_id ?></a></td>
+                            <td class="col-md-1 b"><?php echo $row->ro_reference ?></a></td>
                                                                                        
                         </tr>
                         <?php endforeach;	                               
@@ -231,10 +231,10 @@
                             <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
 						</tr>
                         <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
-                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id ?>">
+                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference ?>">
                         	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
 							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
-                            <td class="col-md-1 b"><?php echo $row->ro_id ?></a></td>
+                            <td class="col-md-1 b"><?php echo $row->ro_reference ?></a></td>
                                                                                        
                         </tr>
                         <?php endforeach;	                               
@@ -261,10 +261,10 @@
                             <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
 						</tr>
                         <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
-                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_id ?>">
+                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference ?>">
                         	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
 							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
-                            <td class="col-md-1 b"><?php echo $row->ro_id ?></a></td>
+                            <td class="col-md-1 b"><?php echo $row->ro_reference ?></a></td>
                                                                                        
                         </tr>
                         <?php endforeach;	                               

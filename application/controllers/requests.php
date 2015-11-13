@@ -95,8 +95,7 @@ class requests extends CI_Controller {
 		$code = $this->uri->segment(3);
 			
 		$data['ro'] = $this -> requests_model -> getRO($code);
-		$data['orders'] = $this -> requests_model -> getROrders($code);
-		$data['to'] = $this->requests_model->get_total($code);
+		$data['requests'] = $this -> requests_model -> getROrders($code);		
 			
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2')){
 			
@@ -124,34 +123,7 @@ class requests extends CI_Controller {
 	}
 	
 	
-	public function product_request($id) {
-		
-		$data['po'] = $this -> requests_model -> getROR($id);
-		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
-
-			$data['main_content'] = 'request_info';
-			$this -> load -> view('includes/adminTemplate', $data);
-			
-		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
-
-			$data['main_content'] = 'request_info';
-			$this -> load -> view('includes/bTemplate', $data);
-		
-		} else if($this->session->userdata('is_logged_in')){
-			
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
-			redirect(base_url(), 'refresh');
-			
-		} 
-		
-		else {
-			//If no session, redirect to login page
-			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
-
-	}
+	
 	
 	
 	public function add_order($code){
@@ -173,10 +145,10 @@ class requests extends CI_Controller {
 		}
 	}
 	
-	public function update_order($id){
+	public function update($code){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4')))
 	    {
-			$this -> requests_model -> update_po($id);
+			$this -> requests_model -> update($code);
 			redirect($this->agent->referrer(), 'refresh');
 		}
 		 
@@ -213,45 +185,21 @@ class requests extends CI_Controller {
 	}
 	
 	
-	public function accept_request($id)
+	public function approve($id)
 	{
-		$this -> requests_model -> receive_po($id);
+		$this -> requests_model -> approve($id);
 		redirect($this->agent->referrer(), 'refresh');
 	}
 	
-	public function receive($id)
+	
+	
+	public function disapprove($id)
 	{
-		$this -> requests_model -> receive_order($id);
+		$this -> requests_model -> disapprove($id);
 		redirect($this->agent->referrer(), 'refresh');
 	}
 	
-	public function cancel_request($id)
-	{
-		$this -> requests_model -> remove_order($id);
-		redirect('requests', 'refresh');
-	}
-	
 		
-	public function purchase_invoice()
-	{
-		
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
-	    {			
-			$pid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> requests_model -> get_purchase_rec($pid);
-			
-			$data['main_content'] = 'view_purchase';
-			$this->load->view('includes/adminTemplate', $data);
-		}
-	
-		else
-	    {
-			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
-		
-	}
 		
 	function search() {
 		
@@ -278,9 +226,7 @@ class requests extends CI_Controller {
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '1')
 	    {
-			
-			$data['cls'] = $this -> products_model -> getClass();
-		
+						
 			$data['search'] = $this -> requests_model -> search_requests($search);
 			
 			$data['main_content'] = 'requests_table';

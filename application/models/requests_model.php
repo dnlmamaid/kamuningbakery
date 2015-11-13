@@ -11,11 +11,11 @@ class requests_model extends CI_Model{
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
-			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
-			$this -> db -> limit($limit, $start);
+			$this->db->join('user_type', 'user_type.type_id = users.user_type', 'right');
+			$this->db->limit($limit, $start);
 			$this->db->where('request_status <=', '1');
-			$this -> db -> order_by('request_date', 'desc');
-			$query = $this -> db -> get('requests');
+			$this->db->order_by('request_date', 'desc');
+			$query = $this->db->get('requests');
 			if ($query -> num_rows() > 0) {
 				foreach ($query->result() as $row) {
 					$data[] = $row;
@@ -28,11 +28,11 @@ class requests_model extends CI_Model{
 		} else if($this->session->userdata('is_logged_in') ){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
-			$this -> db -> join('user_type', 'user_type.type_id = users.user_type', 'right');
-			$this -> db -> limit($limit, $start);
-			$this -> db -> order_by('request_date', 'desc');
+			$this->db->join('user_type', 'user_type.type_id = users.user_type', 'right');
+			$this->db->limit($limit, $start);
+			$this->db->order_by('request_date', 'desc');
 			$this->db->where('user_id', $this->session->userdata('user_id'));
-			$query = $this -> db -> get('requests');
+			$query = $this->db->get('requests');
 			if ($query -> num_rows() > 0) {
 				foreach ($query->result() as $row) {
 					$data[] = $row;
@@ -60,9 +60,9 @@ class requests_model extends CI_Model{
 	
 	
 	public function getRequestsCtr() {
-		$this -> db -> select('*');
-		$this -> db -> from('requests');
-		$query = $this -> db -> get();
+		$this->db->select('*');
+		$this->db->from('requests');
+		$query = $this->db->get();
 		$result = $query -> num_rows();
 		return $result;
 	}
@@ -74,10 +74,11 @@ class requests_model extends CI_Model{
 	function getRO($code)
 	{
 		
-		$this -> db -> where('requests.ro_id', $code);
-		$this -> db -> join('request_orders', 'request_orders.order_reference = requests.ro_id', 'left');
-		$this -> db -> join('users', 'users.id = requests.user_id', 'left');
-		$q = $this -> db -> get('requests');
+		$this->db->where('requests.ro_reference', $code);
+		$this->db->where('requests.ro_reference', $code);
+		$this->db->join('request_orders', 'request_orders.request_reference = requests.ro_reference', 'left');
+		$this->db->join('users', 'users.id = requests.user_id', 'left');
+		$q = $this->db->get('requests');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -95,14 +96,14 @@ class requests_model extends CI_Model{
 	function getROrders($code)
 	{
 		
-		$this -> db -> where('request_orders.order_reference', $code);
+		$this->db->where('request_orders.request_reference', $code);
 		
-		$this -> db -> join('products', 'products.product_id = request_orders.product_id', 'left');
+		$this->db->join('products', 'products.product_id = request_orders.product_id', 'left');
 		
-		$this -> db -> join('product_class', 'product_class.class_id = products.class_ID', 'right');
-		$this -> db -> join('requests', 'requests.ro_id = request_orders.order_reference', 'left');
+		$this->db->join('product_class', 'product_class.class_id = products.class_ID', 'right');
+		$this->db->join('requests', 'requests.ro_reference = request_orders.request_reference', 'left');
 		
-		$q = $this -> db -> get('request_orders');
+		$q = $this->db->get('request_orders');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -120,12 +121,12 @@ class requests_model extends CI_Model{
 	function getROR($id)
 	{
 		
-		$this -> db -> where('order_id', $id);
-		$this -> db -> join('products', 'products.product_id = request_orders.product_id', 'left');
-		$this -> db -> join('requests', 'requests.ro_id = request_orders.order_reference', 'left');
-		$this -> db -> join('users', 'users.id = requests.user_id', 'right');
+		$this->db->where('ro_id', $id);
+		$this->db->join('products', 'products.product_id = request_orders.product_id', 'left');
+		$this->db->join('requests', 'requests.ro_reference = request_orders.request_reference', 'left');
+		$this->db->join('users', 'users.id = requests.user_id', 'right');
 		
-		$q = $this -> db -> get('request_orders');
+		$q = $this->db->get('request_orders');
 		
 		if($q->num_rows()){
 			return $q -> result();
@@ -139,9 +140,9 @@ class requests_model extends CI_Model{
 	function add_order($code)
     {		
 		$request = array(
-			'product_id'	=> $this->input->post('product_id'),
-			'order_reference'			=> $code,
-			'request_qty'	=> $this->input->post('request_qty'),
+			'product_id'		=> $this->input->post('product_id'),
+			'request_reference'	=> $code,
+			'request_qty'		=> $this->input->post('request_qty'),
 		);
 			
 		$this->db->insert('request_orders', $request);
@@ -160,7 +161,7 @@ class requests_model extends CI_Model{
 	
 	function get_total($code){
 		
-		$this->db->where('order_reference',$code);
+		$this->db->where('request_reference',$code);
 		$this->db->select('sum(request_qty) as total');
 		$q = $this->db->get('request_orders');
 		return $q->row();
@@ -172,22 +173,22 @@ class requests_model extends CI_Model{
 	    
 		$request = array(
 			'user_id'	=> $this->session->userdata('user_id'),
-			'ro_id'	=> $code,
+			'ro_reference'	=> $code,
 			'request_date'=> date('Y-m-j H:i:s'),
 			'request_status'=> '0',
 		);
 			  
 		$this->db->insert('requests', $request);
 		
-		$this->session->set_flashdata('success','Add your request on the newly created order');
+		$this->session->set_flashdata('success','Add your requests here');
 			
 		$remark_id = $this->db->insert_id();
 			
 		$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'requests',
+				'module'	=> 'Requests',
 				'remark_id'	=> $remark_id,
-				'remarks'	=> 'Placed a purchase order',
+				'remarks'	=> 'User created a request',
 				'date_created'=> date('Y-m-j H:i:s'),
 		);
 				
@@ -195,148 +196,73 @@ class requests_model extends CI_Model{
 	}
 
 
-	function update_ro($id)
+	function update($code)
     {
 	    
-		$purchase = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'supplier_id' => $this->input->post('supplier_id'),
-			'date_ordered'=> $this->input->post('date_ordered'),
-			'date_received'=> $this->input->post('date_received'),
+		$requests = array(
+			'ro_reference'=> $this->input->post('ro_reference'),
+			'request_status'=> $this->input->post('request_status'),
 		);
 			  
-		$this->db->where('purchase_id', $id);  
-		$this->db->update('requests', $purchase);
+		$this->db->where('ro_reference', $code);  
+		$this->db->update('requests', $requests);
 		
-		$this->session->set_flashdata('success','You have successfully updated the purchase order');
+		$this->session->set_flashdata('success','You have Successfully updated the Request Order');
 			
 		$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
-				'module'	=> 'requests',
-				'remark_id'	=> $id,
-				'remarks'	=> 'Updated a purchase order',
+				'module'	=> 'Requests',
+				'remark_id'	=> $code,
+				'remarks'	=> 'Updated a Request Order',
 				'date_created'=> date('Y-m-j H:i:s'),
 		);
 				
 		$this->db->insert('audit_trail', $audit);
 	}
 	
-	function request_order($id)
-    {
-		$this->db->select('price');
-		$this->db->from('products');
-		$this->db->where('product_id', $id);
-		$oldprice = $this->db->get()->row('price');
-    	$newprice = ($this->input->post('price') + $oldprice)/2;
-			
-		$this->db->select('quantity');
-		$this->db->from('products');
-		$this->db->where('product_id', $id);
-		$oldquantity = $this->db->get()->row('quantity');
-    	$newquantity = $this->input->post('quantity') + $oldquantity;
-			
-		$data = array(
-			'current_count' => $newquantity,
-			'price' => $newprice,					
-		);
-		
-		$this->db->where('product_id', $id);
-		$this->db->update('products', $data);
-			
-		$total = $this->input->post('price') * $this->input->post('quantity');
-		$code = random_string('alnum',11);
-			
-		$purchase = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'product_id'	=> $id,
-			'supplier_id'	=> $this->input->post('supplier_id'),
-			'ro_id'	=> $code,
-			'purchase_quantity'	=> $this->input->post('quantity'),
-			'ppu'	=> $this->input->post('price'),
-			'ordering_cost'	=> $total,
-			'purchase_date'=> date('Y-m-j H:i:s'),
-		);
-			
-		$this->db->insert('requests', $purchase);
-			
-		$audit = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'Products',
-			'remark_id'	=> $id,
-			'remarks'	=> 'purchased additional product',
-			'request_date'=> date('Y-m-j H:i:s'),
-		);
-			
-		$this->db->insert('audit_trail', $audit);
 	
-		$this->session->set_flashdata('success','Successfully Purchased Product.');
-	}
-
 	
-	function receive_order($id)
+	function approve($id)
     {
     	
-		$order = array(			
-			'order_status'=> '1',
+		$request = array(			
+			'ro_status'=> '1',
 		);
 				
-		$this->db->where('order_id',$id);
-		$this->db->update('request_orders', $order);
+		$this->db->where('ro_id',$id);
+		$this->db->update('request_orders', $request);
 		
-		$this->db->select('current_count');
-		$this->db->from('products');
-		$this->db->where('product_id', $this->input->post('product_id'));
-		$oldquantity = $this->db->get()->row('current_count');
-    	$newquantity = $oldquantity + $this->input->post('order_quantity');
-
-		$receive = array(
-			'current_count'	=> $newquantity,
-			'product_status'=> '1',
-		);
-		
-	    $this->db->where('product_id',$this->input->post('product_id'));
-		$this->db->update('products', $receive);
-		
-		
-		$this->db->select('total_cost');
-		$this->db->from('requests');
-		$this->db->where('ro_id', $this->input->post('ro_id'));
-		$oamt = $this->db->get()->row('total_cost');
-    	$newamt = $oamt + $this->input->post('ordering_cost');
-		
-		$purchase = array(
-			'total_cost'	=> $newamt,
-		);
-		
-		$this->db->where('ro_id',$this->input->post('ro_id'));
-		$this->db->update('requests', $purchase);
-		
-	    $this->session->set_flashdata('success','Product received and updated');
+	    $this->session->set_flashdata('success','Request approved.');
 			
 		$audit = array(
 			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'requests',
+			'module'	=> 'Requests',
 			'remark_id'	=> $id,
-			'remarks'	=> 'received product',
-			'request_date'=> date('Y-m-j H:i:s'),
+			'remarks'	=> 'Approved a request',
+			'date_created'=> date('Y-m-j H:i:s'),
 				
 		);
 			
 		$this->db->insert('audit_trail', $audit);
     }
 	
-	function remove_order($id)
+	function disapprove($id)
     {
-	    $this->db->where('order_id',$id);
-		$query = $this->db->delete('request_orders');
-	    $this->session->set_flashdata('success','Entry Deleted.');
+	    $request = array(			
+			'ro_status'=> '0',
+		);
+				
+		$this->db->where('ro_id',$id);
+		$this->db->update('request_orders', $request);
+		
+	    $this->session->set_flashdata('success','Request disapproved.');
 			
 		$audit = array(
 			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'requests',
+			'module'	=> 'Requests',
 			'remark_id'	=> $id,
-			'remarks'	=> 'deleted a product order',
-			'request_date'=> date('Y-m-j H:i:s'),
+			'remarks'	=> 'Disapproved a request',
+			'date_created'=> date('Y-m-j H:i:s'),
 				
 		);
 			

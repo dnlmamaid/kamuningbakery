@@ -169,7 +169,8 @@
 										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Production Cost</th>
-			                            <th class="col-md-1"><i class="fa fa-dollar"></i> Sale Price</th>
+			                            <th class="col-md-1"><i class="fa fa-tag"></i> Mark Up</th>
+			                            <th class="col-md-1"><i class="fa">&#8369;</i> Sale Price</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Total Cost</th>
 			                            <th class="col-md-1"><i class="fa fa-cogs"></i> Action</th>
 	                              	</tr>
@@ -178,9 +179,10 @@
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->price?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->sale_Price?></td>
-		                                <td class="col-md-1 b">Php <?php echo ($row->price*$row->current_count)?></td>
+		                                <td class="col-md-1 b">&#8369; <?php echo $row->price?></td>
+		                                <td class="col-md-1 b">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
+		                                <td class="col-md-1 b">&#8369; <?php echo $row->sale_Price?></td>
+		                                <td class="col-md-1 b">&#8369; <?php echo ($row->price*$row->current_count)?></td>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -196,9 +198,10 @@
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->price?></td>
-		                                <td class="col-md-1">Php <?php echo $row->sale_Price?></td>
-		                                <td class="col-md-1">Php <?php echo ($row->price*$row->current_count)?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->price?></td>
+		                                <td class="col-md-1"><?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
+		                                <td class="col-md-1">&#8369; <?php echo ($row->price*$row->current_count)?></td>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -215,9 +218,10 @@
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->price?></td>
-		                                <td class="col-md-1 b">Php <?php echo $row->sale_Price?></td>
-		                                <td class="col-md-1 b">Php <?php echo ($row->price*$row->current_count)?></td>
+		                                <td class="col-md-1 b">&#8369; <?php echo $row->price?></td>
+		                               	<td class="col-md-1 b">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
+		                                <td class="col-md-1 b">&#8369; <?php echo $row->sale_Price?></td>
+		                                <td class="col-md-1 b">&#8369; <?php echo ($row->price*$row->current_count)?></td>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -233,9 +237,10 @@
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1">Php <?php echo $row->price?></td>
-		                                <td class="col-md-1">Php <?php echo $row->sale_Price?></td>
-		                                <td class="col-md-1">Php <?php echo ($row->price*$row->current_count)?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->price?></td>
+		                                <td class="col-md-1">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
+		                                <td class="col-md-1">&#8369; <?php echo ($row->price*$row->current_count)?></td>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>

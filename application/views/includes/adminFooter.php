@@ -153,16 +153,7 @@
 <?php if($head == '' || $head =='home'):?>
 	var colors_array= ["#009000", "#006600", "#339933"];
 
-    Morris.Donut({
-
-		element: 'hsp',
-        colors: colors_array,
-        data: [
-			<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $r):?>
-			{label: "<?php echo $r->product_Name?>", value: <?php echo $r->qty_sold ?>},
-			<?php endforeach; endif;?>   	
-	   	]
-	});
+    
 
 $(function () {
     $('#activity').highcharts({
@@ -170,7 +161,7 @@ $(function () {
             enabled: false
         },
         
-        colors: ['#00FF00', '#CC0000'],
+        colors: ['#0B6738', '#CC0000'],
         
         title: {
             text: 'Monthly Activity',
@@ -230,7 +221,7 @@ $(function () {
             enabled: false
         },
         
-        colors: ['#00FF00'],
+        colors: ['#0B6738'],
         
         title: {
             text: 'Monthly Sales',
@@ -282,7 +273,7 @@ $(function () {
             enabled: false
         },
         
-        colors: ['#00FF00'],
+        colors: ['#0B6738'],
         
         title: {
             text: 'Sales',

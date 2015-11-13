@@ -6,7 +6,6 @@
     <ul class="nav sidebar-nav">
     	<li><a href="<?php echo base_url()?>">Home</a></li>
 		<li><a href="<?php echo base_url()?>suppliers">Suppliers</a></li>
-		<li><a href="<?php echo base_url()?>requests">Requests</a></li>
 		<li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <span class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
 	            <li><a href="<?php echo base_url()?>inventory/raw_materials"> Raw Materials</a></li>
@@ -15,6 +14,7 @@
 		</li>
 		<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Activity <span class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
+				<li><a href="<?php echo base_url()?>requests">Requests</a></li>
 				<li><a href="<?php echo base_url()?>sales">Sales</a></li>
 	            <li><a href="<?php echo base_url()?>purchases">Purchases</a></li>
 		        <li><a href="<?php echo base_url()?>production">Production</a></li>

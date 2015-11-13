@@ -11,7 +11,13 @@ function initializeJS() {
 	   		$('#' + $(this).val()).show();	
  		    
  	});*/
-	 
+	
+	//alert box
+	function alertWithoutNotice(){
+	    setTimeout(function(){
+	        alert();
+	    }, 1000);
+	} 
 	 
 	$('#datep').datetimepicker({
 		lang : 'en',
