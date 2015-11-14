@@ -78,6 +78,7 @@ class production_model extends CI_Model{
 			
 			$ctr = 0;	
 			$total = 0;
+			$net_cost = 0;
 			//Gets Product ID 			
 			$this->db->select('product_id');
 			$this->db->from('products');
@@ -219,6 +220,7 @@ class production_model extends CI_Model{
 				
 			$ctr = 0;					
 			$total = 0;
+			$net_cost = 0;
 			foreach($_POST['rm_ID'] as $val => $rm){
 				//Gets Raw Material 			
 				$this->db->select('current_count');
@@ -247,8 +249,6 @@ class production_model extends CI_Model{
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
 					$price = $this->db->get()->row('price');
-					
-					
 					
 					//multiplies the price per unit with the quantity used on production divided by the number of units produced
 					//0.042 * 544 / 24
