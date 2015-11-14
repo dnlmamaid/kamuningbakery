@@ -240,25 +240,31 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$oldqty = $this->db->get()->row('current_count');
 					$nqty = (($oldqty) - $_POST['qpu'][$val]);
-					
-					
-						
-					//Gets Total Cost Per Unit
+					$qty = $_POST['qpu'][$val];
+													
+					//Gets Total Cost of Raw Mats Per Unit
 					$this->db->select('price');
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
 					$price = $this->db->get()->row('price');
 					
+					
+					
 					//multiplies the price per unit with the quantity used on production divided by the number of units produced
-					$val = ($price * $_POST['qpu'][$val])/$this->input->post('quantity');
 					//0.042 * 544 / 24
 					//0.078php/ml * 120ml = 9.36 php / 24 pcs = 0.39 php per 24 pcs of milk
 					//0.952 flour
 					//0.1875 egg
 					//0.529 white sugar
 					//0,4754 butter
-					  
-					$total = ($total + ($price * $_POST['qpu'][$val])/$this->input->post('quantity'));
+					
+					//total production cost of product (sum of price of raw materials per unit)  
+					$total = $total + $price;
+					
+					//price of raw materials * number of units used for production
+					$cost = $price * $qty;
+					
+					$net_cost = $net_cost + $cost;
 					
 					//Updates Quantity	
 					$process = array(
@@ -270,7 +276,8 @@ class production_model extends CI_Model{
 				}
 				 
 				//price per unit
-				$p = $total / $this->input->post('quantity');
+				
+				$p = $total / $net_cost;
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
@@ -289,7 +296,6 @@ class production_model extends CI_Model{
 				$this->db->insert('products', $data);
 				$this->session->set_flashdata('success','You have successfully produced a new product');
 				
-				$net_cost = $p * $this->input->post('quantity');
 				$remark_id = $this->db->insert_id();
 				
 				foreach($_POST['rm_ID'] as $val => $rm)
@@ -311,7 +317,7 @@ class production_model extends CI_Model{
 					'batch_reference'		=> $code,
 					'previous_count'		=> '0',
 					'units_produced'		=> $this->input->post('quantity'),
-					'production_cpu'		=> $p,
+					'production_cpu'		=> $total,
 					'total_production_cost'	=> $net_cost,
 					
 				);
