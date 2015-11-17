@@ -115,8 +115,9 @@ class production_model extends CI_Model{
 		    	foreach($q->result() as $row)
 				{
 					$rm = $row->product_id;
-					$unit = $row->ingredient_qty/$row->qty_can_produce;
-					$qty = $unit * $this->input->post('quantity');
+					
+					//multiplies the ingredient qty to times of production
+					$qty = $row->ingredient_qty * $this->input->post('quantity');
 						
 					//Gets Raw Material & Subtracts the amount used for production 			
 					$this->db->select('current_count');
@@ -130,7 +131,14 @@ class production_model extends CI_Model{
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
 					$price = $this->db->get()->row('price');
-					$total = ($total + $price );
+					
+					//total production cost of product (sum of price of raw materials per unit)  
+					$total = $total + $price;
+					
+					//price of raw materials * number of units used for production
+					$cost = $price * $qty;
+					
+					$net_cost = $net_cost + $cost;
 						
 					//Updates Quantity of Raw Materials Used
 					$process = array(
@@ -139,6 +147,8 @@ class production_model extends CI_Model{
 							
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $process);
+					
+					$qcp = $row->qty_can_produce;
 									
 				}
 				
@@ -147,7 +157,8 @@ class production_model extends CI_Model{
 				$this->db->from('products');
 				$this->db->where('product_id', $pid);
 				$oldc = $this->db->get()->row('current_count');
-				$nc = ($oldc) + ($this->input->post('quantity'));
+				
+				$nc = $oldc + ($qcp * $this->input->post('quantity'));
 				
 				//total = 4.932/24(inputpost)
 				//per unit = 0.224
@@ -161,18 +172,16 @@ class production_model extends CI_Model{
 				$this->db->where('product_id', $pid);
 				$this->db->update('products', $data);
 								
-				$net_cost = $p * $this->input->post('quantity');
-				
 				$batch = array(
 					'product_id'			=> $pid,
 					'batch_reference'		=> $code,
 					'previous_count'		=> $oldc,
 					'units_produced'		=> $this->input->post('quantity'),
-					'production_cpu'		=> $p,
+					'production_cpu'		=> $total,
 					'total_production_cost'	=> $net_cost,
 					
 				);
-					
+				
 				$this->db->insert('production_batch', $batch);
 				
 				$this->db->select('net_produced_qty');
@@ -191,7 +200,7 @@ class production_model extends CI_Model{
 					'net_produced_qty'		=> $nnpq,
 					'net_production_cost'	=> $nnpc,
 				);
-				
+			
 				$this->db->where('batch_id', $code);
 				$this->db->update('production', $prod);
 				
@@ -208,7 +217,8 @@ class production_model extends CI_Model{
 				$this->session->set_flashdata('success','Successfully Produced Product.');
 			}
 
-				else{
+			else{
+				
 				$this->session->set_flashdata('error','Production Failed. 1 or more Raw Materials required for production is insufficient.');
 			}
 			
