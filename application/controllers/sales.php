@@ -144,7 +144,7 @@ class sales extends CI_Controller {
     	$data['products'] = $this->reports_model->getPSold(); // Dropdown
     	$data['total'] = $this->reports_model->get_total_sales();
 		
-		$data['hsp'] = $this->reports_model->getHSP();
+		$data['hsp'] = $this->reports_model->getHSales();
 		
 		$data['sales_t'] = $this->reports_model->getSales($config['per_page'], $offset);	
 		$data['sales_c'] = $this->reports_model->getMSales();

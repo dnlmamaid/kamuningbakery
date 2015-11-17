@@ -107,7 +107,7 @@
 			<div class="col-lg-6 col-xs-6">
 				<h3>Highest Selling Product</h3>
 				
-					<div id="hsp"></div>
+				<div id="hsp"></div>
                 
 			</div>
 			

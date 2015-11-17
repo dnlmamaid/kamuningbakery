@@ -104,7 +104,9 @@ class products_model extends CI_Model {
 		$val = $this->db->get('products');
 		if (($val -> num_rows() == 1)) {
 			$this->session->set_flashdata('error', 'Product already exist.');
-		} else {
+		} 
+		
+		else {
 			if(($this->input->post('category_ID') == '1')){
 				
 				$total = 0;
@@ -166,8 +168,7 @@ class products_model extends CI_Model {
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'price' => $this->input->post('price'), 
-					 
+							
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 

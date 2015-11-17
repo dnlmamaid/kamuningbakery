@@ -78,7 +78,7 @@
 			<?php if($head == 'sales' && $body =='report'): ?>
 			<div class="col-lg-4">
 				<h3>Top Selling Products</h3>		
-				<div id="donut-example"></div>
+				<div id="hsp"></div>
 			</div>
 			
 			<div class="col-lg-8">

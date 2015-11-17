@@ -357,18 +357,18 @@ Class reports_model extends CI_Model {
 		
 	}
 
-	public function getHSales($limit) {
+	public function getHSales() {
+		
 		
 		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
-		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
-		$this->db->join('users','users.id = sales.user_ID','right');
 		
-		$this -> db -> order_by('qty_sold', 'desc');
-		$this -> db -> group_by('products.product_id');
-		$this -> db -> distinct('products.product_id');
-		$this -> db -> limit($limit);
-	
+		$this->db->select('products.product_Name , sum(qty_sold) as total');
+		$this->db->group_by('sales_invoices.product_id'); 
+		$this->db->order_by('total', 'desc'); 
+		$this->db->where('siv_id !=', '0');
+		
 		$query = $this -> db -> get('sales_invoices');
+				
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
@@ -381,31 +381,7 @@ Class reports_model extends CI_Model {
 		
 	}
 	
-	public function getHSP() {
-		
-		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
-		$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','left');
-		$this->db->join('users','users.id = sales.user_ID','right');
-		
-		
-		$this -> db -> where('products.category_ID', '1');
-		$this -> db -> group_by('sales_invoices.product_ID');
-		
-		
-		
 	
-		$query = $this -> db -> get('sales_invoices');
-		if ($query -> num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
-			}
-
-			return $data;
-		}
-		return false;
-		
-		
-	}
 	
 	function getPSold() {
 		$this->db->join('products','products.product_id = sales_invoices.product_ID','left');
@@ -420,7 +396,7 @@ Class reports_model extends CI_Model {
 	
 	public function getSalesCtr() {
 		$this -> db -> select('*');
-		$this -> db -> from('sales_invoices');
+		$this -> db -> from('sales');
 		$query = $this -> db -> get();
 		$result = $query -> num_rows();
 		return $result;
@@ -462,6 +438,7 @@ Class reports_model extends CI_Model {
 			$this->db->join('sales','sales.invoice_code = sales_invoices.invoice_id','right');
 			$this->db->join('products','products.product_id = sales_invoices.product_id','right');
 			
+			$this -> db -> where('siv_id !=', '0');
 			$this->db->from('sales_invoices');
 				
 			$this -> db -> where('products.product_id', $pid);
