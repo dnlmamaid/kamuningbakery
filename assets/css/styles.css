@@ -101,8 +101,9 @@ html, form {
 	background: #0B6738;
 	color: #FFF;
 	position: relative;
-	margin-top: 126px; /* negative value of footer height */
+	
 	height: 50px;
+	bottom: -168px;
 	padding: 8px 0;
 	clear:both;
 } 
