@@ -330,7 +330,7 @@
 						<div class="col-lg-12">
 						<h3>Ingredients: </h3>
 						</div>
-						<div class="col-lg-8" style="margin-bottom:15px;">
+						<div class="col-lg-4" style="margin-bottom:15px;">
 							<button type="button" id="addButton" class="btn btn-theme" data-toggle="tooltip" data-placement="top" title="Add More" ><i class="fa fa-plus"></i></button>
 							<button type="button"  id="removeButton" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Remove One" ><i class="fa fa-minus"></i></button>
 							
@@ -339,7 +339,16 @@
 							
 						<div class="form-group" id="materials">
 							<div id="rm">
-							<?php foreach($qcp as $val) echo round($val->qty_can_produce); ?> units
+								<?php foreach($qcp as $val)  ?>
+								<div class="col-lg-3  pull-right">
+									<input type="text" class="form-control" value="units" disabled>
+								</div>
+								
+								<div class="col-lg-5  pull-right">
+									<input type="number" step="any" name="qty_can_produce" class="form-control inline" value="<?php echo round($val->qty_can_produce); ?>" required> 
+								</div>
+								
+								
 							<?php foreach($ing as $r2): ?>
 								<div class="col-lg-12 col-xs-12">
 									<div class="col-lg-4 col-xs-4">						
