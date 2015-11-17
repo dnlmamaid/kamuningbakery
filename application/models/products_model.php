@@ -115,7 +115,7 @@ class products_model extends CI_Model {
 					
 					$ing = array(
 						'product_id' => $rm, 
-						'ingredient_qty' => $_POST['qpu'][$val], 
+						'ingredient_qty' => $_POST['qpu'][$val],
 					);
 					
 					$this->db->where('ingredient_ctr =', $val);
@@ -136,7 +136,6 @@ class products_model extends CI_Model {
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-					'price' => $this->input->post('price'), 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 
@@ -168,7 +167,7 @@ class products_model extends CI_Model {
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
-							
+					'price' => $this->input->post('price'), 
 					'category_ID' => $this->input->post('category_ID'), 
 					'class_ID' => $this->input->post('class_ID'), 
 					'description' => $this->input->post('description'), 
@@ -329,6 +328,15 @@ class products_model extends CI_Model {
 		}
 		return false;
 
+	}
+	
+	function getQCP($pid) {
+		
+		$this->db->where('id_for', $pid);
+		$this->db->limit('1');
+		$q = $this->db->get('ingredients');
+		return $q -> result();
+			
 	}
 
 	/**

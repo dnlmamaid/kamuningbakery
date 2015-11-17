@@ -339,14 +339,16 @@
 							
 						<div class="form-group" id="materials">
 							<div id="rm">
-							
+							<?php foreach($qcp as $val) echo round($val->qty_can_produce); ?> units
 							<?php foreach($ing as $r2): ?>
 								<div class="col-lg-12 col-xs-12">
 									<div class="col-lg-4 col-xs-4">						
 										<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
 									</div>
-									
-									<div class="col-lg-8 col-xs-8">
+									<div class="col-lg-2 col-xs-2">						
+										<input type="text" class="form-control inline" value="<?php echo $r2->um?>" disabled>
+									</div>
+									<div class="col-lg-6 col-xs-6">
 										<select name="rm_ID[]" class="form-control" required>
 										<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
 										<?php if(!empty($rm)){

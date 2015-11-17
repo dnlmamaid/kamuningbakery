@@ -227,7 +227,7 @@ $(function () {
 	  element: 'hsp',
 	  colors: colors_array,
 	  data: [<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $row): ?>
-	    {label: "<?php echo $row->product_Name?>", value: <?php echo $row->total?>},
+	    {label: "<?php echo $row->product_Name?>", value: '<?php echo $row->total?>'},
 	  <?php endforeach; endif; ?>]
 	});
 	

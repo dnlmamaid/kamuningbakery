@@ -217,14 +217,11 @@
 												</select>
 											</div>
 										</div>
-<<<<<<< HEAD
-=======
-										
->>>>>>> 15ad98ab8cd7a0f14064be7b4aa01c649762f9bc
+
 										
 										<div class="col-lg-3 col-xs-4">
 											<div class="form-group">
-												<label class="control-label">Quantity</label>
+												<label class="control-label">Times to be Produced</label>
 												<input type="number" name="quantity" class="form-control inline" value="" required>
 											</div>
 										</div>

@@ -176,9 +176,9 @@ class production_model extends CI_Model{
 					'product_id'			=> $pid,
 					'batch_reference'		=> $code,
 					'previous_count'		=> $oldc,
-					'units_produced'		=> $this->input->post('quantity'),
-					'production_cpu'		=> $total,
-					'total_production_cost'	=> $net_cost,
+					'units_produced'		=> ($qcp * $this->input->post('quantity')),
+					'production_cpu'		=> ($total/($qcp * $this->input->post('quantity'))),
+					'total_production_cost'	=> ($net_cost*($qcp * $this->input->post('quantity'))),
 					
 				);
 				
@@ -287,7 +287,7 @@ class production_model extends CI_Model{
 				 
 				//price per unit
 				
-				$p = $total / $net_cost;
+				$p = ($total / $this->input->post('quantity'));
 				
 				$data = array(
 					'product_Name' => $this->input->post('product_Name'),
@@ -327,7 +327,7 @@ class production_model extends CI_Model{
 					'batch_reference'		=> $code,
 					'previous_count'		=> '0',
 					'units_produced'		=> $this->input->post('quantity'),
-					'production_cpu'		=> $total,
+					'production_cpu'		=> ($net_cost/$this->input->post('quantity')),
 					'total_production_cost'	=> $net_cost,
 					
 				);

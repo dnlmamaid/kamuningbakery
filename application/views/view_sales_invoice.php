@@ -56,7 +56,7 @@
 					<div class="form-group">
 						<div class="col-lg-12">
 							<label>Price per unit: </label>
-							&#8369; <?php echo $r->sale_Price?> per <?php echo $r->um; ?>
+							&#8369; <?php echo $r->total_sale/$r->qty_sold?> per <?php echo $r->um; ?>
 						</div>
 					</div>
 					
