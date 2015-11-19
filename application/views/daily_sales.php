@@ -36,7 +36,7 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<form action="<?php echo base_url(); ?>sales/update_sales/<?php echo $r->sales_id?>"  role="form" accept-charset="utf-8" method="post">
+							<form action="<?php echo base_url(); ?>sales/update_sales/<?php echo $r->invoice_code?>"  role="form" accept-charset="utf-8" method="post">
 							
 							<h3>Details</h3>
 							
@@ -89,7 +89,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="invoice_id" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;" disabled>
+										<input type="text" name="invoice_code" class="form-control" value="<?php echo $r->invoice_code ?>" style="text-transform: uppercase;" disabled>
 									</div>
 								</div>
 							</div>

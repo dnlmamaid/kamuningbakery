@@ -359,7 +359,7 @@ class sales extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '3'))
 	    {
 			$this -> sales_model -> update_sales($code);
-			redirect($this->agent->referrer(), 'refresh');
+			redirect('sales', 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){

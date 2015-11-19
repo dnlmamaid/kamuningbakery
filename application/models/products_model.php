@@ -120,6 +120,7 @@ class products_model extends CI_Model {
 					
 					$this->db->where('ingredient_ctr =', $val);
 					$this->db->where('id_for', $id);
+					$this->db->where('initial_ingredient', '1');
 					$this->db->update('ingredients', $ing);
 	
 					//Gets Total Cost

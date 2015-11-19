@@ -156,22 +156,29 @@ class sales_model extends CI_Model {
 	}
 	
 	
-	function update_sales($id)
+	function update_sales($code)
     {
 	    
 		$sinfo = array(
 			'invoice_code'=> $this->input->post('invoice_code'),
 		);
 			  
-		$this->db->where('invoice_code', $id);  
+		$this->db->where('invoice_code', $code);  
 		$this->db->update('sales', $sinfo);
+		
+		$inv = array(
+			'invoice_id'=> $this->input->post('invoice_code'),
+		);
+			  
+		$this->db->where('invoice_id', $code);  
+		$this->db->update('sales_invoices', $inv);
 		
 		$this->session->set_flashdata('success','You have successfully updated the sales info');
 			
 		$audit = array(
 				'user_id'	=> $this->session->userdata('user_id'),
 				'module'	=> 'Sales',
-				'remark_id'	=> $id,
+				'remark_id'	=> $this->input->post('invoice_code'),
 				'remarks'	=> 'Updated a Sales Info',
 				'date_created'=> date('Y-m-j H:i:s'),
 		);
