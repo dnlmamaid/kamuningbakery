@@ -59,16 +59,16 @@
 										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
 			                            <th class="col-md-1"><i class="fa fa-tags"></i> Class</th>
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
-			                            <th class="col-md-1"><i class="fa icon_cogs"></i> Re-Order Level</th>
+			                            
 			                            
 	                              	</tr>
 	                              	
-	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->current_count <= $row->ro_lvl) || ($row->product_status == '0')):?> 
+	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->product_status == '0')):?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><?php if($row->product_status == '0'): ?><i class="fa fa-ban"><?php else: ?><i class="fa fa-exclamation-triangle"><?php endif;?></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                
 		                                
 	                                </tr>	
 									<?php else:?>
@@ -76,17 +76,17 @@
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                
 		                                
 		                                
 	                                </tr>
 									<?php endif;endforeach;	                               
-						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if(($row->current_count || $row->product_status) == '0'):?>
+						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if($row->product_status == '0'):?>
 									<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 										<td class="col-md-1 b"><?php if($row->product_status == '0'): ?><i class="fa fa-ban"><?php else: ?><i class="fa fa-exclamation-triangle"><?php endif;?></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                
 		                               
 	                               </tr>
 	                               <?php else:?>
@@ -94,7 +94,7 @@
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                
 		                              
 	                                </tr>
 	                                <?php endif;endforeach;		                               

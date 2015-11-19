@@ -406,10 +406,7 @@
 								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
 							
-							<div class="col-lg-3">
-								<label class="control-label">Re-Order Level</label>
-								<input type="number" step="any" name="ro_lvl" class="form-control inline" required>
-							</div>
+							
 						</div>
 						
 						<div class="form-group">

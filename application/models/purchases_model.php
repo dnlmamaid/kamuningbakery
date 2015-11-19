@@ -77,7 +77,7 @@ class purchases_model extends CI_Model{
     {
     	$this->db->where('product_Name',$this->input->post('product_Name'));
 		$val = $this->db->get('products');
-		//IF PRODUCT IS NOT NEW
+		
 		if($val->num_rows() == 1){
 			$this->session->set_flashdata('Error','Product Alread Exists Use The Add Old Product Form for ordering old products');
 		}else{
@@ -88,9 +88,9 @@ class purchases_model extends CI_Model{
 				'price' => $this->input->post('price'),
 				'sale_Price' => '0',
 				'holding_cost' => $this->input->post('holding_cost'),
-				'ro_lvl' => $this->input->post('ro_lvl'),
+				'ro_lvl' => '0',
 				'category_ID' => '2',
-				'eoq' => '0',
+				
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
@@ -340,7 +340,7 @@ class purchases_model extends CI_Model{
 		$prce = $this->db->get()->row('price');
 			
 		$np = ($prce + $this->input->post('ppu'))/2;
-		 
+		
 		$receive = array(
 			'price' => $np,
 			'current_count'	=> $newquantity,

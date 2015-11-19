@@ -171,6 +171,15 @@ class products extends CI_Controller {
 			$data['ing'] = $this -> products_model -> getIng_P($pid);
 			$data['qcp'] = $this -> products_model -> getQCP($pid);
 			
+			//Annual Demand
+			$data['ad'] = $this -> reports_model -> getAnnualDemand($pid);
+			
+			//Monthly Use
+			$data['avg'] = $this -> reports_model -> getMonthlyUsage($pid);
+			
+			//LeadTime
+			$data['su'] = $this -> reports_model -> getLeadTime($pid);
+			
 			$data['production'] = $this -> reports_model -> getProductionHistory($pid);
 			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
 			$data['sales'] = $this -> reports_model -> getSalesHistory($pid);

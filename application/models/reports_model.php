@@ -48,7 +48,7 @@ Class reports_model extends CI_Model {
 	public function getLow($limit, $start) {
 			
 		$this -> db -> limit($limit, $start);
-		$this -> db -> where('current_count <= ro_lvl');
+		$this -> db -> where('current_count');
 		$query = $this -> db -> get('products');
 		
 		if ($query -> num_rows() > 0) {
@@ -711,5 +711,54 @@ Class reports_model extends CI_Model {
 		}
 	
 	}
+	
+	
+	function getAnnualDemand($pid){
+		
+		
+		$this->db->join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');		
+			
+		$this->db->where('product_id', $pid);
+		
+		$this->db->select('sum(order_quantity) as total_units, sum(ordering_cost) as total_cost, count(*) as count');
+		$this->db->group_by('year(date_received)');
+		
+		
+		
+		$q = $this->db->get('purchase_orders');
+		return $q->row();
+	}
+	
+	function getMonthlyUsage($pid){
+		
+		$this->db->join('production_batch', 'production_batch.pb_id = ingredients.pb_Id', 'left');
+		$this->db->join('production', 'production.batch_id = production_batch.batch_reference', 'right');
+			
+		$this->db->where('ingredients.product_id', $pid);
+		
+		$this->db->select('sum(ingredient_qty) as total, count(*) as count');
+		$this->db->group_by('month(date_produced)');
+		
+		$q = $this->db->get('ingredients');
+		return $q->row();
+	}
+	
+	function getLeadTime($pid){
+		
+		
+		$this->db->join('purchases', 'purchases.purchase_reference = purchase_orders.order_reference', 'left');
+		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'right');
+			
+		$this->db->from('purchase_orders');
+			
+		$this -> db -> where('purchase_orders.product_id', $pid);
+		
+		
+		$query = $this -> db -> get();
+		$data = $query -> result_array();
+		return $data;
+	}
+	
+	
 }
 ?>

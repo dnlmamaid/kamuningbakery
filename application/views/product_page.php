@@ -137,20 +137,27 @@
 						
 						<div class="form-group">
 							<div class="col-lg-5 col-xs-3">
-								<?php if(($r->current_count <= $r->ro_lvl)): ?>
+								<?php foreach($su as $rs)
+									  $ro_lvl = ($avg->total/$avg->count) * $rs['lead_time'];
+								if(($r->current_count <= $ro_lvl)): ?>
 								<label class="control-label" style="color:red;">Re Order Level</label>
-								<input type="text" name="eoq" class="form-control inline" value="<?php echo $r->ro_lvl; ?>">
+								<input type="text" class="form-control inline" value="<?php echo $ro_lvl; ?>" disabled>
 								<?php else:?>
 								<label class="control-label">Re-order Level</label>
-								<input type="text" name="eoq" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>">	
+								<input type="text" class="form-control inline" value="<?php echo round($ro_lvl); ?>" disabled>	
 								<?php endif; ?>
 							</div>
 						</div>
 						
+						<?php $annual_demand = ($ad->total_units/365);
+							  $holding_cost = $r->holding_cost; 
+							  $ordering_cost = ($ad->total_cost/$ad->count)?>
+											
 						<div class="form-group">
 							<div class="col-lg-5 col-xs-3">
 								<label class="control-label">EOQ</label>
-								<input type="text" name="eoq" class="form-control inline" value="<?php if($r->eoq != '0'){ echo $r->eoq; } else{ ?> Needs Further Data<?php }?>" disabled>
+								<?php $EOQ = sqrt( ( (2*$annual_demand*$ordering_cost)/($holding_cost) ) ); ?>
+								<input type="text" name="eoq" class="form-control inline" value="<?php if($EOQ != '0'){ echo $EOQ; } else{ ?> Needs Further Data<?php }?>" disabled>
 							</div>
 						</div>
 				
@@ -172,7 +179,7 @@
 									<option value="0">No</option>
 									<?php } else{?>
 									<option value="0" selected>No</option>
-									<option value="1">Yes</option>
+									<option v alue="1">Yes</option>
 									<?php }?>
 								</select>
 							</div>
@@ -187,13 +194,13 @@
 					</div>
 					
 					
-					<div class="col-lg-12">
+					<div class="col-lg-6">
 						<h3>Purchase History</h3>
 						<div class="table-responsive"> 
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa fa-barcode"></i> Reference Code</th>
+										
 										<th class="col-md-1"><i class="fa fa-truck"></i> Supplier</th>
 					                    <th class="col-md-1"><i class="fa fa-tags"></i> Inventory</th>
 				                        <th class="col-md-1"><i class="fa fa-tag"></i> Quantity</th>
@@ -204,7 +211,7 @@
 			                              	
 			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
 									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
-										<td class="col-md-1"><?php echo $row['purchase_reference'] ?></td>
+										
 										<td class="col-md-1"><?php echo $row['supplier_name'] ?></td>
 										<td class="col-md-1"><?php echo round($row['qty_before_order']) ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1"><?php echo $row['order_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
@@ -215,7 +222,7 @@
 									<?php endforeach;	                               
 									else:?>
 									<tr>											
-										<th>No records</th>
+										
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
