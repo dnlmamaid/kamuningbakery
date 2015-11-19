@@ -438,6 +438,111 @@ $(function () {
         ]
     });
 });
+<?php elseif($head == 'production' && $body =='report'):?>
+$(function () {
+    $('#production-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#ffd400'],
+        
+        title: {
+            text: 'Monthly Production',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($production_c) && is_array($production_c)) : foreach($production_c as $row): ?>
+            			'<?php echo date('F Y',strtotime($row->date))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Units'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' units'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Total Units Produced',
+            data: [<?php if(isset($production_c) && is_array($production_c)) : foreach($production_c as $row): ?>
+            			<?php echo $row->total?>,
+            			
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});
+<?php elseif($head == 'production' && $body =='by_date'):?>
+$(function () {
+    $('#production-report-line').highcharts({
+    	 credits: {
+            enabled: false
+        },
+        
+        colors: ['#ffd400'],
+        
+        title: {
+            text: 'Production',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'From <strong><?php echo date('F d, Y', strtotime($sdate)); ?></strong> to <strong><?php echo date('F d,Y', strtotime($edate)); ?></strong><br>Kamuning Bakery',
+            x: -20
+        },
+        xAxis: {
+            categories: [<?php if(isset($production_c) && is_array($production_c)) : foreach($production_c as $row): ?>
+            			'<?php echo date('F d Y',strtotime($row->date))?>',
+            			<?php endforeach; endif; ?>]
+        },
+        yAxis: {
+        	min: 0,
+            title: {
+                text: 'Units'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' units'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Purchases',
+            data: [<?php if(isset($production_c) && is_array($production_c)) : foreach($production_c as $row): ?>
+            			<?php echo $row->total?>,
+            			<?php endforeach; endif; ?>]
+        },	
+        	
+        ]
+    });
+});
 <?php endif; ?>
 </script>
 </body>

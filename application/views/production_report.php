@@ -2,7 +2,7 @@
 		$pg = $this->uri->segment('3');
 		$body = $this->uri->segment('2');
 	  	$head = $this->uri->segment('1');
-		if($this->session->userdata('user_type') != ('4' || '6')):
+		if(($this->session->userdata('user_type') <= 1) || ($this->session->userdata('user_type') != ('4' || '6'))):
 ?>
 <div class="container bg-panel">
 			
@@ -14,22 +14,18 @@
 					
 					
 		
-			
+			<?php if($body == 'report'){?>					
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
-					<h2 align="center">Production Report</h2>
-					<?php if($body == 'report'){?>
-						<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
-					<?php }
-					else{ ?> 
-					<p align="center">From <strong><?php echo date('F d, Y', strtotime($sdate)); ?></strong> to <strong><?php echo date('F d,Y', strtotime($edate)); ?></strong></p>
-					<?php }?>
+				<div class="col-md-6 col-md-offset-3" style="margin-top:15px;">
+					<h2 align="center">Production Report</h2>					
+					<p align="center">As of <strong><?php echo date('F d, Y'); ?></strong></p>
 					<p align="center">Prepared By: <?php echo $this->session->userdata('username')?></p>
 				</div>
 			</div>
-			
+			<?php } ?>
+											
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<h4>Total Worth of Finished Goods: ₱ <strong><?php echo number_format((float)$total->total, 2, '.', '');?></strong></h4>
 				</div>
 			</div>
@@ -56,6 +52,11 @@
     <!-- page start-->
     <div class="row">
 	    <div class="col-lg-12">
+	    	<section class="col-lg-12 panel">
+				<div class="col-lg-12">
+					<div id="production-report-line"></div>
+				</div>
+			</section>
     		<section class="col-lg-12 panel">
             <?php if($this->session->flashdata('success')){ ?>
 			<div class="alert alert-success" role="alert"><?php echo $this -> session -> flashdata('success'); ?></div>
@@ -78,7 +79,7 @@
 						<th class="col-md-1"><i class="fa fa-dollar"></i> Total Cost</th>
 					</tr>
 	                              	
-	                <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
+	                <?php if(isset($production_t) && is_array($production_t)) : foreach($production_t as $row): ?> 
 					<tr>
 						<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
 						<td class="col-md-1"><?php echo $row->batch_id ?></td>

@@ -152,10 +152,7 @@ class production extends CI_Controller {
 	
 	public function report($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
-	    {
-	    	
-			//Pagination
+		//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 			$total_row = $this->reports_model->getProducedCtr();
 			
@@ -166,9 +163,9 @@ class production extends CI_Controller {
 			'num_links' => 1,
 			'first_link' => 'First',
 			'last_link'=> 'Last',
-			'base_url' => base_url().'productions/page',
+			'base_url' => base_url().'production/report',
 			'suffix' => '?=ref'.http_build_query($_GET, '', "&"),
-			'first_url' => base_url().'productions',
+			'first_url' => base_url().'production/report',
 			'cur_tag_open' => '<li><a class="current">',
 			'cur_tag_close' => '</a></li>',
 			'prev_tag_open' => '<li>',
@@ -195,54 +192,18 @@ class production extends CI_Controller {
       			
     		}   
     		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
+	    {
+	    	
     		$data['total'] = $this->reports_model->get_total_produced();
-			$data['products'] = $this->reports_model->getProduction($config['per_page'], $offset);
-
+			$data['production_c'] = $this->reports_model->getMProduction();
+			$data['production_t'] = $this->reports_model->getProduction($config['per_page'], $offset);
+			
 			$data['main_content'] = 'production_report';
 			$this -> load -> view('includes/adminTemplate', $data);
 			
 		} else if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')){
 			
-			//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->reports_model->getProducedCtr();
-			
-			$config = array(
-			'total_rows' => $total_row,
-			'per_page' => 8, 
-			'uri_segment' => 3,
-			'num_links' => 1,
-			'first_link' => 'First',
-			'last_link'=> 'Last',
-			'base_url' => base_url().'productions/page',
-			'suffix' => '?=ref'.http_build_query($_GET, '', "&"),
-			'first_url' => base_url().'productions',
-			'cur_tag_open' => '<li><a class="current">',
-			'cur_tag_close' => '</a></li>',
-			'prev_tag_open' => '<li>',
-			'prev_tag_close' => '</li>',
-			'first_tag_open' => '<li>',
-			'first_tag_close' => '</li>',
-			'last_tag_open' => '<li>',
-			'last_tag_close' => '</li>',
-			'next_tag_open' => '<li>',
-			'next_tag_close' => '</li>',
-			'num_tag_open' => '<li>',
-			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
-			 	if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
-				{
-      				$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
-      			}
-				else{
-      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-				} 			
-      			
-    		}   
-    		
     		$data['total'] = $this->reports_model->get_total_produced();
 			$data['products'] = $this->reports_model->getProduction($config['per_page'], $offset);
 
@@ -255,6 +216,21 @@ class production extends CI_Controller {
 			
 		} else{
 			redirect(base_url(), 'refresh');
+		}
+	}
+
+	function by_date(){
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {
+			$data['sdate'] = $this->input->post('sdate');
+			$data['edate'] = $this->input->post('edate');
+			
+			$data['total'] = $this->reports_model->get_total_production_by_date();
+			$data['production_c'] = $this->reports_model->get_produced_by_dateuo();
+			$data['production_t'] = $this->reports_model->get_produced_by_date();
+			
+			$data['main_content'] = 'production_report';
+			$this -> load -> view('includes/admintemplate', $data);
 		}
 	}
 

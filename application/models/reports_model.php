@@ -555,8 +555,17 @@ Class reports_model extends CI_Model {
 	/*********************  PRODUCTION	*****************************/
 	/***************************************************************/
 	
+	//Monthly purhases for charts
+	function getMProduction(){
+		$this->db->select('date_produced as date, count(*) as count, sum(net_produced_qty) as total');
+		$this->db->group_by('month(date_produced)');
+		$q = $this->db->get('production');
+		return $q->result();
+	}
+	
 	public function getProduction($limit, $start) {
 		$this->db->join('users','users.id = production.user_id','left');
+		
 		$this -> db -> limit($limit, $start);
 		$this -> db -> order_by('date_produced', 'desc');
 		$query = $this -> db -> get('production');
@@ -615,7 +624,7 @@ Class reports_model extends CI_Model {
 		}
 	}
 
-	function get_total_produced_by_date(){
+	function get_total_production_by_date(){
 		$start = $this->input->post('sdate');
 		$end = $this->input->post('edate');
 		
@@ -641,8 +650,8 @@ Class reports_model extends CI_Model {
 		$end = $this->input->post('edate');
 		$this->db->where('date_produced >=',$start);
 		$this->db->where('date_produced <=',$end);
-		$this->db->join('users','users.id = purchases.user_id','left');
-		$this->db->join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'left');
+		$this->db->join('users','users.id = production.user_id','left');
+		
 		
 		$this->db->order_by('date_produced','desc');
 		$query = $this->db->get('production');
@@ -656,6 +665,29 @@ Class reports_model extends CI_Model {
 		return false;
 	}
 	
+	
+	function get_produced_by_dateuo(){
+		
+		$start = $this->input->post('sdate');
+		$end = $this->input->post('edate');
+		
+		$this->db->where('date_produced >=',$start);
+		$this->db->where('date_produced <=',$end);
+		
+		$this->db->select('date_produced as date, sum(net_produced_qty) as total');
+		$this->db->group_by('DAY(date_produced)');
+		
+		
+		$query = $this->db->get('production');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+		return false;
+	}
 	/** Search Production **/
 	function search_prod($keyword)
     {

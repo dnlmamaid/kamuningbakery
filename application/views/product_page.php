@@ -137,6 +137,18 @@
 						
 						<div class="form-group">
 							<div class="col-lg-5 col-xs-3">
+								<?php if(($r->current_count <= $r->ro_lvl)): ?>
+								<label class="control-label" style="color:red;">Re Order Level</label>
+								<input type="text" name="eoq" class="form-control inline" value="<?php echo $r->ro_lvl; ?>">
+								<?php else:?>
+								<label class="control-label">Re Order Level</label>
+								<input type="text" name="eoq" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>">	
+								<?php endif; ?>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-5 col-xs-3">
 								<label class="control-label">EOQ</label>
 								<input type="text" name="eoq" class="form-control inline" value="<?php if($r->eoq != '0'){ echo $r->eoq; } else{ ?> Needs Further Data<?php }?>" disabled>
 							</div>
@@ -194,7 +206,7 @@
 									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
 										<td class="col-md-1"><?php echo $row['purchase_reference'] ?></td>
 										<td class="col-md-1"><?php echo $row['supplier_name'] ?></td>
-										<td class="col-md-1"><?php echo $row['qty_before_order'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
+										<td class="col-md-1"><?php echo round($row['qty_before_order']) ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1"><?php echo $row['order_quantity'] ?> <?php if($row['um'] == 'pc'){echo $row['um'];?>s<?php } else{ echo $row['um'];}?></td>
 		                                <td class="col-md-1">&#8369; <?php echo $row['ppu']?></td>
 		                                <td class="col-md-1">&#8369; <?php echo $row['ordering_cost']?></td>
