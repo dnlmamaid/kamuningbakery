@@ -316,9 +316,10 @@ class products_model extends CI_Model {
 	 * Get Ingredients Function
 	 *
 	 */
-	function getIng($pid) {
+	function getIng($pbid, $pid) {
 		$this->db->join('products', 'products.product_id = ingredients.product_id', 'left');
 		$this->db->where('id_for', $pid);
+		$this->db->where('pb_id', $pbid);
 		$query = $this->db->get('ingredients');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {

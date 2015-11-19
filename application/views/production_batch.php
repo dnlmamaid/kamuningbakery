@@ -104,7 +104,7 @@
 													<?php if(!empty($rm)){
 														if (is_array($rm)){                      
 											            	foreach ($rm as $row) {?>
-															<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+															<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?> (<?php echo $row['um'] ?>)</option>
 															<?php }
 														}
 													}
@@ -152,21 +152,14 @@
 									</div>
 								
 									<div class="row" style="margin-top:15px;">
-										<div class="col-lg-3 col-xs-4">
+										<div class="col-lg-4 col-xs-4">
 											<div class="form-group">
 												<label class="control-label">Quantity</label>
 												<input type="number" name="quantity" class="form-control inline" value="" required>
 											</div>
 										</div>
 										
-										<div class="col-lg-2">
-											<div class="form-group">
-												<label class="control-label">Unit</label>
-												<input type="text" name="um" class="form-control inline" value="" required>
-											</div>
-										</div>
-										
-										
+									
 									</div>
 									
 						

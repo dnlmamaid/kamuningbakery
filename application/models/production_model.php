@@ -111,7 +111,8 @@ class production_model extends CI_Model{
 				
 				$this->db->where('id_for', $pid);
 				$q = $this->db->get('ingredients');
-			
+				
+				$ingArray = array();
 		    	foreach($q->result() as $row)
 				{
 					$rm = $row->product_id;
@@ -148,9 +149,23 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $process);
 					
+					$ingr = array(
+						'id_for' => $pid,
+						'product_id' => $rm,
+						'ingredient_ctr' => $ctr,
+						'ingredient_qty' => $qty,
+						'qty_can_produce' => $row->qty_can_produce * $this->input->post('quantity'),
+					);
+					
+					$this->db->insert('ingredients', $ingr);
 					$qcp = $row->qty_can_produce;
-									
+					$ctr++;
+										
 				}
+				
+				
+					
+				
 				
 				//Get the Current Count of The Product to be produced and adds the number of units produced
 				$this->db->select('current_count');
@@ -179,7 +194,6 @@ class production_model extends CI_Model{
 					'units_produced'		=> ($qcp * $this->input->post('quantity')),
 					'production_cpu'		=> ($total/($qcp * $this->input->post('quantity'))),
 					'total_production_cost'	=> ($net_cost*($qcp * $this->input->post('quantity'))),
-					
 				);
 				
 				$this->db->insert('production_batch', $batch);
@@ -284,9 +298,8 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $process);
 				}
-				 
+							
 				//price per unit
-				
 				$p = ($total / $this->input->post('quantity'));
 				
 				$data = array(
@@ -298,7 +311,7 @@ class production_model extends CI_Model{
 					'category_ID' => '1',
 					'class_ID' => $this->input->post('class_ID'),
 					'description' => $this->input->post('description'),
-					'um' => $this->input->post('um'),
+					'um' => 'pc',
 					'date_created'=> date('Y-m-j H:i:s'),
 					'product_status' => '1',
 		        );
@@ -316,6 +329,7 @@ class production_model extends CI_Model{
 						'ingredient_ctr' => $val,
 						'ingredient_qty' => $_POST['qpu'][$val],
 						'qty_can_produce' => $this->input->post('quantity'),
+						
 					);
 					
 					$this->db->insert('ingredients', $ingr);
@@ -328,8 +342,7 @@ class production_model extends CI_Model{
 					'previous_count'		=> '0',
 					'units_produced'		=> $this->input->post('quantity'),
 					'production_cpu'		=> ($net_cost/$this->input->post('quantity')),
-					'total_production_cost'	=> $net_cost,
-					
+					'total_production_cost'	=> $net_cost,			
 				);
 				
 				$this->db->insert('production_batch', $batch);
