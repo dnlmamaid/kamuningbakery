@@ -37,7 +37,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<?php if(!$r->order_status) { ?>
-							<form action="<?php echo base_url(); ?>purchases/update_order/<?php echo $r->purchase_id?>"  role="form" accept-charset="utf-8" method="post">
+							<form action="<?php echo base_url(); ?>purchases/update_order/<?php echo $r->purchase_reference?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							
 							<div class="row">

@@ -198,7 +198,7 @@
 										</div>
 										</form>
 										
-										<div class="col-lg-4 pull-right">
+										<div class="col-lg-4 align-center">
 											<div class="form-group">
 												<?php if($r->order_status != '1'){?>
 												<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
@@ -208,13 +208,21 @@
 													<input type="hidden" name="order_quantity" value="<?php echo $r->order_quantity?>">
 													<input type="hidden" name="ordering_cost" value="<?php echo $r->ordering_cost?>">
 												
-													<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="left" title="Cancel Order"><i class="fa fa-close"></i></a>
-													<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="right" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
+													<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>
+													<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
+													
 												</form>
 												<?php } ?>
-						
-												<a href="javascript:window.history.go(-1);" class="btn btn-default" style="align">Back</a>
-						
+												
+											</div>
+											
+											
+										</div>
+										
+										
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<a href="javascript:window.history.go(-1);" data-toggle="tooltip" data-placement="top" title="Back to Purchase Order" class="btn btn-default" style="align">Back</a>
 											</div>
 										</div>
 								

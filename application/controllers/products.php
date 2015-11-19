@@ -168,7 +168,7 @@ class products extends CI_Controller {
 			
 			
 			//Record Values
-			$data['ing'] = $this -> products_model -> getIng($pid);
+			$data['ing'] = $this -> products_model -> getIng_P($pid);
 			$data['qcp'] = $this -> products_model -> getQCP($pid);
 			
 			$data['production'] = $this -> reports_model -> getProductionHistory($pid);

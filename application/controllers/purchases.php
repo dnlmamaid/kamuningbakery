@@ -178,7 +178,7 @@ class purchases extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
 			$this -> purchases_model -> update_po($id);
-			redirect($this->agent->referrer(), 'refresh');
+			redirect('purchases', 'refresh');
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){

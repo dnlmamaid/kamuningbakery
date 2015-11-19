@@ -36,7 +36,7 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<?php if(!$r->ro_status && $r->request_status != '1'): ?>
+							<?php if(!$r->ro_status && $r->is_reviewed != '1'): ?>
 							<form action="<?php echo base_url(); ?>requests/update/<?php echo $r->ro_reference?>"  role="form" accept-charset="utf-8" method="post">
 							<h3>Details</h3>
 							<div class="row">
@@ -175,16 +175,17 @@
 						                    <th class="col-md-1"><i class="fa fa-cogs"></i> Status</th>
 										</tr>
 				                              	
-				                        <?php if(isset($requests) && is_array($requests)): foreach($requests as $row): if($row->ro_status != '0'):?> 
+				                        <?php if(isset($requests) && is_array($requests)): foreach($requests as $row): if($row->is_reviewed == '1'):?> 
 										<tr>
 											<td class="col-md-1"><?php echo $row->ro_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->request_qty ?></td>
+					                         
 					                        <td>
-					                        	<?php if($r->request_status != '1' && $row->status == '0'): ?>
-						                		<a class="btn btn-caution" href="<?php echo base_url()?>requests/disapprove/<?php echo $row->ro_id?>" data-toggle="tooltip" data-placement="left" title="Disapprove"><i class="icon_close_alt2"></i></a>
-						                		<?php else: ?>
-						                			Approved
+					                        	<?php if($row->ro_status): ?>
+						                			Accepted
+						                		<?php elseif(!$row->ro_status): ?>
+						                			Rejected
 						                		<?php endif; ?>
 					                        </td>
 					                        
@@ -196,10 +197,9 @@
 											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1 b"><?php echo $row->request_qty ?></td>
 					                        <td>
-					                        	<?php if($r->request_status != '1' && $row->status == '1'): ?>
+					                        	<?php if($row->ro_status == '0'):?>
+					                        	<a class="btn btn-caution" href="<?php echo base_url()?>requests/disapprove/<?php echo $row->ro_id?>" data-toggle="tooltip" data-placement="left" title="Disapprove"><i class="icon_close_alt2"></i></a>
 						                		<a class="btn btn-success" href="<?php echo base_url()?>requests/approve/<?php echo $row->ro_id?>" data-toggle="tooltip" data-placement="left" title="Approve"><i class="icon_check_alt2"></i></a>
-						                		<?php else: ?>
-						                			Rejected
 						                		<?php endif; ?>
 					                        </td>
 										</tr>	

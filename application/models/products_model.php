@@ -252,7 +252,7 @@ class products_model extends CI_Model {
 		} else if (!$this->session->userdata('is_admin')) {
 			$this->db->limit($limit, $start);
 			$this->db->join('product_category', 'product_category.category_ID = products.category_ID', 'left');
-			$this->db->where('products.status', '1');
+			$this->db->where('products.product_status', '1');
 			$this->db->where('products.category_ID', $cid);
 			$this->db->order_by('date_created', 'desc');
 			$query = $this->db->get('products');
@@ -320,6 +320,21 @@ class products_model extends CI_Model {
 		$this->db->join('products', 'products.product_id = ingredients.product_id', 'left');
 		$this->db->where('id_for', $pid);
 		$this->db->where('pb_id', $pbid);
+		$query = $this->db->get('ingredients');
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		return false;
+
+	}
+	
+	function getIng_P($pid) {
+		$this->db->join('products', 'products.product_id = ingredients.product_id', 'left');
+		$this->db->where('id_for', $pid);
+		$this->db->where('initial_ingredient', '1');
 		$query = $this->db->get('ingredients');
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {

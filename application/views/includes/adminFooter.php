@@ -26,36 +26,43 @@
 								
 					<div class="form-group">
 						<div class="col-lg-6 col-xs-6">
-							<label for="lastName">Contact Person</label>
+							<label>Contact Person</label>
 							<input type="text" name="contact_Person" class="form-control inline" required>
 						</div>
 					</div>
 								
 					<div class="form-group">
 						<div class="col-lg-8 col-xs-8">
-							<label for="lastName">Address</label>
+							<label>Address</label>
 							<input type="text" name="st_Address" class="form-control inline" required>
 						</div>
 					</div>
 								
 					<div class="form-group">
 						<div class="col-lg-4 col-xs-4">
-							<label for="lastName">City</label>
+							<label>City</label>
 							<input type="text" name="city" class="form-control inline" required>
 						</div>
 					</div>
 								
 					<div class="form-group">
 						<div class="col-lg-8 col-xs-8">
-							<label for="lastName">Contact</label>
+							<label>Contact</label>
 							<input type="text" name="contact" class="form-control inline" required>
 						</div>
 					</div>
 								
 					<div class="form-group">
 						<div class="col-lg-8 col-xs-8">
-							<label for="lastName">Terms</label>
+							<label>Terms</label>
 							<textarea name="terms" class="form-control inline" required></textarea>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-4 col-xs-4">
+							<label>Lead Time</label>
+							<input type="text" name="lead_time" class="form-control inline" required>
 						</div>
 					</div>
 								
@@ -150,6 +157,11 @@
 <script src="<?php echo base_url();?>assets/js/customscroll.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.nicescroll.js"></script>
 <script>
+	Highcharts.setOptions({
+		lang: {
+			thousandsSep: ','
+		}
+	});
 <?php if($head == '' || $head =='home'):?>
 	var colors_array= ["#009000", "#006600", "#339933"];
 	Morris.Donut({
@@ -162,6 +174,7 @@
     
 
 $(function () {
+	
     $('#activity').highcharts({
     	 credits: {
             enabled: false
@@ -178,7 +191,7 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
+            categories: [<?php if(isset($purchases_c) && is_array($purchases_c)) : foreach($purchases_c as $row): ?>
             			'<?php echo date('F Y',strtotime($row->date))?>',
             			<?php endforeach; endif; ?>]
         },

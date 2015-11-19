@@ -59,7 +59,7 @@
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">
 										<label>Reference ID</label>
-										<input type="text" name="batch_id" class="form-control" value="<?php echo $r->batch_id ?>" style="text-transform: uppercase;">
+										<input type="text" name="batch_id" class="form-control" value="<?php echo $r->batch_id ?>" style="text-transform: uppercase;" disabled>
 									</div>
 								</div>
 								

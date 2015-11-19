@@ -73,6 +73,13 @@
 					
 					<div class="form-group">
 						<div class="col-lg-3 col-xs-5">
+							<label>Lead Time (Days)</label>
+							<input type="text" name="lead_time" class="form-control inline" value="<?php echo $r->lead_time?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-3 col-xs-5">
 							<label class="control-label">Enabled</label>
 					  		<select name="is_active" class="form-control" required>
 					  			<?php if($r->is_active){?>
@@ -97,7 +104,7 @@
 									<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 									<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product</th>
 						            <th class="col-md-1"><i class="fa fa-truck"></i> Quantity</th>
-						            <th class="col-md-1"><i class="fa fa-dollar"></i> Total</th> 
+						            <th class="col-md-1"><i class="fa">&#8369;</i> Total</th> 
 				                    <!--<th class="col-md-1"><i class="icon_cogs"></i> Action</th>-->
 		                       	</tr>
 		                              	
@@ -106,7 +113,7 @@
 									<td class="col-md-1"><?php echo $row['order_reference'] ?></td>
 									<td class="col-md-1"><?php echo $row['product_Name'] ?></td>
 			                       	<td class="col-md-1"><?php echo $row['order_quantity'] ?></td>
-			                        <td class="col-md-1"><?php echo $row['ordering_cost'] ?></td>
+			                        <td class="col-md-1">&#8369; <?php echo $row['ordering_cost'] ?></td>
 			                        
 			                        <!--<td class="col-md-1">
 				                        	<div class="btn-group">

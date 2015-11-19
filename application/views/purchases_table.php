@@ -149,36 +149,40 @@
 							
 					<div class="modal-body">
 					<form action="<?php echo base_url()?>purchases/create_purchase_order" role="form" accept-charset="utf-8" method="post">
-						<div class="col-lg-8 col-xs-8">
-							<div class="form-group">
-								<label>Supplier</label>
-								<div class="input-group">
-								<select name="supplier_id" class="form-control" required>
-									<option value="">Choose a Supplier</option>
-									<?php if(!empty($supplier)){
-										if (is_array($supplier)){                      
-									    	foreach ($supplier as $row) {
-									    		if ($row['supplier_id'] != 1){?>
-												<option value="<?php echo $row['supplier_id']?>"><?php echo $row['supplier_name']; ?></option>
-											<?php } }
+						<div class="row">
+							<div class="col-lg-8 col-xs-8">
+								<div class="form-group">
+									<label>Supplier</label>
+									<div class="input-group">
+									<select name="supplier_id" class="form-control" required>
+										<option value="">Choose a Supplier</option>
+										<?php if(!empty($supplier)){
+											if (is_array($supplier)){                      
+										    	foreach ($supplier as $row) {
+										    		if ($row['supplier_id'] != 1){?>
+													<option value="<?php echo $row['supplier_id']?>"><?php echo $row['supplier_name']; ?></option>
+												<?php } }
+											}
 										}
-									}
-																		
-									else{	?>
-									<option value=""></option>
-									<?php }?>
-								</select>
-								<span class="input-group-btn">
-									<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
-							    </span>
+																			
+										else{	?>
+										<option value=""></option>
+										<?php }?>
+									</select>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
+								    </span>
+									</div>
 								</div>
 							</div>
 						</div>
-						
-						<div class="col-lg-3 col-xs-4">
-							<div class="form-group">
-								<label>Date of Delivery</label>
-								<input type="text" class="form-control" id="datep" name="date_received" value="">
+						<br>
+						<div class="row">
+							<div class="col-lg-5 col-xs-5">
+								<div class="form-group">
+									<label>Estimated Date of Delivery</label>
+									<input type="text" class="form-control" id="datep" name="date_received" value="">
+								</div>
 							</div>
 						</div>
 						

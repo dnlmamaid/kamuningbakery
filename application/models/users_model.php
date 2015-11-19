@@ -503,7 +503,7 @@ Class users_model extends CI_Model
 			
 			$data = array(
 				'supplier_name'	=> $this->input->post('supplier_name'),
-				
+				'lead_time'		=> $this->input->post('lead_time'),
 				'contact_Person'=> $this->input->post('contact_Person'),
 				'st_Address'	=> $this->input->post('st_Address'),
 				'city'			=> $this->input->post('city'),
@@ -546,7 +546,7 @@ Class users_model extends CI_Model
 			'supplier_name'	=> $this->input->post('supplier_name'),
 			'contact_Person'=> $this->input->post('contact_Person'),
 			'st_Address'	=> $this->input->post('st_Address'),
-			
+			'lead_time'		=> $this->input->post('lead_time'),
 			'city'			=> $this->input->post('city'),
 			'terms'			=> $this->input->post('terms'),
 			'contact'		=> $this->input->post('contact'),
@@ -674,7 +674,8 @@ Class users_model extends CI_Model
 	public function getSuppliers($limit, $start) {
 		
 		$this->db->limit($limit, $start);
-		$this -> db -> order_by('created_at', 'desc');		
+		$this -> db -> order_by('created_at', 'desc');
+		$this->db->where('supplier_id !=', '1');		
 		$query = $this->db->get('suppliers');
 		if ($query->num_rows() > 0) {
 		foreach ($query->result() as $row) {

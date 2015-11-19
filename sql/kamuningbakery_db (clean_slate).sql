@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2015 at 07:55 AM
+-- Generation Time: Nov 19, 2015 at 08:11 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -253,6 +253,7 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
   `st_Address` varchar(108) NOT NULL,
   `city` varchar(64) NOT NULL,
   `terms` varchar(255) NOT NULL,
+  `lead_time` varchar(16) NOT NULL,
   `contact` varchar(64) NOT NULL,
   `created_at` datetime NOT NULL,
   `is_active` tinyint(1) NOT NULL
@@ -262,11 +263,11 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_Person`, `st_Address`, `city`, `terms`, `contact`, `created_at`, `is_active`) VALUES
-(1, 'Kamuning Bakery', 'Pastry Chef A', '#A A St. Address A', 'Quezon City', 'Some terms related information here.', '09097421212', '2015-10-13 05:50:45', 1),
-(2, 'Grocery', 'Contact Person A', '#B B St. Address B', 'Valenzuela CIty', 'B', 'B', '2015-10-15 15:00:31', 1),
-(3, 'Supplier C', 'Contact Person B', '#C C st. Address C', 'Bulacan City', 'C', 'C', '2015-10-15 16:09:12', 1),
-(4, 'Supplier D', 'Contact Person D', '#D D St. D Address', 'Pampanga', 'D terms', 'D', '2015-10-19 00:18:19', 1);
+INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_Person`, `st_Address`, `city`, `terms`, `lead_time`, `contact`, `created_at`, `is_active`) VALUES
+(1, 'Kamuning Bakery', 'Pastry Chef A', '#A A St. Address A', 'Quezon City', 'Some terms related information here.', '', '09097421212', '2015-10-13 05:50:45', 1),
+(2, 'Grocery', 'Contact Person A', '#B B St. Address B', 'Valenzuela CIty', 'B', '', 'B', '2015-10-15 15:00:31', 1),
+(3, 'Supplier C', 'Contact Person B', '#C C st. Address C', 'Bulacan City', 'C', '', 'C', '2015-10-15 16:09:12', 1),
+(4, 'Supplier D', 'Contact Person D', '#D D St. D Address', 'Pampanga', 'D terms', '3', 'D', '2015-10-19 00:18:19', 1);
 
 -- --------------------------------------------------------
 

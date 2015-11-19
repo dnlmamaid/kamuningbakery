@@ -141,7 +141,7 @@
 								<label class="control-label" style="color:red;">Re Order Level</label>
 								<input type="text" name="eoq" class="form-control inline" value="<?php echo $r->ro_lvl; ?>">
 								<?php else:?>
-								<label class="control-label">Re Order Level</label>
+								<label class="control-label">Re-order Level</label>
 								<input type="text" name="eoq" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>">	
 								<?php endif; ?>
 							</div>
@@ -342,41 +342,33 @@
 						<div class="col-lg-12">
 						<h3>Ingredients: </h3>
 						</div>
-						<div class="col-lg-4" style="margin-bottom:15px;">
-							<button type="button" id="addButton" class="btn btn-theme" data-toggle="tooltip" data-placement="top" title="Add More" ><i class="fa fa-plus"></i></button>
-							<button type="button"  id="removeButton" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Remove One" ><i class="fa fa-minus"></i></button>
-							
-						</div>
+						
 						
 							
 						<div class="form-group" id="materials">
 							<div id="rm">
-								<?php foreach($qcp as $val)  ?>
-								<div class="col-lg-3  pull-right">
-									<input type="text" class="form-control" value="units" disabled>
-								</div>
-								
-								<div class="col-lg-5  pull-right">
+								<?php foreach($qcp as $val) ?>
+								<div class="col-lg-5">
 									<input type="number" step="any" name="qty_can_produce" class="form-control inline" value="<?php echo round($val->qty_can_produce); ?>" required> 
 								</div>
-								
+								<div class="col-lg-3">
+									<input type="text" class="form-control" value="units" disabled>
+								</div>
 								
 							<?php foreach($ing as $r2): ?>
 								<div class="col-lg-12 col-xs-12">
 									<div class="col-lg-4 col-xs-4">						
 										<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" required>
 									</div>
-									<div class="col-lg-2 col-xs-2">						
-										<input type="text" class="form-control inline" value="<?php echo $r2->um?>" disabled>
-									</div>
+									
 									<div class="col-lg-6 col-xs-6">
 										<select name="rm_ID[]" class="form-control" required>
-										<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
+										<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?> (<?php echo $r2->um?>)</option>
 										<?php if(!empty($rm)){
 											if (is_array($rm)){                      
 									        	foreach ($rm as $row) {
 									            	if($row['product_id'] != $r2->product_id){?>
-														<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
+														<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?> (<?php echo $row['um']?>)</option>
 													<?php } 
 												}
 											}
@@ -465,158 +457,8 @@
 	</div>
 	<!-- /#container bg-panel -->
 	
-	<!--Purchase Order Modal-->			
-	<div class="modal fade" id="purchaseOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-							
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title"><i class="fa fa-briefcase"></i> Purchase Order Form</h4>
-					</div>
-							
-					<div class="modal-body">
-					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>production/produce/<?php echo $r->product_id?>">
-						
-						<div class="form-group">
-							<div class="col-lg-6 col-xs-6">
-								<label> Quantity</label>
-								<input type="text" name="quantity" class="form-control inline" required>
-								<input type="hidden" name="supplier_id" class="form-control" value="<?php echo $r->supplier_ID ?>">
-							</div>
-						</div>
-									
-						<div class="form-group">
-							<div class="col-lg-8 col-xs-8">
-								<label> Price Per unit</label>
-								<input type="number" step="any" name="price" class="form-control inline" required>
-							</div>
-						</div>
-									
-					</div>
-								
-								
-					<div class="modal-footer">
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<input type="submit" class="btn btn-success" value="Add">
-							</form>
-						</div>
-					</div>
-								
-					
-				</div>
-							
-			</div>
-		</div>
-	</div>
 	
-	<!-- Sales Order Modal-->			
-	<div class="modal fade" id="salesOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-							
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title"><i class="fa fa-briefcase"></i> Sales Order Form</h4>
-					</div>
-							
-					<div class="modal-body">
-					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>products/sell_product/<?php echo $r->product_id?>">
-						
-						<div class="form-group">
-							<div class="col-lg-6 col-xs-6">
-								<label> Quantity</label>
-								<input type="text" name="quantity" class="form-control inline" required>
-							</div>
-						</div>
-							
-					</div>
-								
-								
-					<div class="modal-footer">
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<input type="submit" class="btn btn-success" value="Submit">
-							</form>
-						</div>
-					</div>
-								
-					
-				</div>
-							
-			</div>
-		</div>
-	</div>
 	
-	<!-- Production Modal-->			
-	<div class="modal fade" id="produce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-							
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title"><i class="fa fa-briefcase"></i> Goods Production Form</h4>
-					</div>
-							
-					<div class="modal-body">
-					<form class="form-group" method="post" accept-charset="utf-8" action="<?php echo base_url(); ?>products/reproduce/<?php echo $r->product_id?>">
-						<?php foreach($ing as $r2): ?>
-						<div class="col-lg-12 col-xs-12">
-							<div class="col-lg-4 col-xs-4">	
-								<input type="hidden" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>">
-							</div>
-									
-							<div class="col-lg-8 col-xs-8" hidden>
-								<select name="rm_ID[]" class="form-control">
-								<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?></option>
-								<?php if(!empty($rm)){
-									if (is_array($rm)){                      
-										foreach ($rm as $row) {
-									    	if($row['product_id'] != $r2->product_id){?>
-												<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?></option>
-											<?php } 
-										}
-									}
-								} ?>
-								</select>
-							</div>
-						</div>
-						<?php endforeach;?>
-						
-						<div class="form-group">
-							<div class="col-lg-6 col-xs-6">
-								<label> Quantity</label>
-								<input type="text" name="quantity" class="form-control inline" required>
-							</div>
-						</div>
-							
-					</div>
-								
-								
-					<div class="modal-footer">
-						<div class="form-group">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<input type="submit" class="btn btn-success" value="Submit">
-							</form>
-						</div>
-					</div>
-								
-					
-				</div>
-							
-			</div>
-		</div>
-	</div>
 	
 	
 </div>	

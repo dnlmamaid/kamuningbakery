@@ -204,16 +204,27 @@ class purchases_model extends CI_Model{
 
 	function update_po($id)
     {
+    	$order = array(
+			'order_reference' => $this->input->post('order_reference'),
+		);
+			  
+		$this->db->where('order_reference', $id);    
+		$this->db->update('purchase_orders', $order);
+		
 	    
 		$purchase = array(
 			'user_id'	=> $this->session->userdata('user_id'),
 			'supplier_id' => $this->input->post('supplier_id'),
 			'date_ordered'=> $this->input->post('date_ordered'),
 			'date_received'=> $this->input->post('date_received'),
+			'purchase_reference' => $this->input->post('order_reference'),
 		);
 			  
-		$this->db->where('purchase_id', $id);  
+		$this->db->where('purchase_reference', $id);  
 		$this->db->update('purchases', $purchase);
+		
+		
+		
 		
 		$this->session->set_flashdata('success','You have successfully updated the purchase order');
 			

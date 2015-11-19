@@ -112,7 +112,7 @@ class production_model extends CI_Model{
 				$this->db->where('id_for', $pid);
 				$q = $this->db->get('ingredients');
 				
-				$ingArray = array();
+				
 		    	foreach($q->result() as $row)
 				{
 					$rm = $row->product_id;
@@ -126,13 +126,13 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$oldqty = $this->db->get()->row('current_count');
 					$nqty = ($oldqty - $qty);
-						
-					//Gets Total Cost Per Unit of Raw Materials
+					
+					//Gets Total Cost of Raw Mats Per Unit
 					$this->db->select('price');
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
 					$price = $this->db->get()->row('price');
-					
+									
 					//total production cost of product (sum of price of raw materials per unit)  
 					$total = $total + $price;
 					
@@ -140,7 +140,7 @@ class production_model extends CI_Model{
 					$cost = $price * $qty;
 					
 					$net_cost = $net_cost + $cost;
-						
+											
 					//Updates Quantity of Raw Materials Used
 					$process = array(
 						'current_count' => $nqty,
@@ -149,15 +149,7 @@ class production_model extends CI_Model{
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $process);
 					
-					$ingr = array(
-						'id_for' => $pid,
-						'product_id' => $rm,
-						'ingredient_ctr' => $ctr,
-						'ingredient_qty' => $qty,
-						'qty_can_produce' => $row->qty_can_produce * $this->input->post('quantity'),
-					);
 					
-					$this->db->insert('ingredients', $ingr);
 					$qcp = $row->qty_can_produce;
 					$ctr++;
 										
@@ -193,16 +185,43 @@ class production_model extends CI_Model{
 					'previous_count'		=> $oldc,
 					'units_produced'		=> ($qcp * $this->input->post('quantity')),
 					'production_cpu'		=> ($total/($qcp * $this->input->post('quantity'))),
-					'total_production_cost'	=> ($net_cost*($qcp * $this->input->post('quantity'))),
+					'total_production_cost'	=> ($net_cost),
 				);
 				
 				$this->db->insert('production_batch', $batch);
+				$pb_id = $this->db->insert_id();
+				
+				$this->db->where('id_for', $pid);
+				$q = $this->db->get('ingredients');
+			
+				$ctr = 0;
+				foreach($q->result() as $row){
+					
+					$rm = $row->product_id;
+					
+					//multiplies the ingredient qty to times of production
+					$qty = $row->ingredient_qty * $this->input->post('quantity');
+					
+					$ingr = array(
+						'pb_Id' => $pb_id,
+						'id_for' => $pid,
+						'product_id' => $rm,
+						'ingredient_ctr' => $ctr,
+						'ingredient_qty' => $qty,
+						'qty_can_produce' => $row->qty_can_produce * $this->input->post('quantity'),
+						'initial_ingredient' => '0',
+					);
+					
+					$this->db->insert('ingredients', $ingr);
+					
+					$ctr++;
+				}
 				
 				$this->db->select('net_produced_qty');
 				$this->db->from('production');
 				$this->db->where('batch_id', $code);
 				$onpq = $this->db->get()->row('net_produced_qty');
-				$nnpq = (($onpq) + $this->input->post('quantity'));
+				$nnpq = (($onpq) + ($qcp * $this->input->post('quantity')));
 				
 				$this->db->select('net_production_cost');
 				$this->db->from('production');
@@ -321,21 +340,6 @@ class production_model extends CI_Model{
 				
 				$remark_id = $this->db->insert_id();
 				
-				foreach($_POST['rm_ID'] as $val => $rm)
-				{
-					$ingr = array(
-						'id_for' => $remark_id,
-						'product_id' => $rm,
-						'ingredient_ctr' => $val,
-						'ingredient_qty' => $_POST['qpu'][$val],
-						'qty_can_produce' => $this->input->post('quantity'),
-						
-					);
-					
-					$this->db->insert('ingredients', $ingr);
-					
-				}
-				
 				$batch = array(
 					'product_id'			=> $remark_id,
 					'batch_reference'		=> $code,
@@ -344,8 +348,26 @@ class production_model extends CI_Model{
 					'production_cpu'		=> ($net_cost/$this->input->post('quantity')),
 					'total_production_cost'	=> $net_cost,			
 				);
-				
+						
 				$this->db->insert('production_batch', $batch);
+				$pb_id = $this->db->insert_id();
+				
+				foreach($_POST['rm_ID'] as $val => $rm)
+				{
+					$ingr = array(
+						'pb_id' => $pb_id,
+						'id_for' => $remark_id,
+						'product_id' => $rm,
+						'ingredient_ctr' => $val,
+						'ingredient_qty' => $_POST['qpu'][$val],
+						'qty_can_produce' => $this->input->post('quantity'),
+						'initial_ingredient' => '1',
+						
+					);
+					
+					$this->db->insert('ingredients', $ingr);
+					
+				}
 				
 				$this->db->select('net_produced_qty');
 				$this->db->from('production');
@@ -383,44 +405,7 @@ class production_model extends CI_Model{
 			else{
 				$this->session->set_flashdata('error','Production Failed. 1 or more Raw Materials required for production is insufficient.');
 			}
-			/*
-			$this->db->trans_begin();
-			try{
-				
-				foreach($_POST['rm_ID'] as $val => $rm){
-				    //Gets Raw Material 			
-					$this->db->select('current_count');
-					$this->db->from('products');
-					$this->db->where('product_id', $rm);
-					$oldqty = $this->db->get()->row('current_count');
-					$nqty = (($oldqty) - $_POST['qpu'][$val]);
-						
-					//Gets Total Cost Per Unit
-					$this->db->select('price');
-					$this->db->from('products');
-					$this->db->where('product_id', $rm);
-					$price = $this->db->get()->row('price');
-					$total = ($price + $total);
-					
-					if($nqty > 0){
-						//Updates Quantity	
-						$process = array(
-							'current_count' => $nqty,
-						);
-										
-						$this->db->where('product_id', $rm);
-						$this->db->update('products', $process);
-					}
-				}
-				$this->db->trans_commit();
-			}
 			
-			catch(Exception $e){
-			  	$this->db->trans_rollback();
-			  	$this->session->set_flashdata('error','Production Failed. 1 or more Raw Materials required for production is insufficient.');
-				exit;
-			}
-			*/
 			
 																								
 			
@@ -528,4 +513,5 @@ class production_model extends CI_Model{
 
 	
 }
+
 

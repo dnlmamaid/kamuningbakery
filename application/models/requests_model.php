@@ -227,6 +227,7 @@ class requests_model extends CI_Model{
     	
 		$request = array(			
 			'ro_status'=> '1',
+			'is_reviewed'=> '1',
 		);
 				
 		$this->db->where('ro_id',$id);
@@ -250,6 +251,7 @@ class requests_model extends CI_Model{
     {
 	    $request = array(			
 			'ro_status'=> '0',
+			'is_reviewed'=> '1',	
 		);
 				
 		$this->db->where('ro_id',$id);
