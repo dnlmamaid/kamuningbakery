@@ -213,6 +213,36 @@ class production_model extends CI_Model{
 					);
 					
 					$this->db->insert('ingredients', $ingr);
+									
+					//Gets Lead Time for reorder lvl
+				    $this -> db -> join('purchase_orders', 'purhase_orders.product_id = products.product_id', 'left');
+					$this -> db -> join('purchases', 'purhases.purchase_reference = purchase_orders.order_reference', 'right');	
+					$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'right');
+					
+					$this->db->select('lead_time');
+					$this->db->from('purchases');
+					$this->db->where('purhase_orders.product_id', $rm);
+					$lt = $this->db->get()->row('lead_time');
+					
+					//Gets monthly usage of raw mats
+					$this->db->join('production_batch', 'production_batch.pb_id = ingredients.pb_Id', 'left');
+					$this->db->join('production', 'production.batch_id = production_batch.batch_reference', 'right');
+						
+					$this->db->where('ingredients.product_id', $rm);
+					$this->db->select('sum(ingredient_qty) as total');
+					$this->db->group_by('month(date_produced)');
+					
+					$q = $this->db->get('ingredients');
+									
+					$ro = ($q->total/30) * $lt;
+					
+					//Updates ReOrder Level	
+					$ro = array(
+						'ro_lvl' => $ro,
+					);
+										
+					$this->db->where('product_id', $rm);
+					$this->db->update('products', $ro);
 					
 					$ctr++;
 				}
@@ -279,7 +309,7 @@ class production_model extends CI_Model{
 			
 			if($ctr == '0'){
 				foreach($_POST['rm_ID'] as $val => $rm){
-				    //Gets Raw Material 			
+				    						 					
 					$this->db->select('current_count');
 					$this->db->from('products');
 					$this->db->where('product_id', $rm);
@@ -308,10 +338,10 @@ class production_model extends CI_Model{
 					$cost = $price * $qty;
 					
 					$net_cost = $net_cost + $cost;
-					
+									
 					//Updates Quantity	
 					$process = array(
-						'current_count' => $nqty,
+						'current_count' => $nqty,		
 					);
 										
 					$this->db->where('product_id', $rm);
@@ -366,6 +396,36 @@ class production_model extends CI_Model{
 					);
 					
 					$this->db->insert('ingredients', $ingr);
+					
+					//Gets Lead Time for reorder lvl
+				    $this -> db -> join('purchase_orders', 'purhase_orders.product_id = products.product_id', 'left');
+					$this -> db -> join('purchases', 'purhases.purchase_reference = purchase_orders.order_reference', 'right');	
+					$this -> db -> join('suppliers', 'suppliers.supplier_id = purchases.supplier_id', 'right');
+					
+					$this->db->select('lead_time');
+					$this->db->from('purchases');
+					$this->db->where('purhase_orders.product_id', $rm);
+					$lt = $this->db->get()->row('lead_time');
+					
+					//Gets monthly usage of raw mats
+					$this->db->join('production_batch', 'production_batch.pb_id = ingredients.pb_Id', 'left');
+					$this->db->join('production', 'production.batch_id = production_batch.batch_reference', 'right');
+						
+					$this->db->where('ingredients.product_id', $rm);
+					$this->db->select('sum(ingredient_qty) as total');
+					$this->db->group_by('month(date_produced)');
+					
+					$q = $this->db->get('ingredients');
+									
+					$ro = ($q->total/30) * $lt;
+					
+					//Updates ReOrder Level	
+					$ro = array(
+						'ro_lvl' => $ro,
+					);
+										
+					$this->db->where('product_id', $rm);
+					$this->db->update('products', $ro);
 					
 				}
 				
@@ -513,5 +573,6 @@ class production_model extends CI_Model{
 
 	
 }
+
 
 

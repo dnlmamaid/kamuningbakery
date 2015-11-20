@@ -138,14 +138,15 @@
 						<div class="form-group">
 							<div class="col-lg-5 col-xs-3">
 								<?php foreach($su as $rs)
-									  $ro_lvl = ($avg->total/$avg->count) * $rs['lead_time'];
+									  $ro_lvl = ($avg->total/30) * $rs['lead_time'];
 								if(($r->current_count <= $ro_lvl)): ?>
 								<label class="control-label" style="color:red;">Re Order Level</label>
-								<input type="text" class="form-control inline" value="<?php echo $ro_lvl; ?>" disabled>
+								<input type="text" class="form-control inline" value="<?php echo round($ro_lvl); ?>" disabled>
 								<?php else:?>
-								<label class="control-label">Re-order Level</label>
+								<label class="control\-label">Re-order Level</label>
 								<input type="text" class="form-control inline" value="<?php echo round($ro_lvl); ?>" disabled>	
 								<?php endif; ?>
+								<input type="hidden" name="ro_lvl" class="form-control inline" value="<?php echo round($ro_lvl); ?>" disabled>	
 							</div>
 						</div>
 						

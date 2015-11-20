@@ -338,7 +338,7 @@ $(function () {
             borderWidth: 0
         },
         series: [{
-            name: 'Purchases',
+            name: 'Sales',
             data: [<?php if(isset($sales_c) && is_array($sales_c)) : foreach($sales_c as $row): ?>
             			<?php echo $row->total?>,
             			<?php endforeach; endif; ?>]

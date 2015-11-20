@@ -1,12 +1,12 @@
 <?php
 Class reports_model extends CI_Model {
 		
-	public function getRequests($limit, $start) {
+	public function getRequests($limit) {
 		
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
-			$this-> db -> limit($limit, $start);
+			$this-> db -> limit($limit);
 			$this -> db -> where('request_status', '0');
 			$this -> db -> order_by('request_date', 'asc');
 			$query = $this -> db -> get('requests');
@@ -45,10 +45,10 @@ Class reports_model extends CI_Model {
 		}
 	}
 	
-	public function getLow($limit, $start) {
-			
-		$this -> db -> limit($limit, $start);
-		$this -> db -> where('current_count');
+	public function getLow($limit){
+		
+		$this-> db -> limit($limit);
+		$this -> db -> where('current_count <= ro_lvl');
 		$query = $this -> db -> get('products');
 		
 		if ($query -> num_rows() > 0) {
@@ -737,10 +737,12 @@ Class reports_model extends CI_Model {
 		$this->db->where('ingredients.product_id', $pid);
 		
 		$this->db->select('sum(ingredient_qty) as total, count(*) as count');
+		
 		$this->db->group_by('month(date_produced)');
 		
 		$q = $this->db->get('ingredients');
 		return $q->row();
+		
 	}
 	
 	function getLeadTime($pid){

@@ -90,7 +90,6 @@ class purchases_model extends CI_Model{
 				'holding_cost' => $this->input->post('holding_cost'),
 				'ro_lvl' => '0',
 				'category_ID' => '2',
-				
 				'class_ID' => $this->input->post('class_ID'),
 				'description' => $this->input->post('description'),
 				'um' => $this->input->post('um'),
