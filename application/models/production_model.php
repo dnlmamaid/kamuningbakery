@@ -216,7 +216,8 @@ class production_model extends CI_Model{
 					);
 					
 					$this->db->insert('ingredients', $ingr);
-
+					
+					/*
 					//Gets Lead Time for reorder lvl
 				    
 					$this -> db -> join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
@@ -251,7 +252,7 @@ class production_model extends CI_Model{
 										
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $rou);
-					
+					*/
 					$ctr++;
 				}
 				
@@ -404,7 +405,7 @@ class production_model extends CI_Model{
 					);
 					
 					$this->db->insert('ingredients', $ingr);
-					
+					/*
 					//Gets Lead Time for reorder lvl
 				    
 					$this -> db -> join('purchase_orders', 'purchase_orders.order_reference = purchases.purchase_reference', 'left');
@@ -439,7 +440,7 @@ class production_model extends CI_Model{
 										
 					$this->db->where('product_id', $rm);
 					$this->db->update('products', $rou);
-					
+					*/
 				}
 				
 				$this->db->select('net_produced_qty');
