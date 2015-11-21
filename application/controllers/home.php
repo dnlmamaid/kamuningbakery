@@ -17,15 +17,17 @@ class home extends CI_Controller {
 	* 
 	*/	
 	function index() {
+		
+		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+	    $data['audit'] = $this->reports_model->getAudit('5', $offset);
+		$data['hsp'] = $this->reports_model->getHSales();
+		$data['purchases_c'] = $this->reports_model->getMPurchases();
+		$data['sales_c'] = $this->reports_model->getMSales();
+		$data['products'] = $this->reports_model->getLow('5');
+		$data['requests'] = $this->reports_model->getRequests('5');
+		
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2'))
 	    {
-	    	$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-	    	$data['audit'] = $this->reports_model->getAudit('5', $offset);
-			$data['hsp'] = $this->reports_model->getHSales();
-			$data['purchases_c'] = $this->reports_model->getMPurchases();
-			$data['sales_c'] = $this->reports_model->getMSales();
-			$data['products'] = $this->reports_model->getLow('5');
-			$data['requests'] = $this->reports_model->getRequests('5');		
 			$data['main_content'] = 'home';
 			$this->load->view('includes/admintemplate', $data);		
 		}
@@ -45,6 +47,7 @@ class home extends CI_Controller {
 		
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '5'))
 	    {
+	    	$data['purchases_c'] = $this->reports_model->getMPurchases();
 			$data['main_content'] = 'home';
 			$this->load->view('includes/ptemplate', $data);		
 		}
@@ -55,12 +58,7 @@ class home extends CI_Controller {
 			$this->load->view('includes/sktemplate', $data);		
 		}
 		
-		else
-	    {
-			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
-			redirect('login', 'refresh');
-		}
+		
 	}
 	
 }

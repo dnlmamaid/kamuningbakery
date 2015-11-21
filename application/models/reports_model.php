@@ -26,7 +26,7 @@ Class reports_model extends CI_Model {
 		} else if($this->session->userdata('is_logged_in')){
 			
 			$this->db->join('users','users.id = requests.user_id','left');
-			$this -> db -> limit($limit, $start);
+			$this -> db -> limit($limit);
 			$this -> db -> where('request_status', '0');
 			$this -> db -> order_by('request_date', 'asc');
 			$query = $this -> db -> get('requests');

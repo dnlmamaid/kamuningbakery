@@ -281,6 +281,47 @@
 				
 			</div>	
 		</div>
+		<?php elseif($this->session->userdata('user_type') == '5'): ?>
+    	
+    	<!--------------- PURCHASER --------------------->
+    	<!--------------- PURCHASER --------------------->
+    	<!--------------- PURCHASER --------------------->
+    	
+    	<div class="row">
+    		<div class="col-lg-12" align="center" style="margin-bottom:15px;">
+				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+			</div>
+    		<div class="col-lg-2">
+		    	
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>purchases" data-toggle="tooltip" data-placement="top" title="Purchases">
+					<div class="info-box yellow-bg">
+						<i class="fa icon_datareport"></i>
+						
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+							
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>suppliers" data-toggle="tooltip" data-placement="top" title="Suppliers">
+					<div class="info-box red-bg">
+						<i class="fa fa-truck"></i>
+						
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+				
+			</div>
+			<?php if($this->session->flashdata('message')){ ?>
+			<div class="col-lg-12">
+				<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
+			</div>
+			<?php } ?>
+			<div class="col-lg-10">				
+				<div id="purchaser-purchases"></div>	
+			</div>			
+				
+		</div>
 		<?php endif; ?>
 		
 		

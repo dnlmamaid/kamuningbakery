@@ -15,10 +15,7 @@ class suppliers extends CI_Controller {
 	public function index($offset = 0)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
-	    {
-	    	
-	    	//Pagination
+		//Pagination
 			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
 			$total_row = $this->users_model->getAllUsersCtr();
 			
@@ -53,43 +50,69 @@ class suppliers extends CI_Controller {
 			$data['suppliers'] = $this->users_model->getSuppliers($config['per_page'], $offset);
 			
 			$data['utype'] = $this->users_model->getuType();
-			
+		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+	    		    	
 			$data['main_content'] = 'suppliers_table';
 			$this->load->view('includes/adminTemplate', $data);
 			
 		}
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5'){
+			
+			$data['main_content'] = 'suppliers_table';
+			$this->load->view('includes/pTemplate', $data);			
+			
+		}
 
-		else
-	    {
+		else if($this->session->userdata('is_logged_in')){
+			
+	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+			
+		} 
+
+
+		else{
+					
 			//If no session, redirect to login page
 			$this->session->set_flashdata('message','You need to be logged in to continue');
 			redirect('login', 'refresh');
+			
 		}
 	}
 
 	public function profile()
 	{
+		$data['utype'] = $this->users_model->getuType();
+						
+		$mid = $this -> uri -> segment(3);
+		$data['rec'] = $this -> users_model -> get_supplier_rec($mid);
+		$data['products'] = $this -> products_model -> getProductSupplier($mid);
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){			
-			$data['utype'] = $this->users_model->getuType();
-			
-			/* Notification */
-			
-			$data['notif'] = $this->users_model->getNotif(); //gets member applicants
-			$data['notif_n_ctr'] = $this->users_model->getNotifNCtr();//ctr for member applicants
-			
-			$mid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> users_model -> get_supplier_rec($mid);
-			$data['products'] = $this -> products_model -> getProductSupplier($mid);
-			
-			$data['main_content'] = 'suppliers_profile';
-			
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+						
+			$data['main_content'] = 'suppliers_profile';			
 			$this->load->view('includes/adminTemplate', $data);
 			
-		} else if($this->session->userdata('is_logged_in')){
+		}
+
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5'){
+			
+			$data['main_content'] = 'suppliers_profile';
+			$this->load->view('includes/pTemplate', $data);			
+			
+		}
+
+		else if($this->session->userdata('is_logged_in')){
+			
 	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
-		} else{
+			
+		} 
+		
+		else{
+			
 	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
@@ -99,10 +122,9 @@ class suppliers extends CI_Controller {
 
 	public function update($id)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			$id = $this -> uri -> segment(3);
 			$this -> users_model -> update_supplier($id);
-			
 			redirect('suppliers/profile/'.$id, 'refresh');
 			
 		} else if($this->session->userdata('is_logged_in')){
@@ -117,7 +139,7 @@ class suppliers extends CI_Controller {
 	
 	public function add()
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			$this -> users_model -> create_supplier();
 			$this->session->set_flashdata('success','Successfully Created User');
 			redirect('suppliers', 'refresh');
@@ -133,7 +155,7 @@ class suppliers extends CI_Controller {
 	
 	public function remove($id)
 	{
-		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <='2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			$this -> users_model -> remove_s($id);
 			$this->session->set_flashdata('message','Successfully Deleted Entry');
 			redirect('suppliers', 'refresh');
@@ -151,7 +173,7 @@ class suppliers extends CI_Controller {
 	public function disable($id)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			
 			$this -> users_model -> disable_s($id);
 			
@@ -168,7 +190,7 @@ class suppliers extends CI_Controller {
 
 	public function enable($id)
 	{		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){
 			
 			$this -> users_model -> enable_s($id);
 			
@@ -187,7 +209,7 @@ class suppliers extends CI_Controller {
 	
 	function search() {
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){	
+		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')){	
 			$search = $this -> input -> post('search');
 			redirect('suppliers/search_result/'.$search);
 						
@@ -203,17 +225,28 @@ class suppliers extends CI_Controller {
 
 	function search_result($search) {
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
-			$data['search'] = $this -> users_model -> search_suppliers($search);
-			
+		$data['search'] = $this -> users_model -> search_suppliers($search);
+		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+				
 			$data['main_content'] = 'suppliers_table';
 			$this -> load -> view('includes/adminTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
+			
+			$data['main_content'] = 'suppliers_table';
+			$this -> load -> view('includes/pTemplate', $data);
+				
 		} else if($this->session->userdata('is_logged_in')){
+			
 	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
+			
 		} else{
+			
 	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
+			
 		}
 	
 	}
