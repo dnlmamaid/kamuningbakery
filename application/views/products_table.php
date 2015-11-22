@@ -69,7 +69,7 @@
 										<td class="col-md-1 b"><?php if($row->product_status == '0'): ?><i class="fa fa-ban"><?php else: ?><i class="fa fa-exclamation-triangle"><?php endif;?></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1 b"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1 b"><?php if($row->ro_lvl == '0'):?>Needs more data <?php else: echo round($row->ro_lvl);?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;} endif;?></td>
 		                                
 	                                </tr>	
 									<?php else:?>
@@ -77,7 +77,7 @@
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->ro_lvl == '0'):?>Needs more data <?php else: echo round($row->ro_lvl);?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;} endif;?></td>
 		                                		                                
 	                                </tr>
 									<?php endif;endforeach;	                               
@@ -86,7 +86,7 @@
 										<td class="col-md-1 b"><?php if($row->product_status == '0'): ?><i class="fa fa-ban"><?php else: ?><i class="fa fa-exclamation-triangle"><?php endif;?></i> <?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1 b"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1 b"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1 b"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1 b"><?php if($row->ro_lvl == '0'):?>Needs more data <?php else: echo round($row->ro_lvl);?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;} endif;?></td>
 		                               
 	                               </tr>
 	                               <?php else:?>
@@ -94,7 +94,7 @@
 										<td class="col-md-1"><?php echo $row->product_Name ?></td>
 		                                <td class="col-md-1"><?php echo $row->class_Name?></td>
 		                                <td class="col-md-1"><?php echo round($row->current_count) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
-		                                <td class="col-md-1"><?php echo round($row->ro_lvl) ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+		                                <td class="col-md-1"><?php if($row->ro_lvl == '0'):?>Needs more data <?php else: echo round($row->ro_lvl);?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;} endif;?></td>
 		                              
 	                                </tr>
 	                                <?php endif;endforeach;		                               

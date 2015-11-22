@@ -300,7 +300,6 @@ class production extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4')))
 	    {
 			$this -> production_model -> add_to_batch($code);
-			$this -> production_model -> update_usage($code);
 			redirect($this->agent->referrer(), 'refresh');
 		}
 		 

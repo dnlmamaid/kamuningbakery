@@ -6,14 +6,12 @@ class home extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-		$this -> load -> model('users_model');
-		$this -> load -> model('reports_model');		
-		$this -> load -> model('products_model');
+		$this->load->model('users_model');
+		$this->load->model('reports_model');		
+		$this->load->model('products_model');
 	}
 
-
-	/**
-	* 
+	/*
 	* 
 	*/	
 	function index() {
@@ -58,6 +56,17 @@ class home extends CI_Controller {
 			$this->load->view('includes/sktemplate', $data);		
 		}
 		
+		else if($this->session->userdata('is_logged_in'))
+	    {
+			
+			redirect(base_url(), 'refresh');
+		} 
+		
+		else {
+			//If no session, redirect to login page
+			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			redirect('login', 'refresh');
+		}
 		
 	}
 	
