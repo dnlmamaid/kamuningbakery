@@ -156,14 +156,14 @@
 					<tbody>
 						<tr>
 							<th class="col-md-2"><i class="fa icon_cart"></i> Product Name</th>
-                            <th class="col-md-2"><i class="fa fa-dollar"></i> Cost per unit</th>
+                            <th class="col-md-2"><i class="fa">&#8369;</i> Cost per unit</th>
 							<th class="col-md-2"><i class="fa fa-exclamation-triangle"></i> Quantity</th>
 						</tr>
                         
                         <?php if(isset($products) && is_array($products)) : foreach($products as $row):?> 
 								  	<tr class="conf clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
 							<td class="col-md-2-b"><i class="fa fa-exclamation-triangle"></i> <?php echo $row->product_Name?></a></td>
-                            <td class="col-md-2-b"> <?php echo $row->price ?></a></td>
+                            <td class="col-md-2-b">&#8369; <?php echo $row->price ?></a></td>
                             <td class="col-md-2-b"> <?php echo round($row->current_count) ?></a></td>                                                           
                         <?php endforeach;	                               
 						else:?>

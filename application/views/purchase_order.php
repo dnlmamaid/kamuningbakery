@@ -396,9 +396,13 @@
 							</div>
 							
 							
-							<div class="col-lg-2">
+							<div class="col-lg-3">
 								<label class="control-label">Unit</label>
-								<input type="text" name="um" class="form-control inline" value="" required>
+								<select name="purchase_status" class="form-control">
+									<option value="g">Grams</option>
+									<option value="ml">Millilitres</option>
+									<option value="pc">Piece</option>
+								</select>
 							</div>
 
 							<div class="col-lg-3">

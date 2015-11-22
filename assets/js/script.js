@@ -1,5 +1,5 @@
 function initializeJS() {
-
+	var dateToday = new Date();
 	//clickable row
 	 $(".clickable-row").click(function() {
 	        window.document.location = $(this).data("href");
@@ -22,24 +22,28 @@ function initializeJS() {
 	$('#datep').datetimepicker({
 		lang : 'en',
 		timepicker : false,
-		format : 'Y-m-d'
+		format : 'Y-m-d',
+		minDate: dateToday,
 	});
 	
 	$('#date2').datetimepicker({
 		lang : 'en',
 		timepicker : false,
-		format : 'Y-m-d'
+		format : 'Y-m-d',
+		minDate: dateToday,
 	});
 
 	$('#sched').datetimepicker({
 		allowTimes : ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'],
 		lang : 'en',
+		minDate: dateToday,
 		format : 'Y/m/d H:i'
 	});
 
 	$('#timein').datetimepicker({
 		lang : 'en',
 		datepicker : false,
+		minDate: dateToday,
 		format : 'H:i',
 		step : 1
 	});
