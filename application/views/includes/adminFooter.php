@@ -162,15 +162,8 @@
 			thousandsSep: ','
 		}
 	});
-<?php if(($head == '' || $head =='home')&& $this->session->userdata('user_type') <= '2'):?>
-	var colors_array= ["#009000", "#006600", "#339933"];
-	Morris.Donut({
-	  element: 'hsp',
-	  colors: colors_array,
-	  data: [<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $row): ?>
-	    {label: "<?php echo $row->product_Name?>", value: <?php echo $row->total?>},
-	  <?php endforeach; endif; ?>]
-	});
+<?php if(($head == '' || $head =='home')&& $this->session->userdata('user_type') <= '3'):?>
+	
     
 
 $(function () {
@@ -231,6 +224,16 @@ $(function () {
         ]
     });
 });
+
+
+var colors_array= ["#009000", "#006600", "#339933"];
+	Morris.Donut({
+	  element: 'hsp',
+	  colors: colors_array,
+	  data: [<?php if(isset($hsp) && is_array($hsp)) : foreach($hsp as $row): ?>
+	    {label: "<?php echo $row->product_Name?>", value: <?php echo $row->total?>},
+	  <?php endforeach; endif; ?>]
+	});
 
 <?php elseif(($head == '' || $head =='home') && $this->session->userdata('user_type') == '5'):?>
 $(function () {

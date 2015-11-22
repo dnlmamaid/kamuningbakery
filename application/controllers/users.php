@@ -14,13 +14,11 @@ class users extends CI_Controller {
 	public function index($offset = 0)
 	{
 		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
-	    	
-	    	//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->users_model->getAllUsersCtr();
+		//Pagination
+		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+		$total_row = $this->users_model->getAllUsersCtr();
 			
-			$config = array(
+		$config = array(
 			'total_rows' => $total_row,
 			'per_page' => 8, 
 			'uri_segment' => 3,
@@ -42,22 +40,28 @@ class users extends CI_Controller {
 			'next_tag_close' => '</li>',
 			'num_tag_open' => '<li>',
 			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
+		);
+		
+		$this->pagination->initialize($config);
+		$data['paginglinks'] = $this->pagination->create_links();
+		
+		if($data['paginglinks']!= '') {
       			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-    		}   
-			$data['users'] = $this->users_model->getUsers($config['per_page'], $offset);
-			
-			$data['utype'] = $this->users_model->getuType();
-			
+    	}
+		   
+		$data['users'] = $this->users_model->getUsers($config['per_page'], $offset);
+		$data['utype'] = $this->users_model->getuType();
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+
 			$data['main_content'] = 'users_table';
 			$this->load->view('includes/adminTemplate', $data);
 			
 		} else if($this->session->userdata('is_logged_in')){
+			
 	    	$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
+			
 		} else{
 	    	$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
@@ -66,15 +70,37 @@ class users extends CI_Controller {
 
 	public function profile()
 	{
+		$data['utype'] = $this->users_model->getuType();
+			
+		$mid = $this -> uri -> segment(3);
+		$data['rec'] = $this -> users_model -> get_member_rec($mid);
 		
-		if($this->session->userdata('is_logged_in')){			
-			$data['utype'] = $this->users_model->getuType();
-			
-			$mid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> users_model -> get_member_rec($mid);
-			
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){			
+						
 			$data['main_content'] = 'profile_page';
 			$this->load->view('includes/adminTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3'){			
+						
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/accTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4'){			
+						
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/bTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5'){			
+						
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/pTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6'){			
+						
+			$data['main_content'] = 'profile_page';
+			$this->load->view('includes/skTemplate', $data);
+			
 		} else {
 			//If no session, redirect to login page
 			$this->session->set_flashdata('error','You need to be logged in to continue');
@@ -191,7 +217,6 @@ class users extends CI_Controller {
 		
 		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
 			$data['search'] = $this -> users_model -> search_users($search);
-			
 			$data['main_content'] = 'users_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		} else if($this->session->userdata('is_logged_in')){

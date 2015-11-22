@@ -179,25 +179,73 @@
                 </div>
                 
 			</div>
+			
+		<?php elseif($this->session->userdata('user_type') == '3'): ?>
+    	
+    	<!--------------- Accountant --------------------->
+    	<!--------------- Accountant --------------------->
+    	<!--------------- Accountant --------------------->
+    	<!--------------- Accountant --------------------->
+    		
+    	
+    	<div class="row">
+    		<div class="col-lg-12" align="center" style="margin-bottom:15px;">
+				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+			</div>
+    		<div class="col-lg-2">
+		    	
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>sales/report" data-toggle="tooltip" data-placement="top" title="Sales">
+					<div class="info-box greenLight-bg">
+						<i class="fa fa">&#8369;</i>
+						
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+				
+				<div class="col-lg-12 col-xs-6">
+					<a href="<?php echo base_url()?>purchases" data-toggle="tooltip" data-placement="top" title="Purchases">
+					<div class="info-box yellow-bg">
+						<i class="fa icon_datareport"></i>
+						
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
+				
+			</div>
+			<div class="col-lg-10">
+				
+				<?php if($this->session->flashdata('message')){ ?>
+				<div class="col-lg-12">
+					<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
+				</div>
+				<?php } ?>
+				
+				<div class="col-lg-12">
+					<div id="activity" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				</div>	
+			</div>
+			
+			
+		</div>
     	<?php elseif($this->session->userdata('user_type') == '4'): ?>
     	
     	<!--------------- BAKER --------------------->
     	<!--------------- BAKER --------------------->
     	<!--------------- BAKER --------------------->
     	<!--------------- BAKER --------------------->
+    	
     	<div class="row">
     		<div class="col-lg-12" align="center" style="margin-bottom:15px;">
 				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
 			</div>
-    		<div class="col-lg-4">
+    		<div class="col-lg-2">
 		    	
 				<div class="col-lg-12 col-xs-6">
 					<a href="<?php echo base_url()?>production" data-toggle="tooltip" data-placement="top" title="Production">
 					<div class="info-box red-bg">
 						<i class="fa flaticon-stone2"></i>
-						<div class="count">
-							Production
-						</div>
+						
 					</div><!--/.info-box-->
 					</a>
 				</div><!--/.col-->
@@ -206,15 +254,13 @@
 					<a href="<?php echo base_url()?>requests" data-toggle="tooltip" data-placement="top" title="Requests">
 					<div class="info-box magenta-bg">
 						<i class="fa fa-comments-o"></i>
-						<div class="count">
-							Requests
-						</div>
+
 					</div><!--/.info-box-->
 					</a>
 				</div><!--/.col-->
 				
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-10">
 				
 				<?php if($this->session->flashdata('message')){ ?>
 				<div class="col-lg-12">
@@ -250,26 +296,28 @@
                 </div>
 			</div>
 			
-			<div class="col-lg-8">
-				<h2><i class="fa fa-comments-o"></i> Produced Goods</h2>
+			<div class="col-lg-10">
+				<h2><i class="fa flaticon-stone2"></i> Produced Goods</h2>
 				<div class="table-responsive"> 
 					<table class="table table-advance table-hover">
 					<tbody>
 						<tr>
-							<th class="col-md-2"><i class="fa fa-calendar"></i> Date</th>
-							<th class="col-md-1"><i class="fa fa-user"></i> User</th>
-                            <th class="col-md-1"><i class="fa fa-comment"></i> Request ID</th>
+							<th class="col-md-1"><i class="fa fa-calendar"></i> Date Produced</th>
+							<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
+			                <th class="col-md-1"><i class="fa fa-tags"></i> Number of Goods Produced</th>
+							<th class="col-md-1"><i class="fa">&#8369;</i> Net Cost</th>
 						</tr>
-                        <?php if(isset($requests) && is_array($requests)) : foreach($requests as $row): ?>
-                        <tr class="conf clickable-row" data-href="<?php echo base_url()?>requests/request_order/<?php echo $row->ro_reference ?>">
-                        	<td class="col-md-2 b"><?php echo date('F d,Y (D) h:i A', strtotime($row->request_date))?></td>
-							<td class="col-md-1 b"><?php echo $row->lastName ?>, <?php echo $row->firstName ?></a></td>
-                            <td class="col-md-1 b"><?php echo $row->ro_reference ?></a></td>
-                                                                                       
-                        </tr>
+                        <?php if(isset($production) && is_array($production)) : foreach($production as $row): ?>
+                        <tr class="clickable-row" data-href="<?php echo base_url()?>production/production_batch/<?php echo $row->batch_id ?>">
+							<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row->date_produced))?></td>
+							<td class="col-md-1"><?php echo $row->batch_id ?></td>
+		                   	<td class="col-md-1"><?php echo $row->net_produced_qty ?> units</td>
+		                	<td class="col-md-1">Php <?php echo $row->net_production_cost ?></td>
+	                    </tr>
                         <?php endforeach;	                               
 						else:?>
 						<tr>											
+							<th>No records</th>
 							<th>No records</th>
 							<th>No records</th>
 							<th>No records</th>

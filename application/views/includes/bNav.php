@@ -7,7 +7,7 @@
     	<li><a href="<?php echo base_url()?>">Home</a></li>
     	<li><a href="<?php echo base_url()?>requests">Requests</a></li>
     	<li><a href="<?php echo base_url()?>production">Production</a></li>
-    	<li><a href="<?php echo base_url()?>products/finished_goods">Products</a></li>
+    	<li><a href="<?php echo base_url()?>inventory/finished_goods">Products</a></li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Control Panel <span class="caret"></span></a>
         	<ul class="dropdown-menu" role="menu">
                 <li><a href="<?php echo base_url()?>users/profile/<?php echo $this->session->userdata('user_id')?>">My Profile</a></li>

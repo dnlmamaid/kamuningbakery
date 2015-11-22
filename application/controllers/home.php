@@ -45,7 +45,7 @@ class home extends CI_Controller {
 		
 		else if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') == '5'))
 	    {
-	    	$data['purchases_c'] = $this->reports_model->getMPurchases();
+	    	
 			$data['main_content'] = 'home';
 			$this->load->view('includes/ptemplate', $data);		
 		}

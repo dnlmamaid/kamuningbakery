@@ -14,13 +14,11 @@ class inventory extends CI_Controller {
 
 	public function index($offset = 0)
 	{
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '1')
-	    {
-			//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->products_model->getProductsCtr();
+		//Pagination
+		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+		$total_row = $this->products_model->getProductsCtr();
 			
-			$config = array(
+		$config = array(
 			'total_rows' => $total_row,
 			'per_page' => 8, 
 			'uri_segment' => 3,
@@ -42,35 +40,60 @@ class inventory extends CI_Controller {
 			'next_tag_close' => '</li>',
 			'num_tag_open' => '<li>',
 			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
-			 	if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
-				{
-      				$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
-      			}
-				else{
-      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-				} 			
-      			
-    		}   
-			$data['products'] = $this->products_model->getProducts($config['per_page'], $offset);
-			
-			
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-			
+		);
 		
+		$this->pagination->initialize($config);
+		$data['paginglinks'] = $this->pagination->create_links();
+		if($data['paginglinks']!= '') {
+			 if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
+			{
+      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
+      		}
+			else{
+      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
+			} 			    
+    	}   
+		$data['products'] = $this->products_model->getProducts($config['per_page'], $offset);
+			
+			
+		$data['cat'] = $this -> products_model -> getCategory();
+		$data['cls'] = $this -> products_model -> getClass();
+			
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
+	    {
 			
 			$data['main_content'] = 'products_table';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
 
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
+	    {
+			$data['main_content'] = 'products_table';
+			$this -> load -> view('includes/accTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
+	    {
+			$data['main_content'] = 'products_table';
+			$this -> load -> view('includes/bTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5')
+	    {
+			$data['main_content'] = 'products_table';
+			$this -> load -> view('includes/pTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6')
+	    {
+			$data['main_content'] = 'products_table';
+			$this -> load -> view('includes/skTemplate', $data);
+		}
+
 		else
 	    {
 			//If no session, redirect to login page
-			$this->session->set_flashdata('message','You need to be logged in to continue');
+			$this->session->set_flashdata('error','You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 	}
@@ -123,11 +146,44 @@ class inventory extends CI_Controller {
    			
 			$data['products'] = $this->products_model->get_product_by_rm($config['per_page'], $offset);
 			
-		
-			$data['main_content'] = 'products_table';
-			$this -> load -> view('includes/adminTemplate', $data);
+			if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
+		    {
+				
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/adminTemplate', $data);
+			}
+	
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/accTemplate', $data);
+			}
 			
-		
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/bTemplate', $data);
+			}
+			
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/pTemplate', $data);
+			}
+			
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/skTemplate', $data);
+			}
+	
+			else
+		    {
+				//If no session, redirect to login page
+				$this->session->set_flashdata('error','You need to be logged in to continue');
+				redirect('login', 'refresh');
+			}
+						
 	}
 
 	public function finished_goods()
@@ -180,8 +236,43 @@ class inventory extends CI_Controller {
 			$data['cat'] = $this -> products_model -> getCategory();
 			$data['cls'] = $this -> products_model -> getClass();
 		
-			$data['main_content'] = 'products_table';
-			$this -> load -> view('includes/adminTemplate', $data);
+			if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
+		    {
+				
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/adminTemplate', $data);
+			}
+	
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/accTemplate', $data);
+			}
+			
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/bTemplate', $data);
+			}
+			
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/pTemplate', $data);
+			}
+			
+			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6')
+		    {
+				$data['main_content'] = 'products_table';
+				$this -> load -> view('includes/skTemplate', $data);
+			}
+	
+			else
+		    {
+				//If no session, redirect to login page
+				$this->session->set_flashdata('error','You need to be logged in to continue');
+				redirect('login', 'refresh');
+			}
 			
 		
 	}

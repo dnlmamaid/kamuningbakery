@@ -56,16 +56,22 @@ class production extends CI_Controller {
 		   
 		$data['production'] = $this->reports_model->getProduction($config['per_page'], $offset);
 			
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2'){
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
 			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/adminTemplate', $data);
-		} else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4'){
+			$this->load->view('includes/adminTemplate', $data);
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3'){
 	
 			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/bTemplate', $data);
+			$this->load->view('includes/accTemplate', $data);
 
-		}else
-	    {
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
+	
+			$data['main_content'] = 'production_table';
+			$this->load->view('includes/bTemplate', $data);
+
+		} else {
+			//If no session, redirect to login page
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	}
@@ -74,7 +80,7 @@ class production extends CI_Controller {
 	/*public function produce_goods()
 	{
 		
-		if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2') || ($this -> session -> userdata('user_type') == '4'))
+		if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '4'))
 	    {			
 			$data['cls'] = $this -> products_model -> getClass();
 			$data['rm'] = $this -> products_model -> getRawMats();
@@ -96,11 +102,12 @@ class production extends CI_Controller {
 	function search()
 	{
 		
-		if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '5')){
+		if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '5')){
+			
 			$search = $this -> input -> post('search');
 			redirect('production/search_result/'.$search);
 						
-		} else if ($this -> session -> userdata('is_logged_in')) {
+		} else if ($this->session->userdata('is_logged_in')) {
 			
 		
 			$search = $this -> input -> post('search');
@@ -108,7 +115,7 @@ class production extends CI_Controller {
 			
 		} else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	
@@ -116,34 +123,33 @@ class production extends CI_Controller {
 
 	function search_result($search)
 	{
+		$data['search'] = $this -> production_model -> search($search);
 		
-		if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')){
-				
-			$data['search'] = $this -> production_model -> search($search);
+		if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')){
+					
+			$data['main_content'] = 'production_table';
+			$this->load->view('includes/adminTemplate', $data);
+			
+		} else if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3')){
+							
+			$data['main_content'] = 'production_table';
+			$this->load->view('includes/accTemplate', $data);
+			
+			
+		} else if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4')){
+					
+			$data['main_content'] = 'production_table';
+			$this->load->view('includes/bTemplate', $data);
+			
+			
+		} else if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')){			
 			
 			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/adminTemplate', $data);
-		} else if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')){
+			$this->load->view('includes/pTemplate', $data);
 			
-			$data['search'] = $this -> production_model -> search($search);
-			
-			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/accTemplate', $data);
-		} else if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')){
-			
-			$data['search'] = $this -> production_model -> search($search);
-			
-			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/bTemplate', $data);
-		} else if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5')){
-			
-			$data['search'] = $this -> production_model -> search($search);
-			
-			$data['main_content'] = 'production_table';
-			$this -> load -> view('includes/pTemplate', $data);
 		} else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	
@@ -153,10 +159,10 @@ class production extends CI_Controller {
 	public function report($offset = 0)
 	{
 		//Pagination
-			$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
-			$total_row = $this->reports_model->getProducedCtr();
+		$offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3): 0);
+		$total_row = $this->reports_model->getProducedCtr();
 			
-			$config = array(
+		$config = array(
 			'total_rows' => $total_row,
 			'per_page' => 8, 
 			'uri_segment' => 3,
@@ -178,59 +184,78 @@ class production extends CI_Controller {
 			'next_tag_close' => '</li>',
 			'num_tag_open' => '<li>',
 			'num_tag_close' => '</li>',
-			);
-			$this->pagination->initialize($config);
-			$data['paginglinks'] = $this->pagination->create_links();
-			 if($data['paginglinks']!= '') {
-			 	if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
-				{
-      				$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
-      			}
-				else{
+		);
+		
+		$this->pagination->initialize($config);
+		$data['paginglinks'] = $this->pagination->create_links();
+		
+		if($data['paginglinks']!= '') {
+			if(($this->pagination->cur_page*$this->pagination->per_page) > $total_row)
+			{
+      			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.$total_row.' of '.$total_row;
+      		}
+			else{
       			$data['pagermessage'] = 'Showing '.((($this->pagination->cur_page-1)*$this->pagination->per_page)+1).' to '.($this->pagination->cur_page*$this->pagination->per_page).' of '.$total_row;
-				} 			
-      			
-    		}   
-    		
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
-	    {
-	    	
-    		$data['total'] = $this->reports_model->get_total_produced();
-			$data['production_c'] = $this->reports_model->getMProduction();
-			$data['production_t'] = $this->reports_model->getProduction($config['per_page'], $offset);
-			
-			$data['main_content'] = 'production_report';
-			$this -> load -> view('includes/adminTemplate', $data);
-			
-		} else if(($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')){
-			
-    		$data['total'] = $this->reports_model->get_total_produced();
-			$data['products'] = $this->reports_model->getProduction($config['per_page'], $offset);
+			} 			      
+    	}
 
+		$data['total'] = $this->reports_model->get_total_produced();
+		$data['production_c'] = $this->reports_model->getMProduction();
+		$data['production_t'] = $this->reports_model->getProduction($config['per_page'], $offset);   
+    		
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
+	    {
 			$data['main_content'] = 'production_report';
-			$this -> load -> view('includes/accTemplate', $data);
+			$this->load->view('includes/adminTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3'){
+			    	
+			$data['main_content'] = 'production_report';
+			$this->load->view('includes/accTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
+			    	
+			$data['main_content'] = 'production_report';
+			$this->load->view('includes/bTemplate', $data);
 			
 		} else if($this->session->userdata('is_logged_in')){
 			$this -> session-> set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 			
-		} else{
+		} else {
+			//If no session, redirect to login page
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect(base_url(), 'refresh');
 		}
 	}
 
 	function by_date(){
+		
+		$data['sdate'] = $this->input->post('sdate');
+		$data['edate'] = $this->input->post('edate');
+			
+		$data['total'] = $this->reports_model->get_total_production_by_date();
+		$data['production_c'] = $this->reports_model->get_produced_by_dateuo();
+		$data['production_t'] = $this->reports_model->get_produced_by_date();
+			
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
 	    {
-			$data['sdate'] = $this->input->post('sdate');
-			$data['edate'] = $this->input->post('edate');
-			
-			$data['total'] = $this->reports_model->get_total_production_by_date();
-			$data['production_c'] = $this->reports_model->get_produced_by_dateuo();
-			$data['production_t'] = $this->reports_model->get_produced_by_date();
 			
 			$data['main_content'] = 'production_report';
-			$this -> load -> view('includes/admintemplate', $data);
+			$this->load->view('includes/admintemplate', $data);
+		} else if(($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3')){
+			    	
+			$data['main_content'] = 'production_report';
+			$this->load->view('includes/accTemplate', $data);
+			
+		} else if($this->session->userdata('is_logged_in')){
+			$this -> session-> set_flashdata('message', 'You don\'t have permission to access this page.');
+			redirect(base_url(), 'refresh');
+			
+		} else {
+			//If no session, redirect to login page
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
+			redirect(base_url(), 'refresh');
 		}
 	}
 
@@ -243,13 +268,13 @@ class production extends CI_Controller {
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			$this->session->set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 		}
 		
 		else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 	}
@@ -268,7 +293,7 @@ class production extends CI_Controller {
 			$data['to'] = $this->production_model->get_total_pc($code);
 			
 			$data['main_content'] = 'production_batch';
-			$this -> load -> view('includes/productionTemplate', $data);
+			$this->load->view('includes/productionTemplate', $data);
 			
 		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
 			$code = $this->uri->segment(3);
@@ -282,15 +307,15 @@ class production extends CI_Controller {
 			$data['to'] = $this->production_model->get_total_pc($code);
 			
 			$data['main_content'] = 'production_batch';
-			$this -> load -> view('includes/bTemplate', $data);
+			$this->load->view('includes/bTemplate', $data);
 			
 		} else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			$this->session->set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 			
 		} else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 
@@ -304,13 +329,13 @@ class production extends CI_Controller {
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');
+			$this->session->set_flashdata('message', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 		}
 		
 		else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 	}
@@ -327,21 +352,21 @@ class production extends CI_Controller {
 		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2'){
 		
 			$data['main_content'] = 'process_info';
-			$this -> load -> view('includes/adminTemplate', $data);
+			$this->load->view('includes/adminTemplate', $data);
 			
 		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '4'){
 			
 			$data['main_content'] = 'process_info';
-			$this -> load -> view('includes/bTemplate', $data);
+			$this->load->view('includes/bTemplate', $data);
 		
 		} else if($this->session->userdata('is_logged_in')){
-			$this -> session -> set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this->session->set_flashdata('error', 'You don\'t have permission to access this page.');
 			redirect(base_url(), 'refresh');
 		} 
 		
 		else {
 			//If no session, redirect to login page
-			$this -> session -> set_flashdata('error', 'You need to be logged in to continue');
+			$this->session->set_flashdata('error', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
 		}
 
