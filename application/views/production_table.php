@@ -29,7 +29,9 @@
 	    			<div class="col-lg-2 col-xs-4 pull-right" style="margin-bottom:15px;">
 	    				<a href="<?php echo base_url()?>production/report" type="button" data-toggle="tooltip" data-placement="top" title="Production Report" class="btn btn-caution"><i class="fa fa-line-chart"></i></button></a>
 	    				<a type="button" alt="Finished Goods" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>inventory/finished_goods" class="btn btn-success"><i class="fa flaticon-breakfast27"></i></a>
+	    				<?php if($this->session->userdata('user_type') == '4'):?>
 		    			<a href="<?php echo base_url()?>production/create_production_batch" type="button" alt="Produce" data-toggle="tooltip" data-placement="top" title="Produce Goods" class="btn btn-theme"><i class="fa flaticon-baker7"></i></a>
+		    			<?php endif;?>
 					</div>
 	    				
 				</div>

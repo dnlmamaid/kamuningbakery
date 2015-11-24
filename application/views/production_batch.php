@@ -54,7 +54,7 @@
 									</div>	
 								</div>
 							</div>
-							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced))):?>
+							<?php if(date('Ymd') <= date('Ymd', strtotime($r->date_produced)) && ($this->session->userdata('user_type') == '4')):?>
 							<div class="row">
 								<div class="col-lg-6 col-xs-6">
 									<div class="form-group">

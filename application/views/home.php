@@ -2,7 +2,10 @@
 
 	<div class="container bg-panel">
             	
-		<div class="row" style="margin-top:15px;">                   
+		<div class="row" style="margin-top:15px;">
+			<div class="col-lg-12" align="center" style="margin-bottom:15px;">
+				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+			</div>                   
 			<div class="col-lg-12">
 				
 				

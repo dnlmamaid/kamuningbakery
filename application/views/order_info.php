@@ -200,7 +200,7 @@
 										
 										<div class="col-lg-4 align-center">
 											<div class="form-group">
-												<?php if($r->order_status != '1'){?>
+												<?php if($r->order_status != '1' && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '6')){?>
 												<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
 													<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
 													<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">

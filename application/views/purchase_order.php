@@ -60,9 +60,11 @@
 											<option value=""></option>
 											<?php }?>
 										</select>
+										<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5'):?>
 										<span class="input-group-btn">
 											<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
 									    </span>
+									    <?php endif; ?>
 										</div>
 									</div>
 									
@@ -79,7 +81,8 @@
 								<div class="col-lg-3 col-xs-3 pull-right">
 									<div class="form-group">
 										<label>Date Ordered</label>
-										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate">
+										<input type="text" name="date_ordered" class="form-control" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>" id="edate" disabled>
+										<input type="hidden" name="date_ordered" value="<?php echo date('Y-m-d', strtotime($r->date_ordered)) ?>">
 									</div>	
 								</div>
 							</div>
@@ -105,7 +108,7 @@
 								
 							</div>
 							<div class="row">
-								
+								<?php if($this->session->userdata('user_type') == '5'):?>
 								<div class="col-lg-3 pull-left">
 									<div class="form-group">
 										<span data-toggle="modal" data-target="#addNew">
@@ -121,7 +124,7 @@
 										</span>
 									</div>
 								</div>
-								
+								<?php endif; ?>
 								<div class="col-lg-2 pull-right">
 									<div class="form-group">
 										<input type="submit" class="btn btn-theme" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">

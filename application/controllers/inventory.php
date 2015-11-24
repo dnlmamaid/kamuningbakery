@@ -260,13 +260,7 @@ class inventory extends CI_Controller {
 				$data['main_content'] = 'products_table';
 				$this -> load -> view('includes/pTemplate', $data);
 			}
-			
-			else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6')
-		    {
-				$data['main_content'] = 'products_table';
-				$this -> load -> view('includes/skTemplate', $data);
-			}
-	
+						
 			else
 		    {
 				//If no session, redirect to login page

@@ -80,6 +80,12 @@ class purchases extends CI_Controller {
 			$data['main_content'] = 'purchases_table';
 			$this -> load -> view('includes/pTemplate', $data);
 		}
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '6')
+	    {			
+			$data['main_content'] = 'purchases_table';
+			$this -> load -> view('includes/skTemplate', $data);
+		}
 
 		else if($this->session->userdata('is_logged_in')){
 			
@@ -110,10 +116,8 @@ class purchases extends CI_Controller {
 		$data['orders'] = $this -> purchases_model -> getOrders($code);
 		$data['to'] = $this->purchases_model->get_total($code);
 			
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
 	    {
-			
-			
 			$data['main_content'] = 'purchase_order';
 			$this -> load -> view('includes/adminTemplate', $data);
 		}
@@ -122,6 +126,18 @@ class purchases extends CI_Controller {
 	    {			
 			$data['main_content'] = 'purchase_order';
 			$this -> load -> view('includes/accTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+	    {			
+			$data['main_content'] = 'purchase_order';
+			$this -> load -> view('includes/pTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '6')
+	    {			
+			$data['main_content'] = 'purchase_order';
+			$this -> load -> view('includes/skTemplate', $data);
 		}
 		
 		else if($this->session->userdata('is_logged_in'))
@@ -148,7 +164,7 @@ class purchases extends CI_Controller {
 		$data['po'] = $this -> purchases_model -> getPOR($id);
 			
 			
-		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
+		if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') <= '2')
 	    {
 			
 			$data['main_content'] = 'order_info';
@@ -160,7 +176,18 @@ class purchases extends CI_Controller {
 			$data['main_content'] = 'order_info';
 			$this -> load -> view('includes/accTemplate', $data);
 		}
+
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+	    {			
+			$data['main_content'] = 'order_info';
+			$this -> load -> view('includes/pTemplate', $data);
+		}
 		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '6')
+	    {			
+			$data['main_content'] = 'order_info';
+			$this -> load -> view('includes/skTemplate', $data);
+		}
 		
 		else if($this->session->userdata('is_logged_in'))
 	    {
