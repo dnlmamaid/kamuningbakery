@@ -157,49 +157,65 @@ class products extends CI_Controller {
 	}
 
 	public function view_product() {
-		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '1')
+		
+		$pid = $this -> uri -> segment(3);
+		//Dropdowns
+		$data['supplier'] = $this -> products_model -> getSupplier();
+		$data['cat'] = $this -> products_model -> getCategory();
+		$data['cls'] = $this -> products_model -> getClass();
+		$data['rm'] = $this -> products_model -> getRawMats();
+		
+		//Record Values
+		$data['ing'] = $this -> products_model -> getIng_P($pid);
+		$data['qcp'] = $this -> products_model -> getQCP($pid);
+		
+		//Annual Demand
+		$data['ad'] = $this -> reports_model -> getAnnualDemand($pid);
+		
+		//Monthly Use
+		$data['avg'] = $this -> reports_model -> getMonthlyUsage($pid);
+			
+		//LeadTime
+		$data['su'] = $this -> reports_model -> getLeadTime($pid);
+			
+		$data['production'] = $this -> reports_model -> getProductionHistory($pid);
+		$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
+		$data['sales'] = $this -> reports_model -> getSalesHistory($pid);
+			
+		$data['rec'] = $this -> products_model -> get_product_rec($pid);
+		
+		
+		if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') <= '2')
 	    {	
-			$pid = $this -> uri -> segment(3);
-			//Dropdowns
-			$data['supplier'] = $this -> products_model -> getSupplier();
-			$data['cat'] = $this -> products_model -> getCategory();
-			$data['cls'] = $this -> products_model -> getClass();
-			$data['rm'] = $this -> products_model -> getRawMats();
-			
-			
-			//Record Values
-			$data['ing'] = $this -> products_model -> getIng_P($pid);
-			$data['qcp'] = $this -> products_model -> getQCP($pid);
-			
-			//Annual Demand
-			$data['ad'] = $this -> reports_model -> getAnnualDemand($pid);
-			
-			//Monthly Use
-			$data['avg'] = $this -> reports_model -> getMonthlyUsage($pid);
-			
-			//LeadTime
-			$data['su'] = $this -> reports_model -> getLeadTime($pid);
-			
-			$data['production'] = $this -> reports_model -> getProductionHistory($pid);
-			$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
-			$data['sales'] = $this -> reports_model -> getSalesHistory($pid);
-			
-			$data['rec'] = $this -> products_model -> get_product_rec($pid);
-						
+				
 			$data['main_content'] = 'product_page';
 			$this->load->view('includes/productionTemplate', $data);
 		}
-		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') != '1')
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '3')
 	    {
-			
-			$pid = $this -> uri -> segment(3);
-			$data['rec'] = $this -> products_model -> get_product_rec($pid);
-			$data['products'] = $this -> products_model -> getSimilarProducts($pid);	
-			$data['rm'] = $this -> products_model -> getRawMats();
-			
+					
 			$data['main_content'] = 'product_page';
-			$this -> load -> view('includes/memberTemplate', $data);
-		} else {
+			$this -> load -> view('includes/accTemplate', $data);
+		} 
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '4')
+	    {
+					
+			$data['main_content'] = 'product_page';
+			$this -> load -> view('includes/bTemplate', $data);
+		} 
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '5')
+	    {
+					
+			$data['main_content'] = 'product_page';
+			$this -> load -> view('includes/pTemplate', $data);
+		} 
+		else if($this->session->userdata('is_logged_in') && $this -> session -> userdata('user_type') == '6')
+	    {
+					
+			$data['main_content'] = 'product_page';
+			$this -> load -> view('includes/skTemplate', $data);
+		} 
+		else {
 			//If no session, redirect to login page
 			$this -> session -> set_flashdata('message', 'You need to be logged in to continue');
 			redirect('login', 'refresh');
