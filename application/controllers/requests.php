@@ -107,6 +107,11 @@ class requests extends CI_Controller {
 			$data['main_content'] = 'request_order';
 			$this -> load -> view('includes/bTemplate', $data);
 			
+		} else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5'){
+			
+			$data['main_content'] = 'request_order';
+			$this -> load -> view('includes/pTemplate', $data);
+			
 		} else if($this->session->userdata('is_logged_in')) {
 			
 			$this -> session -> set_flashdata('message', 'You don\'t have permission to access this page.');

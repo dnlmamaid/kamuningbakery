@@ -66,6 +66,7 @@
 									</div>
 								</div>
 								
+								<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5'):?>
 								<div class="col-lg-3 col-xs-3 pull-right">
 									<div class="form-group">
 										<label>Status</label>
@@ -82,6 +83,25 @@
 										</select>
 									</div>
 								</div>
+								<?php else: ?>
+								<div class="col-lg-3 col-xs-3 pull-right">
+									<div class="form-group">
+										<label>Status</label>
+										<select name="request_status" class="form-control" disabled>
+											<?php if($r->request_status == '1'){ ?>
+												<option value="1" selected>Ok</option>	
+												<option value="0">For Review</option>	
+											<?php } else { ?>
+												<option value="0" selected>For Review</option>
+												<option value="1">Ok</option>	
+											<?php }?>
+											
+											
+										</select>
+									</div>
+								</div>							
+								<?php endif;?>
+								
 								
 								
 							</div>
@@ -89,10 +109,12 @@
 								<div class="col-lg-3 pull-right">
 									<div class="form-group">
 										<input type="submit" onclick="return confirm('If you update the status you will not be able to change it again, proceed?');" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Clear Request" value="Update">
+										<?php if($this->session->userdata('user_type') == '4'):?>
 										<span data-toggle="modal" data-target="#addOrder">
 											<a type="button" class="btn btn-caution" data-toggle="tooltip" data-placement="top" title="Add a Request"><i class="fa fa-plus"></i><a>
 										</span>
 										<a href="<?php echo base_url()?>requests/cancel/<?php echo $r->ro_reference?>" onclick="return confirm('Action can not be undone, proceed?');" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Request"><i class="fa fa-close"></i><a>
+										<?php endif; ?>
 									</div>
 								</div>
 							</div>
@@ -145,7 +167,7 @@
 							<div class="row">
 								<div class="col-lg-1 pull-right">
 									<div class="form-group">
-										<?php if($r->request_status != '1'): ?>
+										<?php if($r->request_status != '1' && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '5')): ?>
 										<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Clear Request" value="&#xf00c;">
 										<?php endif; ?>
 										
@@ -197,7 +219,7 @@
 											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1 b"><?php echo $row->request_qty ?></td>
 					                        <td>
-					                        	<?php if($row->ro_status == '0'):?>
+					                        	<?php if($row->ro_status == '0' && $this->session->userdata('user_type') != '4'):?>
 					                        	<a class="btn btn-caution" href="<?php echo base_url()?>requests/disapprove/<?php echo $row->ro_id?>" data-toggle="tooltip" data-placement="left" title="Disapprove"><i class="icon_close_alt2"></i></a>
 						                		<a class="btn btn-success" href="<?php echo base_url()?>requests/approve/<?php echo $row->ro_id?>" data-toggle="tooltip" data-placement="left" title="Approve"><i class="icon_check_alt2"></i></a>
 						                		<?php endif; ?>

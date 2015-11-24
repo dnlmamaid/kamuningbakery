@@ -3,13 +3,15 @@
 	<div class="container bg-panel">
             	
 		<div class="row" style="margin-top:15px;">
-			<div class="col-lg-12" align="center" style="margin-bottom:15px;">
-				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
-			</div>                   
+			                 
 			<div class="col-lg-12">
 				
 				
 				<?php if($this->session->userdata('user_type') <= '2'): ?>
+				<div class="col-lg-12" align="center" style="margin-bottom:15px;">
+					<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
+				</div>  
+				
 				<div class="col-lg-2 col-xs-4">
 					<a href="<?php echo base_url()?>users" data-toggle="tooltip" data-placement="top" title="Users">
 					<div class="info-box green-bg">
@@ -99,13 +101,10 @@
 		<!-- tables-->
 		<div class="row">
 			<?php if($this->session->flashdata('message')){ ?>
-			<div class="col-lg-12">
+			<div class="col-lg-10">
 				<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
 			</div>
 			<?php } ?>
-			
-			
-			
 			
 			<div class="col-lg-6 col-xs-6">
 				<h3>Highest Selling Product</h3>
@@ -343,6 +342,14 @@
 				<img class="img-responsive" src="<?php echo base_url(); ?>assets/images/kb_logo.jpg">
 			</div>
     		<div class="col-lg-2">
+    			
+    			<div class="col-lg-12 col-xs-4">
+					<a href="<?php echo base_url()?>requests" data-toggle="tooltip" data-placement="top" title="Requests">
+					<div class="info-box magenta-bg">
+						<i class="fa fa-comments-o"></i>
+					</div><!--/.info-box-->
+					</a>
+				</div><!--/.col-->
 		    	
 				<div class="col-lg-12 col-xs-6">
 					<a href="<?php echo base_url()?>purchases" data-toggle="tooltip" data-placement="top" title="Purchases">
@@ -362,9 +369,11 @@
 					</a>
 				</div><!--/.col-->
 				
+				
+				
 			</div>
 			<?php if($this->session->flashdata('message')){ ?>
-			<div class="col-lg-12">
+			<div class="col-lg-10">
 				<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
 			</div>
 			<?php } ?>
@@ -406,7 +415,7 @@
 				
 			</div>
 			<?php if($this->session->flashdata('message')){ ?>
-			<div class="col-lg-12">
+			<div class="col-lg-10">
 				<div class="alert alert-info" role="alert" style="margin-top:5px"><?php echo $this -> session -> flashdata('message'); ?></div>
 			</div>
 			<?php } ?>
@@ -416,9 +425,6 @@
 				
 		</div>
 		<?php endif; ?>
-		
-		
-		
 		
 		
 		

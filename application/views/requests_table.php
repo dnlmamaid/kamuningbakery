@@ -25,11 +25,11 @@
 		      			<?php echo form_close()?>
 		    			</div>
 	    			</div>
-	    			
+	    			<?php if($this->session->userdata('user_type') == '4'): ?>
 	    			<div class="col-lg-1 col-xs-2 pull-right" style="margin-bottom:15px;">
 		    			<a href="<?php echo base_url()?>requests/create_request_order" alt="Request" data-toggle="tooltip" data-placement="top" title="Request Raw Materials" class="btn btn-theme"><i class="fa fa-comment"></i></a>		    			
 					</div>
-	    				
+	    			<?php endif; ?>
 				</div>
 			</div>
             <!-- page start-->
