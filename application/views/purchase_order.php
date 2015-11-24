@@ -312,7 +312,7 @@
 						<div class="form-group">
 							<div class="col-lg-3">
 								<label class="control-label">Quantity</label>
-								<input type="number" name="quantity" class="form-control inline" required>
+								<input type="number" min="1" name="quantity" class="form-control inline" required>
 							</div>
 
 							<div class="col-lg-3">
@@ -392,7 +392,7 @@
 						<div class="form-group">
 							<div class="col-lg-3">
 								<label class="control-label">Quantity</label>
-								<input type="number" name="quantity" class="form-control inline" required>
+								<input type="number" min="1" name="quantity" class="form-control inline" required>
 							</div>
 							
 							
