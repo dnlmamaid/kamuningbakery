@@ -393,6 +393,12 @@ class purchases extends CI_Controller {
 			$this -> load -> view('includes/accTemplate', $data);
 		}
 		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+	    {			
+			$data['main_content'] = 'purchases_report';
+			$this -> load -> view('includes/pTemplate', $data);
+		}
+		
 		else
 	    {
 			redirect(base_url(), 'refresh');
@@ -417,6 +423,13 @@ class purchases extends CI_Controller {
 	    {			
 			$data['main_content'] = 'view_purchase';
 			$this -> load -> view('includes/accTemplate', $data);
+		}
+		
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+	    {			
+			$data['main_content'] = 'view_purchase';
+			$this -> load -> view('includes/pTemplate', $data);
 		}
 		
 		else
@@ -444,8 +457,14 @@ class purchases extends CI_Controller {
 		
 		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3')
 	    {			
-			$data['main_content'] = 'view_purchase';
+			$data['main_content'] = 'purchases_report';
 			$this -> load -> view('includes/accTemplate', $data);
+		}
+		
+		else if($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+	    {			
+			$data['main_content'] = 'purchases_report';
+			$this -> load -> view('includes/pTemplate', $data);
 		}
 		
 		else
@@ -489,11 +508,20 @@ class purchases extends CI_Controller {
 			$data['main_content'] = 'purchases_table';
 			$this -> load -> view('includes/adminTemplate', $data);			
 			
-		} else if ($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3')
+		} 
+		
+		else if ($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '3')
 		{
 					
 			$data['main_content'] = 'purchases_table';
 			$this -> load -> view('includes/accTemplate', $data);
+		}
+		
+		else if ($this->session->userdata('is_logged_in') && $this->session->userdata('user_type') == '5')
+		{
+					
+			$data['main_content'] = 'purchases_table';
+			$this -> load -> view('includes/pTemplate', $data);
 		}
 		
 		else if($this->session->userdata('is_logged_in'))

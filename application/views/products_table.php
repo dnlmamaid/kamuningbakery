@@ -29,10 +29,12 @@
 	    			
 	    			<div class="col-lg-2 col-xs-5 pull-right" style="margin-bottom:15px;">
 		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
-		    			<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4' || $this->session->userdata('user_type') == '5'):?>
+		    			<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4' || $this->session->userdata('user_type') == '3'):?>
 		    			<a type="button" alt="Finished Goods" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>inventory/finished_goods" class="btn btn-theme"><i class="fa flaticon-breakfast27"></i></a>
 		    			<?php endif; ?>
+		    			<?php if($this->session->userdata('user_type') != '4'):?>
 		    			<a type="button" alt="Purchases" data-toggle="tooltip" data-placement="top" title="Purchase Raw Materials" href="<?php echo base_url()?>purchases" class="btn btn-success"><i class="fa flaticon-bill9"></i></a>
+		    			<?php endif; ?>
 		    			
 					</div>
 	    				
@@ -143,7 +145,9 @@
 	    			<div class="col-lg-2 col-xs-5 pull-right" style="margin-bottom:15px;">
 		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
 		    			<a type="button" alt="Raw Materials" data-toggle="tooltip" data-placement="top" title="Raw Materials" href="<?php echo base_url()?>inventory/raw_materials" class="btn btn-theme"><i class="fa flaticon-ingredients1"></i></a>
+		    			<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 		    			<a type="button" alt="Production" data-toggle="tooltip" data-placement="top" title="Production" href="<?php echo base_url()?>production" class="btn btn-success"><i class="fa flaticon-stone2"></i></a>
+		    			<?php endif; ?> 
 		    			
 					</div>
 	    				
@@ -175,7 +179,9 @@
 			                            <th class="col-md-1"><i class="fa fa-tag"></i> Mark Up</th>
 			                            <th class="col-md-1"><i class="fa">&#8369;</i> Sale Price</th>
 			                            <th class="col-md-1"><i class="fa">&#8369;</i> Total Cost</th>
+			                            <?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 			                            <th class="col-md-1"><i class="fa fa-cogs"></i> Action</th>
+			                            <?php endif; ?>
 	                              	</tr>
 	                              	
 	                              	<?php if(isset($products) && is_array($products)) : foreach($products as $row): if(($row->current_count || $row->product_status) == '0'):?> 
@@ -186,6 +192,7 @@
 		                                <td class="col-md-1 b">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
 		                                <td class="col-md-1 b">&#8369; <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1 b">&#8369; <?php echo ($row->sale_Price*$row->current_count)?></td>
+		                                <?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -196,6 +203,7 @@
 						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
+	                                	<?php endif; ?> 
 	                                </tr>	
 									<?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
@@ -205,6 +213,7 @@
 		                                <td class="col-md-1"><?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
 		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1">&#8369; <?php echo ($row->sale_Price*$row->current_count)?></td>
+		                               <?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -215,6 +224,7 @@
 						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
+	                                	<?php endif; ?>
 	                                </tr>
 									<?php endif;endforeach;	                               
 						   			elseif(isset($search) && is_array($search)): foreach($search as $row): if(($row->current_count || $row->product_status) == '0'):?>
@@ -225,6 +235,7 @@
 		                               	<td class="col-md-1 b">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
 		                                <td class="col-md-1 b">&#8369; <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1 b">&#8369; <?php echo ($row->price*$row->current_count)?></td>
+		                                <?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -235,6 +246,7 @@
 						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
+	                                	<?php endif; ?>
 	                               </tr>
 	                               <?php else:?>
 									<tr class="clickable-row" data-href="<?php echo base_url()?>products/view_product/<?php echo $row->product_id?>">
@@ -244,6 +256,7 @@
 		                                <td class="col-md-1">&#8369; <?php echo round((($row->sale_Price - $row->price)/$row->price) * 100)?> %</td>
 		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
 		                                <td class="col-md-1">&#8369; <?php echo ($row->price*$row->current_count)?></td>
+		                                <?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
 		                                <td class="col-md-1">
 			                                <div class="">
 						                		<?php if($row->product_status == '1'){?>
@@ -254,6 +267,7 @@
 						                        <!--<a class="btn btn-danger"  onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>products/remove/<?php echo $row->product_id?>" data-toggle="tooltip" data-placement="right" title="delete item"><i class="icon_close_alt2"></i></a>-->
 						                    </div>
 	                                	</td>
+	                                	<?php endif; ?>
 	                                </tr>
 	                                <?php endif;endforeach;		                               
 									else:?>
@@ -263,6 +277,10 @@
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
+										<th>No records</th>
+										<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4'):?>
+										<th>No records</th>
+										<?php endif; ?>
 									</tr>
 									<?php endif; ?>      
 	                               	

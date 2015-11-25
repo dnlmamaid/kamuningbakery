@@ -508,6 +508,7 @@ Class users_model extends CI_Model
 				'st_Address'	=> $this->input->post('st_Address'),
 				'city'			=> $this->input->post('city'),
 				'terms'			=> $this->input->post('terms'),
+				'supplier_email'		=> $this->input->post('email'),
 				'contact'		=> $this->input->post('contact'),
 				'created_at'	=> date('Y-m-j H:i:s'),
 				'is_active'		=> '1',	
@@ -549,6 +550,7 @@ Class users_model extends CI_Model
 			'lead_time'		=> $this->input->post('lead_time'),
 			'city'			=> $this->input->post('city'),
 			'terms'			=> $this->input->post('terms'),
+			'supplier_email'		=> $this->input->post('email'),
 			'contact'		=> $this->input->post('contact'),
 			'is_active'		=> $this->input->post('is_active'),
 		);

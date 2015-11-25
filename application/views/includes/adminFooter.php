@@ -44,6 +44,13 @@
 							<input type="text" name="city" class="form-control inline" required>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-8 col-xs-8">
+							<label>Email</label>
+							<input type="email" name="email" class="form-control inline" required>
+						</div>
+					</div>
 								
 					<div class="form-group">
 						<div class="col-lg-8 col-xs-8">

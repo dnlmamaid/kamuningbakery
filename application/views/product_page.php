@@ -44,10 +44,10 @@
 						</div>
 					</div>
 					<?php } ?>
-<?php if ($r->category_ID == '2') {?>
+					<?php if ($r->category_ID == '2') {?>
 					<h3>Details</h3>
 					<div class="col-lg-6">
-						
+						<?php if($this->session->userdata('user_type') != '4'): ?>
 						<div class="form-group" style="margin-top:10px;">
 							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>
 							<div class="col-lg-8">
@@ -185,7 +185,135 @@
 								</select>
 							</div>
 						</div>		
+						<?php else: ?>
+						<div class="form-group" style="margin-top:10px;">
+							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>
+							<div class="col-lg-8">
+								<input type="text" name="product_Name" class="form-control inline" value="<?php echo $r->product_Name?>" disabled>
+							</div>
+						</div>
 						
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Category</label>
+							<div class="col-lg-8">
+								<select name="category_ID" class="form-control" disabled>
+								<option value="<?php echo $r->category_id?>"><?php echo $r->category_name?></option>
+								<?php if(!empty($cat)){
+									if (is_array($cat)){                      
+							            foreach ($cat as $row) {
+							            	if($row['category_id'] != $r->category_ID){?>
+											<option value="<?php echo $row['category_id']?>"><?php echo $row['category_name']; ?></option>
+										<?php } }
+									}
+								}
+															
+								else{	?>
+								<option value=""></option>
+								<?php }?>
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Class</label>
+							<div class="col-lg-8">
+								<select name="class_ID" class="form-control" disabled>
+								<option value="<?php echo $r->class_ID?>"><?php echo $r->class_Name?></option>
+								<?php if(!empty($cls)){
+									if (is_array($cls)){                      
+							 	      	foreach ($cls as $row) {
+							 	      		if($row['class_id'] != $r->class_ID){?>
+											<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
+										<?php } }
+									}							
+								}
+														
+								else{	?>
+								<option value=""></option>
+								<?php }?>
+								</select>
+							</div>
+						</div>					
+					</div>
+					
+					<div class="col-lg-6">
+						<div class="form-group" style="margin-top:10px;">
+							<div class="col-lg-3 col-xs-3">						
+								<label class="control-label">Quantity</label>
+								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->current_count ?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Unit</label>
+								<input type="text" name="um" class="form-control inline" value="<?php echo $r->um?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Price per unit</label>
+								<input type="number" step="any" name="price" class="form-control inline" value="<?php echo $r->price?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Holding Cost</label>
+								<input type="number" step="any" name="holding_cost" class="form-control inline" value="<?php echo $r->holding_cost?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-5 col-xs-3">								
+								<?php if(($r->current_count <= $r->ro_lvl)): ?>
+								<label class="control-label" style="color:red;">Re Order Level</label>
+								<input type="text" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>" disabled>
+								<?php else:?>
+								<label class="control\-label">Re-order Level</label>
+								<input type="text" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>" disabled>	
+								<?php endif; ?>
+								<input type="hidden" name="ro_lvl" class="form-control inline" value="<?php echo round($r->ro_lvl); ?>" disabled>	
+							</div>
+						</div>
+						
+						<?php $annual_demand = ($ad->total_units/365);
+							  $holding_cost = $r->holding_cost; 
+							  $ordering_cost = ($ad->total_cost/$ad->count)?>
+											
+						<div class="form-group">
+							<div class="col-lg-5 col-xs-3">
+								<label class="control-label">EOQ</label>
+								<?php $EOQ = sqrt( ( (2*$annual_demand*$ordering_cost)/($holding_cost) ) ); ?>
+								<input type="text" name="eoq" class="form-control inline" value="<?php if($EOQ != '0'){ echo $EOQ; } else{ ?> Needs Further Data<?php }?>" disabled>
+							</div>
+						</div>
+				
+						<div class="form-group">
+							<div class="col-lg-8">
+								<label class="control-label">Description</label>
+								<textarea name="description" class="form-control inline" disabled><?php echo $r->description?></textarea>
+							</div>
+						</div>
+					
+							
+							
+						<div class="form-group">
+							<div class="col-lg-3">
+								<label class="control-label">Enabled</label>
+						  		<select name="product_status" class="form-control" disabled>
+						  			<?php if($r->product_status){?> 
+									<option value="1" selected>Yes</option>
+									<option value="0">No</option>
+									<?php } else{?>
+									<option value="0" selected>No</option>
+									<option v alue="1">Yes</option>
+									<?php }?>
+								</select>
+							</div>
+						</div>
+						<?php endif; ?>
 						<div class="col-lg-12 form-group">
 							<input type="submit" class="btn btn-success pull-right" value="Update" style="margin-left:5px;">
 							</form>
@@ -235,7 +363,40 @@
 							</table>
 						</div>
 					</div>
-<?php } else if ($r->category_ID == '1') {?>
+					
+					<div class="col-lg-6">
+						<h3>Used in</h3>
+						<div class="table-responsive"> 
+							<table class="table table-advance table-hover">
+								<tbody>
+									<tr>
+										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
+					                    <th class="col-md-1"><i class="fa">&#8369;</i> Sale Price</th>
+			                            <th class="col-md-1"><i class="fa">&#8369;</i> Total Cost</th>
+			                       	</tr>
+			                              	
+			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
+									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
+										<td class="col-md-1"><?php echo $row->product_Name ?></td>
+		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
+		                                <td class="col-md-1">&#8369; <?php echo ($row->sale_Price*$row->current_count)?></td>
+									</tr>	
+									<?php endforeach;	                               
+									else:?>
+									<tr>											
+										
+										<th>No records</th>
+										<th>No records</th>
+										<th>No records</th>
+										<th>No records</th>
+									</tr>
+									<?php endif; ?>      
+			                        
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<?php } else if ($r->category_ID == '1' && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4')) {?>
 					<div class="col-lg-6">
 						<h3> Details</h3>	
 						<div class="form-group" style="margin-top:10px;">
@@ -413,7 +574,7 @@
 										</tr>
 				                              	
 				                        <?php if(isset($production) && is_array($production)): foreach($production as $row):?> 
-										<tr class="clickable-row" data-href="<?php echo base_url()?>production/info/<?php echo $row['pb_id']?>">
+										<tr class="clickable-row" data-href="<?php echo base_url()?>production/process_info/<?php echo $row['pb_id']?>">
 											<td class="col-md-1"><?php echo date('F d,Y (D)', strtotime($row['date_produced']))?></td>
 											<td class="col-md-1"><?php echo $row['previous_count'] ?></td>
 		                               		<td class="col-md-1"><?php echo $row['units_produced'] ?></td>
@@ -457,6 +618,166 @@
 					</div>
 					<!-- /Table -->
 					
+					<?php } else { ?>
+					<div class="col-lg-6">
+						<h3> Details</h3>	
+						<div class="form-group" style="margin-top:10px;">
+							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>
+							<label class="col-lg-8">
+								<input type="text" name="product_Name" class="form-control inline" value="<?php echo $r->product_Name?>" disabled>
+							</label>
+						</div>
+					
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Category</label>
+							<div class="col-lg-8">
+								<select name="category_ID" class="form-control" disabled>
+								<option value="<?php echo $r->category_id?>"><?php echo $r->category_name?></option>
+								<?php if(!empty($cat)){
+									if (is_array($cat)){                      
+							            foreach ($cat as $row) {
+							            	if($row['category_id'] != $r->category_ID){?>
+											<option value="<?php echo $row['category_id']?>"><?php echo $row['category_name']; ?></option>
+										<?php } }
+									}
+								}
+															
+								else{	?>
+								<option value=""></option>
+								<?php }?>
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Class</label>
+							<div class="col-lg-8">
+								<select name="class_ID" class="form-control" disabled>
+								<option value="<?php echo $r->class_ID?>"><?php echo $r->class_Name?></option>
+								<?php if(!empty($cls)){
+									if (is_array($cls)){                      
+							 	      	foreach ($cls as $row) {
+							 	      		if($row['class_id'] != $r->class_ID){?>
+											<option value="<?php echo $row['class_id']?>"><?php echo $row['class_Name']; ?></option>
+										<?php } }
+									}							
+								}
+														
+								else{	?>
+								<option value=""></option>
+								<?php }?>
+								</select>
+								
+							</div>
+						</div>
+						
+						<div class="form-group" style="margin-top:10px;">
+							<div class="col-lg-3 col-xs-3">						
+								<label class="control-label">Quantity</label>
+								<input type="number" name="quantity" class="form-control inline" value="<?php echo $r->current_count ?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Unit</label>
+								<input type="text" name="um" class="form-control inline" value="<?php echo $r->um?>" disabled>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Price per unit</label>
+								<input type="number" step="any" name="price" class="form-control inline" value="<?php echo $r->price?>" disabled>
+							</div>
+						</div>
+							
+						
+						<div class="form-group" style="color:red; font-weight:bold;">
+							<div class="col-lg-3 col-xs-3">
+								<label class="control-label">Selling Price</label>
+								<input type="number" step="any" name="sale_Price" class="form-control inline" value="<?php echo $r->sale_Price?>" disabled>
+							</div>
+						</div>
+						
+						
+						<div class="form-group">
+							<div class="col-lg-8 col-xs-8">
+								<label class="control-label">Description</label>
+								<textarea name="description" class="form-control inline" disabled><?php echo $r->description?></textarea>
+							</div>
+						</div>
+						
+	
+						<div class="form-group">
+							<div class="col-lg-4 col-xs-4">
+								<label class="control-label">Enabled</label>
+						  		<select name="product_status" class="form-control" disabled>
+						  			<?php if($r->product_status){?> 
+									<option value="1" selected>Yes</option>
+									<option value="0">No</option>
+									<?php } else{?>
+									<option value="0" selected>No</option>
+									<option value="1">Yes</option>
+									<?php }?>
+								</select>
+							</div>
+						</div>		
+	
+					</div>
+					<div class="col-lg-6">
+						<div class="col-lg-12">
+						<h3>Ingredients: </h3>
+						</div>
+						
+						
+							
+						<div class="form-group" id="materials">
+							<div id="rm">
+								<?php foreach($qcp as $val) ?>
+								<div class="col-lg-5">
+									<input type="number" step="any" name="qty_can_produce" class="form-control inline" value="<?php echo round($val->qty_can_produce); ?>" disabled> 
+								</div>
+								<div class="col-lg-3">
+									<input type="text" class="form-control" value="units" disabled>
+								</div>
+								
+							<?php foreach($ing as $r2): ?>
+								<div class="col-lg-12 col-xs-12">
+									<div class="col-lg-4 col-xs-4">						
+										<input type="number" step="any" name="qpu[]" class="form-control inline" value="<?php echo $r2->ingredient_qty?>" disabled>
+									</div>
+									
+									<div class="col-lg-6 col-xs-6">
+										<select name="rm_ID[]" class="form-control" disabled>
+										<option value="<?php echo $r2->product_id ?>"><?php echo $r2->product_Name?> (<?php echo $r2->um?>)</option>
+										<?php if(!empty($rm)){
+											if (is_array($rm)){                      
+									        	foreach ($rm as $row) {
+									            	if($row['product_id'] != $r2->product_id){?>
+														<option value="<?php echo $row['product_id']?>"><?php echo $row['product_Name']; ?> (<?php echo $row['um']?>)</option>
+													<?php } 
+												}
+											}
+										} ?>
+										</select>
+									</div>
+								</div>
+							<?php endforeach;?>
+										
+							</div>	
+						</div>
+						
+						<div class="col-lg-12 form-group">							
+							<a href="javascript:window.history.go(-1);" class="btn btn-default pull-right" style="align">Back</a>
+						</div>
+						
+					</div>
+					
+					
+						
+						
+						
 					<?php } ?>
 				</div>
 			</div>

@@ -7,7 +7,7 @@
 				<div class="col-lg-4 col-xs-12 pull-left">
 				<ol class="breadcrumb">
 					<li><i class="fa flaticon-baker8"></i><a href="<?php echo base_url()?>"> Home</a></li>
-					<li><i class="fa fariefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
+					<li><i class="fa fa-briefcase"></i><a href="<?php echo base_url()?>suppliers"> Suppliers</a></li>
 					<li><i class="fa fa-truck"></i> <?php echo $r->supplier_name?></li>
 				</ol>
 				</div>
@@ -29,9 +29,16 @@
 				<?php } ?>
 				<div class="col-lg-6 col-xs-12">
 					<div class="form-group">
-						<div class="col-lg-12">
+						<div class="col-lg-5">
 							<label>Supplier</label>
 							<input type="text" name="supplier_name" class="form-control inline" value="<?php echo $r->supplier_name?>" required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-lg-7">
+							<label>Email</label>
+							<input type="email" name="email" class="form-control inline" value="<?php echo $r->supplier_email?>" required>
 						</div>
 					</div>
 					
