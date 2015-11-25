@@ -18,6 +18,8 @@
 			<div class="col-lg-12">
 				
 				<div class="col-lg-10 col-lg-offset-1">
+					
+					<?php echo validation_errors(); ?>
 					<?php if($this->session->flashdata('success')){?>
 					<div class="form-group">
 						<div class="alert alert-success" role="	alert">
@@ -316,8 +318,8 @@
 
 						<div class="form-group">
 							<div class="col-lg-3">
-								<label class="control-label">Quantity</label>
-								<input type="number" min="1" name="quantity" class="form-control inline" required>
+								<label id="quantity" class="control-label">Quantity</label>
+								<input id="quantity" type="number" min="1" name="quantity" class="form-control inline" required>
 							</div>
 
 							<div class="col-lg-3">
@@ -396,8 +398,8 @@
 	
 						<div class="form-group">
 							<div class="col-lg-3">
-								<label class="control-label">Quantity</label>
-								<input type="number" min="1" name="quantity" class="form-control inline" required>
+								<label id="quantity" class="control-label">Quantity</label>
+								<input id="quantity" type="number" min="1" name="quantity" class="form-control inline" required>
 							</div>
 							
 							

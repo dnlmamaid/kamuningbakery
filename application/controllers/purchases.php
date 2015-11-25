@@ -207,12 +207,26 @@ class purchases extends CI_Controller {
 	public function add_order($code){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
-			$this -> purchases_model -> add_order($code);
-			redirect($this->agent->referrer(), 'refresh');
+	    	$this->load->library('form_validation');
+			
+			$this->form_validation->set_rules('quantity', 'quantity', 'trim|greater_than[0]');
+			
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->form_validation->set_message('greater_than', 'Quantity should not be equal to zero(0)');
+				redirect($this->agent->referrer(), 'refresh');
+			}
+			else
+			{
+				$this -> purchases_model -> add_order($code);
+				redirect($this->agent->referrer(), 'refresh');
+			}
+				
+			
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){
-			$this->session->set_flashdata('error', 'You don\'t have permission to access this page.');
+			$this->session->set_flashdata('message', 'You don\'t have permission to do this command.');
 			redirect($base_url(), 'refresh');
 		}
 		
@@ -223,9 +237,26 @@ class purchases extends CI_Controller {
 		}
 	}
 	
+	
+	
 	public function add_order_o($code){
 		if($this->session->userdata('is_logged_in') && (($this->session->userdata('user_type') <= '2') || ($this->session->userdata('user_type') == '5')))
 	    {
+	    	$this->load->library('form_validation');
+			
+			$this->form_validation->set_rules('quantity', 'quantity', 'trim|greater_than[0]');
+			
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->form_validation->set_message('greater_than', 'Quantity should not be equal to zero(0)');
+				redirect($this->agent->referrer(), 'refresh');
+			}
+			else
+			{
+				$this -> purchases_model -> add_order($code);
+				redirect($this->agent->referrer(), 'refresh');
+			}
+			
 			$this -> purchases_model -> add_order_o($code);
 			redirect($this->agent->referrer(), 'refresh');
 		}
