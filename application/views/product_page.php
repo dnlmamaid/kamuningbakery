@@ -47,7 +47,7 @@
 					<?php if ($r->category_ID == '2') {?>
 					<h3>Details</h3>
 					<div class="col-lg-6">
-						<?php if($this->session->userdata('user_type') != '4'): ?>
+						<?php if($this->session->userdata('user_type') != ('4' || '3')): ?>
 						<div class="form-group" style="margin-top:10px;">
 							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>
 							<div class="col-lg-8">
@@ -184,7 +184,12 @@
 									<?php }?>
 								</select>
 							</div>
-						</div>		
+						</div>
+						<div class="col-lg-12 form-group">
+							<input type="submit" class="btn btn-success pull-right" value="Update" style="margin-left:5px;">
+							</form>
+							<a href="javascript:window.history.go(-1);" class="btn btn-default pull-right" style="align">Back</a>
+						</div>			
 						<?php else: ?>
 						<div class="form-group" style="margin-top:10px;">
 							<label class="col-lg-3 control-label" for="supplier_name">Product Name</label>
@@ -313,12 +318,12 @@
 								</select>
 							</div>
 						</div>
-						<?php endif; ?>
 						<div class="col-lg-12 form-group">
-							<input type="submit" class="btn btn-success pull-right" value="Update" style="margin-left:5px;">
-							</form>
+							
 							<a href="javascript:window.history.go(-1);" class="btn btn-default pull-right" style="align">Back</a>
 						</div>	
+						<?php endif; ?>
+						
 						
 					</div>
 					

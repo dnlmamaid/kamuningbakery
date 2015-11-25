@@ -17,13 +17,16 @@
 				<li class="dropdown-header">Activity</li>
 	            <li><a href="<?php echo base_url()?>purchases">Purchases</a></li>
 		        <li><a href="<?php echo base_url()?>production">Production</a></li>
+		        <li><a href="<?php echo base_url()?>sales">Sales</a></li>
 			</ul>
 		</li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
             	<li class="dropdown-header">Reports</li>
-                <li><a href="<?php echo base_url()?>sales/report">Sales</a></li>
+            	<li><a href="<?php echo base_url()?>purchases/report">Purchases</a></li>
                 <li><a href="<?php echo base_url()?>production/report">Production</a></li>
+                <li><a href="<?php echo base_url()?>sales/report">Sales</a></li>
+                
         	</ul>
 		</li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Control Panel <span class="caret"></span></a>
