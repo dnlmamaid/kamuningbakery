@@ -325,16 +325,17 @@ class purchases_model extends CI_Model{
 		$this->db->where('order_id', $id);
 		$oq = $this->db->get()->row('order_quantity');
 		
+		/*
 		$this->db->select('qty_received');
 		$this->db->from('purchase_orders');
 		$this->db->where('order_id', $id);
 		$qr = $this->db->get()->row('qty_received');
 		
 		$noq = $oq - $qr;
-				
-		if($this->input->post('order_quantity') <= $noq){
+		*/		
+		if($this->input->post('order_quantity') <= $oq){
 		
-			if($this->input->post('order_quantity') == $noq)
+			if($this->input->post('order_quantity') == $oq)
 			{
 				$this->db->select('current_count');
 				$this->db->from('products');
@@ -376,11 +377,17 @@ class purchases_model extends CI_Model{
 				
 				$order = array(			
 					'order_status'=> '1',
-					'qty_received'=> ($qr + $this->input->post('order_quantity')),
+					'qty_received'=> $this->input->post('order_quantity'),
 				);
 						
 				$this->db->where('order_id',$id);
 				$this->db->update('purchase_orders', $order);	
+				
+				$this->email->from('NOREPLY@kamuningbakery.com','Kamuning Bakery System');
+				$this->email->to($this->input->post('eadd'));
+				$this->email->subject('Ordered Delivery');
+				$this->email->message('<h1>Good day!</h1></br>This email is to notify you that we have received '.$this->input->post('order_quantity').' out of '.$oq.' we ordered');
+				$this->email->send();
 				
 				$audit = array(
 					'user_id'	=> $this->session->userdata('user_id'),
@@ -394,7 +401,7 @@ class purchases_model extends CI_Model{
 				$this->db->insert('audit_trail', $audit);
 			}
 
-			else if($noq - $this->input->post('order_quantity') == '0'){
+			else if($oq - $this->input->post('order_quantity') == '0'){
 												
 				$this->db->select('current_count');
 				$this->db->from('products');
@@ -429,7 +436,7 @@ class purchases_model extends CI_Model{
 					'total_cost'	=> $newamt,
 				);
 				
-				$this->db->where('purchase_reference',$this->input->post('order_quantity'));
+				$this->db->where('purchase_reference',$this->input->post('order_reference'));
 				$this->db->update('purchases', $purchase);
 				
 			    $this->session->set_flashdata('success', 'Product received and updated');
@@ -441,6 +448,12 @@ class purchases_model extends CI_Model{
 						
 				$this->db->where('order_id',$id);
 				$this->db->update('purchase_orders', $order);	
+				
+				$this->email->from('NOREPLY@kamuningbakery.com','Kamuning Bakery System');
+				$this->email->to($this->input->post('eadd'));
+				$this->email->subject('Ordered Delivery');
+				$this->email->message('<h1>Good day!</h1></br>This email is to notify you that we have received '.$this->input->post('order_quantity').' out of '.$oq.' we ordered');
+				$this->email->send();
 				
 				$audit = array(
 					'user_id'	=> $this->session->userdata('user_id'),
@@ -457,7 +470,7 @@ class purchases_model extends CI_Model{
 			
 			else{
 						
-				$nqr = $qr + $this->input->post('order_quantity');
+				$nqr = $this->input->post('order_quantity');
 				
 				$this->db->select('current_count');
 				$this->db->from('products');
@@ -479,17 +492,39 @@ class purchases_model extends CI_Model{
 				);
 				
 			    $this->db->where('product_id',$this->input->post('product_id'));
-				$this->db->update('products', $receive);											
+				$this->db->update('products', $receive);
+				$cost = $this->input->post('ppu') *	$this->input->post('order_quantity');	
 				
-			    $this->session->set_flashdata('success', $this->input->post('order_quantity').' Amount of product received and updated');
+				$this->db->select('total_cost');
+				$this->db->from('purchases');
+				$this->db->where('purchase_reference', $this->input->post('order_reference'));
+				$oamt = $this->db->get()->row('total_cost');
+		    	$newamt = $oamt + $cost;
+				
+				$purchase = array(
+					'total_cost'	=> $newamt,
+				);
+				
+				$this->db->where('purchase_reference', $this->input->post('order_reference'));
+				$this->db->update('purchases', $purchase);
+				
+			    $this->session->set_flashdata('success', 'Product received and updated');									
+				
+			    $this->session->set_flashdata('success', $this->input->post('order_quantity').' Amount of product received and updated ');
 				
 				$order = array(			
-					'order_status'=> '0',
+					'order_status'=> '1',
 					'qty_received' => $nqr,
 				);
 						
 				$this->db->where('order_id',$id);
 				$this->db->update('purchase_orders', $order);	
+								
+				$this->email->from('NOREPLY@kamuningbakery.com','Kamuning Bakery System');
+				$this->email->to($this->input->post('eadd'));
+				$this->email->subject('Ordered Delivery Shortage');
+				$this->email->message('<h1>Good day!</h1></br>This email is to notify you that we only received '.$this->input->post('order_quantity').' out of '.$oq.' we ordered');
+				$this->email->send();
 				
 				$audit = array(
 					'user_id'	=> $this->session->userdata('user_id'),

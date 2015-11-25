@@ -156,9 +156,7 @@
 											<option value=""></option>
 											<?php }?>
 										</select>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-theme" data-toggle="modal" data-target="#addSupplier"><i class="fa fa-plus"></i></a>
-									    </span>
+									
 										</div>
 									</div>
 									

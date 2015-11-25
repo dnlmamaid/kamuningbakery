@@ -101,13 +101,14 @@
 					<!-- details -->
 					<div class="row">
 						<div class="col-lg-6 col-lg-offset-3 bg-panel2">
+						<?php if($this->session->userdata('user_type') == '5' && ($r->order_status != '1' && $r->qty_received == '0')): ?>
 						<form action="<?php echo base_url()?>purchases/update_order_info/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
 							<h3 align="center"><?php echo $r->product_Name?></h3>
 							<p align="center"><b>&#8369;</b> <?php echo round($r->ppu, 2)?> per <?php echo $r->um?></p>
 							
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
-									<?php if($r->order_status != '1' && $r->qty_received == '0'): ?>
+									
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
@@ -146,7 +147,88 @@
 											</div>
 										</div>
 									</div>
-									<?php else: ?>
+									
+									<div class="row" style="margin-top:50px;">
+										<div class="col-lg-4 pull-left">
+											<div class="form-group">
+												<a href="javascript:window.history.go(-1);" data-toggle="tooltip" data-placement="top" title="Back to Purchase Order" class="btn btn-default" style="align">Back</a>
+											</div>
+										</div>
+										
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<?php if($r->order_status != '1' && $r->qty_received == '0'): ?>
+												<input type="submit" class="btn btn-caution" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
+												<?php endif; ?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<?php elseif($r->order_status != '1'): ?>
+						<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
+							<h3 align="center"><?php echo $r->product_Name?></h3>
+							<p align="center"><b>&#8369;</b> <?php echo round($r->ppu, 2)?> per <?php echo $r->um?></p>
+							
+							<div class="row">
+								<div class="col-lg-10 col-lg-offset-1">
+									<input type="hidden" name="eadd" value="<?php echo $r->supplier_email?>">ss
+									<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
+									<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">
+									<input type="hidden" name="ppu" value="<?php echo $r->ppu?>">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Ordered Quantity</label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<input type="number" step="any" class="form-control inline" value="<?php echo $r->order_quantity?>"disabled>
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>To Receive </label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<input type="number" step="any" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>" required>
+											</div>
+										</div>
+									</div>								
+									
+									<div class="row">
+										<div class="col-lg-4 pull-left">
+											<div class="form-group">
+												<a href="javascript:window.history.go(-1);" data-toggle="tooltip" data-placement="top" title="Back to Purchase Order" class="btn btn-default" style="align">Back</a>
+											</div>
+										</div>
+										
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<?php if($r->order_status != '1' && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '6')){?>
+												<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>
+												<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
+												<?php } ?>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</form>
+						<?php else: ?>
+						<h3 align="center"><?php echo $r->product_Name?></h3>
+							<p align="center"><b>&#8369;</b> <?php echo round($r->ppu, 2)?> per <?php echo $r->um?></p>
+							
+							<div class="row">
+								<div class="col-lg-10 col-lg-offset-1">
 									
 									<div class="row">
 										<div class="col-lg-6">
@@ -156,7 +238,7 @@
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label>&#8369; <?php echo $r->ppu?></label>
+												<label><?php echo round($r->ppu, 2)?></label>
 											</div>
 										</div>
 									</div>
@@ -164,12 +246,25 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label>Quantity to Receive </label>
+												<label>Quantity Ordered</label>
 											</div>
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->order_quantity - $r->qty_received;?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?></label>
+												<label><?php echo $r->order_quantity?> <?php if($r->um == 'pc' && $r->order_quantity > 1 ): ?>pcs <?php else: echo $r->um; endif;?></label>
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Quantity Received</label>
+											</div>
+										</div>
+										<div class="col-lg-4 pull-right">
+											<div class="form-group">
+												<label><?php echo $r->qty_received?> <?php if($r->um == 'pc' && $r->order_quantity > 1 ): ?>pcs <?php else: echo $r->um; endif;?></label>
 											</div>
 										</div>
 									</div>
@@ -186,54 +281,25 @@
 											</div>
 										</div>
 									</div>
-									<?php endif; ?>
+									
 									<div class="row" style="margin-top:50px;">
-										
 										<div class="col-lg-4 pull-left">
+											<div class="form-group">
+												<a href="javascript:window.history.go(-1);" data-toggle="tooltip" data-placement="top" title="Back to Purchase Order" class="btn btn-default" style="align">Back</a>
+											</div>
+										</div>
+										
+										<div class="col-lg-4 pull-right">
 											<div class="form-group">
 												<?php if($r->order_status != '1' && $r->qty_received == '0'): ?>
 												<input type="submit" class="btn btn-caution" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
 												<?php endif; ?>
 											</div>
 										</div>
-										</form>
-										
-										<div class="col-lg-4 align-center">
-											<div class="form-group">
-												<?php if($r->order_status != '1' && ($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '6')){?>
-												<form action="<?php echo base_url()?>purchases/receive/<?php echo $r->order_id?>" role="form" accept-charset="utf-8" method="post">
-													<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
-													<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">
-													<input type="hidden" name="ppu" value="<?php echo $r->ppu?>">
-													<input type="number" step="any" class="form-control" name="order_quantity" value="<?php echo $r->order_quantity-$r->qty_received?>">
-													<input type="hidden" name="ordering_cost" value="<?php echo $r->ordering_cost?>">
-												
-													<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>
-													<input type="submit" class="btn btn-success fa" data-toggle="tooltip" data-placement="top" title="Receive Order" value="&#xf00c;"><!--,  [&#xf058;], [&#xf05d;] -->
-													
-												</form>
-												<?php } ?>
-												
-											</div>
-											
-											
-										</div>
-										
-										
-										<div class="col-lg-4 pull-right">
-											<div class="form-group">
-												<a href="javascript:window.history.go(-1);" data-toggle="tooltip" data-placement="top" title="Back to Purchase Order" class="btn btn-default" style="align">Back</a>
-											</div>
-										</div>
-								
 									</div>
-									
-									
-									
 								</div>
 							</div>
-						
-								
+						<?php endif; ?>
 						</div>
 					</div>
 					<!-- /details -->

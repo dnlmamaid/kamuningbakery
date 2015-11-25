@@ -29,8 +29,11 @@
 	    			
 	    			<div class="col-lg-2 col-xs-5 pull-right" style="margin-bottom:15px;">
 		    			<a type="button" alt="Classifications" data-toggle="tooltip" data-placement="top" title="Classifications" href="<?php echo base_url()?>products/classes" class="btn btn-caution"><i class="fa fa-tags"></i></a>
+		    			<?php if($this->session->userdata('user_type') <= '2' || $this->session->userdata('user_type') == '4' || $this->session->userdata('user_type') == '5'):?>
 		    			<a type="button" alt="Finished Goods" data-toggle="tooltip" data-placement="top" title="Finished Goods" href="<?php echo base_url()?>inventory/finished_goods" class="btn btn-theme"><i class="fa flaticon-breakfast27"></i></a>
+		    			<?php endif; ?>
 		    			<a type="button" alt="Purchases" data-toggle="tooltip" data-placement="top" title="Purchase Raw Materials" href="<?php echo base_url()?>purchases" class="btn btn-success"><i class="fa flaticon-bill9"></i></a>
+		    			
 					</div>
 	    				
 				</div>

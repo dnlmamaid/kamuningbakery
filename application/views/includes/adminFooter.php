@@ -235,7 +235,7 @@ var colors_array= ["#009000", "#006600", "#339933"];
 	  <?php endforeach; endif; ?>]
 	});
 
-<?php elseif(($head == '' || $head =='home') && $this->session->userdata('user_type') == '5'):?>
+<?php elseif(($head == '' || $head =='home') && ($this->session->userdata('user_type') == ('5' || '6'))):?>
 $(function () {
     $('#purchaser-purchases').highcharts({
     	 credits: {
