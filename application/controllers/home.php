@@ -23,6 +23,7 @@ class home extends CI_Controller {
 		$data['sales_c'] = $this->reports_model->getMSales();
 		$data['products'] = $this->reports_model->getLow('5');
 		$data['requests'] = $this->reports_model->getRequests('5');
+		$data['production'] = $this->reports_model->getProduction('5', $offset);
 		
 		if($this->session->userdata('is_logged_in') && ($this->session->userdata('user_type') <= '2'))
 	    {
