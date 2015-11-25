@@ -231,7 +231,8 @@
 										<tr>
 											<th class="col-md-1"><i class="fa fa-barcode"></i> Reference ID</th>
 											<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product</th>
-						                    <th class="col-md-1"><i class="fa fa-truck"></i> Quantity</th>
+						                    <th class="col-md-1"><i class="fa fa-truck"></i> Quantity Ordered</th>
+						                    <th class="col-md-1"><i class="fa fa-truck"></i> Quantity Received</th>
 						                    <th class="col-md-1"><i class="fa">&#8369;</i> Total</th> 
 										</tr>
 				                              	
@@ -240,6 +241,7 @@
 											<td class="col-md-1"><?php echo $row->order_reference ?></td>
 											<td class="col-md-1"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+					                        <td class="col-md-1"><?php echo $row->qty_received ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 					                        <td class="col-md-1">&#8369; <?php echo $row->ordering_cost?></b></td>
 										</tr>	
 										<?php 
@@ -248,6 +250,7 @@
 											<td class="col-md-1 b"><?php echo $row->order_reference ?></td>
 											<td class="col-md-1 b"><?php echo $row->product_Name ?></td>
 					                        <td class="col-md-1 b"><?php echo $row->order_quantity ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
+					                        <td class="col-md-1"><?php echo $row->qty_received ?> <?php if($row->um == 'pc'){echo $row->um;?>s<?php } else{ echo $row->um;}?></td>
 					                        <td class="col-md-1 b">&#8369; <?php echo $row->ordering_cost?></b></td>
 										</tr>	
 										<?php
@@ -257,6 +260,7 @@
 										
 										<tr>
 											<td class="col-md-1"><b>Total Amount</b></td>
+										   	<td class="col-md-1"></td>
 										   	<td class="col-md-1"></td>
 										   	<td class="col-md-1"></td>
 										   	<td class="col-md-1"><b>&#8369; <?php echo $to->total?></b></td>	

@@ -107,7 +107,7 @@
 							
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
-									<?php if($r->order_status != '1'): ?>
+									<?php if($r->order_status != '1' && $r->qty_received == '0'): ?>
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
@@ -124,12 +124,12 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label>Quantity </label>
+												<label>To Receive </label>
 											</div>
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<input type="number" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>" required>
+												<input type="number" step="any" name="order_quantity" class="form-control inline" value="<?php echo $r->order_quantity?>" required>
 											</div>
 										</div>
 									</div>
@@ -137,7 +137,7 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label>Total Amount </label>
+												<label>Total Ordering Cost </label>
 											</div>
 										</div>
 										<div class="col-lg-4 pull-right">
@@ -164,12 +164,12 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label>Quantity </label>
+												<label>Quantity to Receive </label>
 											</div>
 										</div>
 										<div class="col-lg-4 pull-right">
 											<div class="form-group">
-												<label><?php echo $r->order_quantity?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?></label>
+												<label><?php echo $r->order_quantity - $r->qty_received;?> <?php if($r->um == 'pc'){echo $r->um;?>s<?php } else{ echo $r->um;}?></label>
 											</div>
 										</div>
 									</div>
@@ -177,7 +177,7 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label>Total Amount </label>
+												<label>Total Ordering Cost </label>
 											</div>
 										</div>
 										<div class="col-lg-4 pull-right">
@@ -191,7 +191,7 @@
 										
 										<div class="col-lg-4 pull-left">
 											<div class="form-group">
-												<?php if($r->order_status != '1'): ?>
+												<?php if($r->order_status != '1' && $r->qty_received == '0'): ?>
 												<input type="submit" class="btn btn-caution" value="Update Info" data-toggle="tooltip" data-placement="top" title="Update Order Information">
 												<?php endif; ?>
 											</div>
@@ -205,7 +205,7 @@
 													<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
 													<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">
 													<input type="hidden" name="ppu" value="<?php echo $r->ppu?>">
-													<input type="hidden" name="order_quantity" value="<?php echo $r->order_quantity?>">
+													<input type="number" step="any" class="form-control" name="order_quantity" value="<?php echo $r->order_quantity-$r->qty_received?>">
 													<input type="hidden" name="ordering_cost" value="<?php echo $r->ordering_cost?>">
 												
 													<a class="btn btn-danger fa" href="<?php echo base_url()?>purchases/cancel_order/<?php echo $r->order_id?>" onclick="return confirm('Action can not be undone, proceed?');"   data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>

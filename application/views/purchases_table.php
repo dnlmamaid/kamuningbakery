@@ -30,9 +30,11 @@
 	    			<div class="col-lg-2 col-xs-2 pull-right" style="margin-bottom:15px;">
 	    				<a alt="Report" data-toggle="tooltip" data-placement="top" title="Purchases Report" href="<?php echo base_url()?>purchases/report" class="btn btn-caution"><i class="fa fa-line-chart"></i></a>
 	    				<a href="<?php echo base_url()?>inventory/raw_materials" alt="Raw Materials" data-toggle="tooltip" data-placement="top" title="Raw Materials" class="btn btn-theme"><i class="fa flaticon-ingredients1"></i></a>
+	    				<?php if($this->session->userdata('user_type') == '5'): ?>
 	    				<span data-toggle="modal" data-target="#addPOrder">
 		    				<a alt="Purchase Order" data-toggle="tooltip" data-placement="top" title="Create Purchase Order" class="btn btn-success"><i class="fa flaticon-bill9"></i></a>
 		    			</span>
+		    			<?php endif; ?>
 		    			
 		    			
 		    			

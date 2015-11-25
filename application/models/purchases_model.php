@@ -320,61 +320,194 @@ class purchases_model extends CI_Model{
 	function receive_order($id)
     {
     	
-		$order = array(			
-			'order_status'=> '1',
-		);
+		$this->db->select('order_quantity');
+		$this->db->from('purchase_orders');
+		$this->db->where('order_id', $id);
+		$oq = $this->db->get()->row('order_quantity');
+		
+		$this->db->select('qty_received');
+		$this->db->from('purchase_orders');
+		$this->db->where('order_id', $id);
+		$qr = $this->db->get()->row('qty_received');
+		
+		$noq = $oq - $qr;
 				
-		$this->db->where('order_id',$id);
-		$this->db->update('purchase_orders', $order);
+		if($this->input->post('order_quantity') <= $noq){
 		
-		$this->db->select('current_count');
-		$this->db->from('products');
-		$this->db->where('product_id', $this->input->post('product_id'));
-		$oldquantity = $this->db->get()->row('current_count');
-    	$newquantity = $oldquantity + $this->input->post('order_quantity');
-		
-		$this->db->select('price');
-		$this->db->from('products');
-		$this->db->where('product_id', $this->input->post('product_id'));
-		$prce = $this->db->get()->row('price');
-			
-		$np = ($prce + $this->input->post('ppu'))/2;
-		
-		$receive = array(
-			'price' => $np,
-			'current_count'	=> $newquantity,
-			'product_status'=> '1',
-		);
-		
-	    $this->db->where('product_id',$this->input->post('product_id'));
-		$this->db->update('products', $receive);
-		
-		
-		$this->db->select('total_cost');
-		$this->db->from('purchases');
-		$this->db->where('purchase_reference', $this->input->post('order_reference'));
-		$oamt = $this->db->get()->row('total_cost');
-    	$newamt = $oamt + $this->input->post('ordering_cost');
-		
-		$purchase = array(
-			'total_cost'	=> $newamt,
-		);
-		
-		$this->db->where('purchase_reference',$this->input->post('order_reference'));
-		$this->db->update('purchases', $purchase);
-		
-	    $this->session->set_flashdata('success','Product received and updated');
-			
-		$audit = array(
-			'user_id'	=> $this->session->userdata('user_id'),
-			'module'	=> 'Purchases',
-			'remark_id'	=> $id,
-			'remarks'	=> 'received product',
-			'date_created'=> date('Y-m-j H:i:s'),
+			if($this->input->post('order_quantity') == $noq)
+			{
+				$this->db->select('current_count');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$oldquantity = $this->db->get()->row('current_count');
+		    	$newquantity = $oldquantity + $this->input->post('order_quantity');
 				
-		);
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$prce = $this->db->get()->row('price');
+					
+				$np = ($prce + $this->input->post('ppu'))/2;
+				
+				$receive = array(
+					'price' => $np,
+					'current_count'	=> $newquantity,
+					'product_status'=> '1',
+				);
+				
+			    $this->db->where('product_id',$this->input->post('product_id'));
+				$this->db->update('products', $receive);
+				
+				
+				$this->db->select('total_cost');
+				$this->db->from('purchases');
+				$this->db->where('purchase_reference', $this->input->post('order_reference'));
+				$oamt = $this->db->get()->row('total_cost');
+		    	$newamt = $oamt + $this->input->post('ordering_cost');
+				
+				$purchase = array(
+					'total_cost'	=> $newamt,
+				);
+				
+				$this->db->where('purchase_reference',$this->input->post('order_reference'));
+				$this->db->update('purchases', $purchase);
+				
+			    $this->session->set_flashdata('success','Product received and updated');
+				
+				$order = array(			
+					'order_status'=> '1',
+					'qty_received'=> ($qr + $this->input->post('order_quantity')),
+				);
+						
+				$this->db->where('order_id',$id);
+				$this->db->update('purchase_orders', $order);	
+				
+				$audit = array(
+					'user_id'	=> $this->session->userdata('user_id'),
+					'module'	=> 'Purchases',
+					'remark_id'	=> $id,
+					'remarks'	=> 'received product',
+					'date_created'=> date('Y-m-j H:i:s'),
+						
+				);
+					
+				$this->db->insert('audit_trail', $audit);
+			}
+
+			else if($noq - $this->input->post('order_quantity') == '0'){
+												
+				$this->db->select('current_count');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$oldquantity = $this->db->get()->row('current_count');
+		    	$newquantity = $oldquantity + $this->input->post('order_quantity');
+				
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$prce = $this->db->get()->row('price');
+					
+				$np = ($prce + $this->input->post('ppu'))/2;
+				
+				$receive = array(
+					'price' => $np,
+					'current_count'	=> $newquantity,
+					'product_status'=> '1',
+				);
+				
+			    $this->db->where('product_id',$this->input->post('product_id'));
+				$this->db->update('products', $receive);
+				
+				
+				$this->db->select('total_cost');
+				$this->db->from('purchases');
+				$this->db->where('purchase_reference', $this->input->post('order_reference'));
+				$oamt = $this->db->get()->row('total_cost');
+		    	$newamt = $oamt + $this->input->post('ordering_cost');
+				
+				$purchase = array(
+					'total_cost'	=> $newamt,
+				);
+				
+				$this->db->where('purchase_reference',$this->input->post('order_quantity'));
+				$this->db->update('purchases', $purchase);
+				
+			    $this->session->set_flashdata('success', 'Product received and updated');
+				
+				$order = array(			
+					'order_status'=> '1',
+					'qty_received' => $oq,
+				);
+						
+				$this->db->where('order_id',$id);
+				$this->db->update('purchase_orders', $order);	
+				
+				$audit = array(
+					'user_id'	=> $this->session->userdata('user_id'),
+					'module'	=> 'Purchases',
+					'remark_id'	=> $id,
+					'remarks'	=> 'received product',
+					'date_created'=> date('Y-m-j H:i:s'),
+						
+				);			
+				$this->db->insert('audit_trail', $audit);
+	
+				
+			}
 			
-		$this->db->insert('audit_trail', $audit);
+			else{
+						
+				$nqr = $qr + $this->input->post('order_quantity');
+				
+				$this->db->select('current_count');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$oldquantity = $this->db->get()->row('current_count');
+		    	$newquantity = $oldquantity + $this->input->post('order_quantity');
+				
+				$this->db->select('price');
+				$this->db->from('products');
+				$this->db->where('product_id', $this->input->post('product_id'));
+				$prce = $this->db->get()->row('price');
+					
+				$np = ($prce + $this->input->post('ppu'))/2;
+				
+				$receive = array(
+					'price' => $np,
+					'current_count'	=> $newquantity,
+					'product_status'=> '1',
+				);
+				
+			    $this->db->where('product_id',$this->input->post('product_id'));
+				$this->db->update('products', $receive);											
+				
+			    $this->session->set_flashdata('success', $this->input->post('order_quantity').' Amount of product received and updated');
+				
+				$order = array(			
+					'order_status'=> '0',
+					'qty_received' => $nqr,
+				);
+						
+				$this->db->where('order_id',$id);
+				$this->db->update('purchase_orders', $order);	
+				
+				$audit = array(
+					'user_id'	=> $this->session->userdata('user_id'),
+					'module'	=> 'Purchases',
+					'remark_id'	=> $id,
+					'remarks'	=> 'received product',
+					'date_created'=> date('Y-m-j H:i:s'),
+						
+				);
+					
+				$this->db->insert('audit_trail', $audit);
+				
+			}
+		}
+		else{
+			$this->session->set_flashdata('error','You cannot receive more than you have ordered.');
+		}
+
     }
 	
 	function remove_order($id)
