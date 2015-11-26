@@ -375,16 +375,17 @@
 							<table class="table table-advance table-hover">
 								<tbody>
 									<tr>
-										<th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Product Name</th>
-					                    <th class="col-md-1"><i class="fa">&#8369;</i> Sale Price</th>
-			                            <th class="col-md-1"><i class="fa">&#8369;</i> Total Cost</th>
+										<th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Product Name</th>
+					                    <th class="col-md-1"><i class="fa flaticon-ingredients1"></i> Quantity Used</th>
+			                            <th class="col-md-1"><i class="fa flaticon-breakfast27"></i> Units it can produce</th>
 			                       	</tr>
 			                              	
-			                        <?php if(isset($purchases) && is_array($purchases)) : foreach($purchases as $row): ?> 
-									<tr class="clickable-row" data-href="<?php echo base_url()?>purchases/purchase_invoice/<?php echo $row['purchase_id']?>">
-										<td class="col-md-1"><?php echo $row->product_Name ?></td>
-		                                <td class="col-md-1">&#8369; <?php echo $row->sale_Price?></td>
-		                                <td class="col-md-1">&#8369; <?php echo ($row->sale_Price*$row->current_count)?></td>
+			                        <?php if(isset($products) && is_array($products)) : foreach($products as $row): ?> 
+									<tr>
+										<td class="col-md-1"><?php echo $row['id_for'] ?></td>
+										<td class="col-md-1"><?php echo $row['ingredient_qty'] ?></td>
+		                                <td class="col-md-1"><?php echo $row['qty_can_produce'] ?></td>
+		                                
 									</tr>	
 									<?php endforeach;	                               
 									else:?>
@@ -393,7 +394,7 @@
 										<th>No records</th>
 										<th>No records</th>
 										<th>No records</th>
-										<th>No records</th>
+										
 									</tr>
 									<?php endif; ?>      
 			                        

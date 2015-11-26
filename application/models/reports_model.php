@@ -623,6 +623,29 @@ Class reports_model extends CI_Model {
 			return $data;
 		}
 	}
+	
+	/**
+	 * Get Products Produced from Ingredient function
+	 * -- gets product production history
+	 * 
+	 */
+	function getProductionIng($pid)
+	{
+		if($this -> session -> userdata('is_logged_in'))
+		{
+			
+			$this->db->join('products','products.product_id = ingredients.product_id','left');
+			
+			$this->db->from('ingredients');
+	
+			$this -> db -> where('ingredients.product_id', $pid);
+			$this->db->group_by('id_for');
+			
+			$query = $this -> db -> get();
+			$data = $query -> result_array();
+			return $data;
+		}
+	}
 
 	function get_total_production_by_date(){
 		$start = $this->input->post('sdate');

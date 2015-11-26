@@ -120,10 +120,11 @@
 										<span data-toggle="modal" data-target="#addOld">
 											<a type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Add Old Product"><i class="fa fa-plus"></i></a>
 										</span>
-										
+										<?php if($this->session->userdata('user_type') <= '2'):?>
 										<span>
 											<a onclick="return confirm('Action can not be undone, proceed?');" href="<?php echo base_url()?>purchases/cancel_purchase/<?php echo $r->purchase_id?>" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Cancel Order"><i class="fa fa-close"></i></a>
 										</span>
+										<?php endif; ?>
 									</div>
 								</div>
 								<?php endif; ?>

@@ -173,7 +173,7 @@
 							
 							<div class="row">
 								<div class="col-lg-10 col-lg-offset-1">
-									<input type="hidden" name="eadd" value="<?php echo $r->supplier_email?>">ss
+									<input type="hidden" name="eadd" value="<?php echo $r->supplier_email?>">
 									<input type="hidden" name="product_id" value="<?php echo $r->product_id?>">
 									<input type="hidden" name="order_reference" value="<?php echo $r->order_reference?>">
 									<input type="hidden" name="ppu" value="<?php echo $r->ppu?>">

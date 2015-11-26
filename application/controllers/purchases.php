@@ -253,12 +253,10 @@ class purchases extends CI_Controller {
 			}
 			else
 			{
-				$this -> purchases_model -> add_order($code);
+				$this -> purchases_model -> add_order_o($code);
 				redirect($this->agent->referrer(), 'refresh');
 			}
-			
-			$this -> purchases_model -> add_order_o($code);
-			redirect($this->agent->referrer(), 'refresh');
+						
 		}
 		 
 		else if($this->session->userdata('is_logged_in')){

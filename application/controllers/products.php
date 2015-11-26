@@ -179,6 +179,7 @@ class products extends CI_Controller {
 		$data['su'] = $this -> reports_model -> getLeadTime($pid);
 			
 		$data['production'] = $this -> reports_model -> getProductionHistory($pid);
+		$data['products'] = $this -> reports_model -> getProductionIng($pid);
 		$data['purchases'] = $this -> reports_model -> getPurchaseHistory($pid);
 		$data['sales'] = $this -> reports_model -> getSalesHistory($pid);
 			

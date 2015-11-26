@@ -144,6 +144,7 @@ class purchases_model extends CI_Model{
 			'order_reference'	=> $code,
 			'qty_before_order'	=> $cc,
 			'order_quantity'	=> $this->input->post('quantity'),
+			'qty_received'	=> '0',
 			'ppu'	=> $this->input->post('price'),
 			'ordering_cost'	=> $total,				
 		);
@@ -515,6 +516,7 @@ class purchases_model extends CI_Model{
 				$order = array(			
 					'order_status'=> '1',
 					'qty_received' => $nqr,
+					'ordering_cost' => $newamt,
 				);
 						
 				$this->db->where('order_id',$id);
