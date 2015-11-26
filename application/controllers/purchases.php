@@ -209,11 +209,13 @@ class purchases extends CI_Controller {
 	    {
 	    	$this->load->library('form_validation');
 			
-			$this->form_validation->set_rules('quantity', 'quantity', 'trim|greater_than[0]');
+			$this->form_validation->set_rules('quantity', 'quantity', 'trim|required|greater_than[0]');
+			$this->form_validation->set_rules('price', 'price', 'trim|required|greater_than[0]');
 			
 			if ($this->form_validation->run() == FALSE)
 			{
-				$this->form_validation->set_message('greater_than', 'Quantity should not be equal to zero(0)');
+				$this->session->set_flashdata('error', 'There should not be any blank spaces or inputs equal to zero(0)');
+				
 				redirect($this->agent->referrer(), 'refresh');
 			}
 			else
@@ -244,11 +246,12 @@ class purchases extends CI_Controller {
 	    {
 	    	$this->load->library('form_validation');
 			
-			$this->form_validation->set_rules('quantity', 'quantity', 'trim|greater_than[0]');
+			$this->form_validation->set_rules('quantity', 'quantity', 'trim|required|greater_than[0]');
+			$this->form_validation->set_rules('price', 'price', 'trim|required|greater_than[0]');
 			
 			if ($this->form_validation->run() == FALSE)
 			{
-				$this->form_validation->set_message('greater_than', 'Quantity should not be equal to zero(0)');
+				$this->session->set_flashdata('error', 'There should not be any blank spaces or inputs equal to zero(0)');
 				redirect($this->agent->referrer(), 'refresh');
 			}
 			else

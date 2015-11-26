@@ -324,7 +324,7 @@
 							</div>
 
 							<div class="col-lg-3">
-								<label class="control-label">Price per unit</label>
+								<label id="price" class="control-label">Price per unit</label>
 								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
 								
@@ -414,7 +414,7 @@
 							</div>
 
 							<div class="col-lg-3">
-								<label class="control-label">Price per unit</label>
+								<label id="price" class="control-label">Price per unit</label>
 								<input type="number" step="any" name="price" class="form-control inline" required>
 							</div>
 							
